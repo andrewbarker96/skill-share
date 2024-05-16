@@ -1,0 +1,8 @@
+{
+  "name": "SkillShare",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react-vite",
+  "id": "634e2e34"
+}
