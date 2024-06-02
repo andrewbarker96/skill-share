@@ -12,6 +12,14 @@ import {
   IonCard,
   IonCardContent,
   IonModal,
+  IonGrid,
+  IonCol,
+  IonRow,
+  IonHeader,
+  IonToolbar,
+  IonTitle,
+  IonButtons,
+  IonToast,
 } from '@ionic/react';
 import { getAuth, signInWithEmailAndPassword, sendPasswordResetEmail } from 'firebase/auth';
 import { firebase } from '../../util/firebase';
@@ -69,8 +77,6 @@ export default function LoginPage() {
   }
 
 
-
-
   return (
     // Main Login Form
     <IonPage>
@@ -97,28 +103,37 @@ export default function LoginPage() {
 
         {/* Reset Password Modal */}
         <IonModal isOpen={showModal} onDidDismiss={() => setShowModal(false)}>
-          <IonCard>
-            <IonCardContent>
-              <IonIcon onClick={() => setShowModal(false)} icon={close} size='large' color='primary' slot='start' />
-            </IonCardContent>
-            <IonCardContent>
-              <IonText class='ion-text-center'><h1>Reset Password</h1></IonText>
-              <IonText class='ion-text-center'><h3>Enter your email address to receive a password reset link.</h3></IonText>
-            </IonCardContent>
-            <IonCardContent>
-              <IonItem>
-                <IonInput type='email' labelPlacement='floating' label='Email' placeholder='Enter Email Address' value={emailVerification} onIonChange={e => setEmailVerification(e.detail.value!)} />
-              </IonItem>
-              <IonItem>
-                <IonLabel position='stacked' color='danger'>{invalid ? 'Email does not exist and/or is invalid' : ''}</IonLabel>
-                <IonLabel position='stacked' color='primary'>{success ? '' : ''}Password reset email sent.<br /><br />Email may take 5-10 minutes.<br />If you do not receive contact your Stock & Associates IT Admin. </IonLabel>
-              </IonItem>
-            </IonCardContent>
-            <IonCardContent>
-              <IonButton id='open-loading' expand='block' onClick={handleForgotPassword}>Send Verification Email</IonButton>
-              <IonLoading className='custom-loading' trigger='open-loading' isOpen={success} onDidDismiss={() => setSuccess(false)} message='Sending Email...' duration={2000} />
-            </IonCardContent>
-          </IonCard>
+          <IonHeader>
+            <IonToolbar>
+              <IonButtons slot='start'>
+                <IonButton slot='icon-only' onClick={() => setShowModal(false)}>
+                  <IonIcon icon={close} />
+                </IonButton>
+              </IonButtons>
+              <IonTitle>Reset Password</IonTitle>
+            </IonToolbar>
+          </IonHeader>
+          <IonContent className='ion-padding'>
+            <IonGrid>
+              <IonRow>
+                <IonCol size='12'>
+                  <IonText className='ion-text-center'>Please enter your email address below to receive a password reset email.</IonText>
+                </IonCol>
+              </IonRow>
+              <IonRow>
+                <IonCol size='12'>
+                  <IonInput type='email' labelPlacement='floating' label='Email' placeholder='Enter Email Address' value={emailVerification} onIonChange={e => setEmailVerification(e.detail.value!)} />
+                </IonCol>
+              </IonRow>
+              <IonRow>
+                <IonCol size='12'>
+                  <IonButton expand='block' onClick={handleForgotPassword}>Send Verification Email</IonButton>
+                </IonCol>
+              </IonRow>
+              <IonToast isOpen={invalid} onDidDismiss={() => setInvalid(true)} message='Email does not exist and/or is invalid' duration={2000} />
+              <IonToast isOpen={success} onDidDismiss={() => setSuccess(false)} message='Password reset email sent. Email may take 5-10 minutes. If you do not receive contact your Stock & Associates IT Admin.' duration={5000} />
+            </IonGrid>
+          </IonContent>
         </IonModal>
       </IonContent>
     </IonPage>
