@@ -1,19 +1,28 @@
+import React, { useEffect, useState } from 'react';
 import { Redirect, Route } from 'react-router-dom';
 import {
   IonApp,
+  IonContent,
+  IonHeader,
   IonIcon,
   IonLabel,
   IonRouterOutlet,
   IonTabBar,
   IonTabButton,
   IonTabs,
+  IonToolbar,
   setupIonicReact
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
+import { onAuthStateChanged } from 'firebase/auth';
+import { adminAuth, auth } from '../util/firebase';
 import { ellipse, square, triangle } from 'ionicons/icons';
 import Tab1 from './pages/Tab1';
 import Tab2 from './pages/Tab2';
 import Tab3 from './pages/Tab3';
+import TopMenu from './components/TopMenu';
+import HomePage from './pages/Home';
+import LoginPage from './pages/Login';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -47,41 +56,64 @@ import './theme/variables.css';
 
 setupIonicReact();
 
-const App: React.FC = () => (
-  <IonApp>
-    <IonReactRouter>
-      <IonTabs>
-        <IonRouterOutlet>
-          <Route exact path="/tab1">
-            <Tab1 />
-          </Route>
-          <Route exact path="/tab2">
-            <Tab2 />
-          </Route>
-          <Route path="/tab3">
-            <Tab3 />
-          </Route>
-          <Route exact path="/">
-            <Redirect to="/tab1" />
-          </Route>
-        </IonRouterOutlet>
-        <IonTabBar slot="bottom">
-          <IonTabButton tab="tab1" href="/tab1">
-            <IonIcon aria-hidden="true" icon={triangle} />
-            <IonLabel>Tab 1</IonLabel>
-          </IonTabButton>
-          <IonTabButton tab="tab2" href="/tab2">
-            <IonIcon aria-hidden="true" icon={ellipse} />
-            <IonLabel>Tab 2</IonLabel>
-          </IonTabButton>
-          <IonTabButton tab="tab3" href="/tab3">
-            <IonIcon aria-hidden="true" icon={square} />
-            <IonLabel>Tab 3</IonLabel>
-          </IonTabButton>
-        </IonTabBar>
-      </IonTabs>
-    </IonReactRouter>
-  </IonApp>
-);
+const App: React.FC = () => {
+  const [authUser, setAuthUser] = useState(false);
+  const [adminUser, setAdminUser] = useState(false);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setAuthUser(true);
+        if (adminAuth.includes(user.uid)) {
+          setAdminUser(true);
+        } else {
+          setAdminUser(false);
+        }
+      } else {
+        setAuthUser(false);
+        setAdminUser(false);
+      }
+    });
+
+    // Cleanup subscription on unmount
+    return () => unsubscribe();
+  }, []);
+
+  return (
+    <IonApp>
+      <IonHeader>
+        <IonToolbar>
+          <TopMenu />
+        </IonToolbar>
+      </IonHeader>
+      <IonContent className='main-content'>
+        <IonReactRouter>
+          <IonTabs>
+            <IonRouterOutlet>
+              <Route exact path="/">
+                {authUser ? <HomePage /> : <LoginPage />}
+              </Route>
+
+            </IonRouterOutlet>
+            <IonTabBar slot={'bottom'}>
+              <IonTabButton tab="tab1" href="/tab1">
+                <IonIcon icon={triangle} />
+                <IonLabel>Tab 1</IonLabel>
+              </IonTabButton>
+              <IonTabButton tab="tab2" href="/tab2">
+                <IonIcon icon={ellipse} />
+                <IonLabel>Tab 2</IonLabel>
+              </IonTabButton>
+              <IonTabButton tab="tab3" href="/tab3">
+                <IonIcon icon={square} />
+                <IonLabel>Tab 3</IonLabel>
+              </IonTabButton>
+            </IonTabBar>
+          </IonTabs>
+        </IonReactRouter>
+      </IonContent>
+    </IonApp>
+  );
+};
 
 export default App;
