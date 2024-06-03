@@ -33,3 +33,6 @@ yarn-error.log*
 
 /secrets
 .fake
+
+.firebase/*
+*.cache

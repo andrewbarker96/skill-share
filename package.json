@@ -27,12 +27,12 @@
     "dotenv": "^16.4.5",
     "firebase": "^10.12.0",
     "firebase-admin": "^12.1.0",
+    "firestore": "^1.1.6",
     "ionicons": "^7.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router": "^5.3.4",
-    "react-router-dom": "^5.3.4",
-    "vite-plugin-pwa": "^0.20.0"
+    "react-router-dom": "^5.3.4"
   },
   "devDependencies": {
     "@capacitor/cli": "6.0.0",
@@ -51,6 +51,7 @@
     "terser": "^5.4.0",
     "typescript": "^5.1.6",
     "vite": "^5.0.0",
+    "vite-plugin-pwa": "^0.20.0",
     "vitest": "^0.34.6"
   },
   "description": "An Ionic project"
