@@ -4,16 +4,16 @@ http://ionicframework.com/docs/theming/ */
 /** Ionic CSS Variables **/
 :root {
   /** primary **/
-  --ion-color-primary: #1C75BC;
-  --ion-color-primary-rgb: 244, 245, 248;
+  --ion-color-primary: #53aee6;
+  --ion-color-primary-rgb: 117, 199, 251;
   --ion-color-primary-contrast: #ffffff;
   --ion-color-primary-contrast-rgb: 0, 0, 0;
   --ion-color-primary-shade: #363839;
   --ion-color-primary-tint: #f5f6f9;
 
   /** secondary **/
-  --ion-color-secondary: #878787;
-  --ion-color-secondary-rgb: 61, 194, 255;
+  --ion-color-secondary: #F83747;
+  --ion-color-secondary-rgb: 248, 55, 71;
   --ion-color-secondary-contrast: #dcdcdc;
   --ion-color-secondary-contrast-rgb: 255, 255, 255;
   --ion-color-secondary-shade: #4c4c4c;

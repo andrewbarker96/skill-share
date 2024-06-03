@@ -8,8 +8,6 @@ import {
   IonPage,
   IonText,
   IonIcon,
-  IonImg,
-  IonCard,
   IonCardContent,
   IonModal,
   IonGrid,
@@ -20,6 +18,7 @@ import {
   IonTitle,
   IonButtons,
   IonToast,
+  IonImg,
 } from '@ionic/react';
 import { getAuth, signInWithEmailAndPassword, sendPasswordResetEmail } from 'firebase/auth';
 import { firebase } from '../../util/firebase';
@@ -27,6 +26,7 @@ import { close, eye, eyeOff, send } from 'ionicons/icons';
 import Copyright from '../components/Copyright';
 import { IonRefresher } from '@ionic/react';
 import { IonLoading } from '@ionic/react';
+import Logo from '../components/Logo';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
@@ -81,25 +81,48 @@ export default function LoginPage() {
     // Main Login Form
     <IonPage>
       <IonContent className='ion-padding'>
-        <IonCardContent className='form'>
-          <IonItem>
-            <IonInput type='email' labelPlacement='floating' label='Email' placeholder='Email' value={email} onIonChange={e => setEmail(e.detail.value!)} />
-          </IonItem>
-          <IonItem>
-            <IonInput type={showPassword ? 'text' : 'password'} labelPlacement='floating' label='Password' placeholder='Enter your Password' value={password} onIonChange={e => setPassword(e.detail.value!)} />
-            <IonIcon slot='end' icon={showPassword ? eye : eyeOff} size='small' color='medium' onClick={() => setShowPassword(!showPassword)} />
-          </IonItem>
-          <IonItem>
-            <IonLabel position='stacked' color='danger'>{invalid ? 'Invalid email or password' : ''}</IonLabel>
-            <IonButton slot='end' fill='clear' onClick={clickForgotPassword}>Forgot Password?</IonButton>
-          </IonItem>
-          <br />
-          <IonButton id='open-loading' expand='block' onClick={handleLogin}>Login</IonButton>
-          <IonLoading className='custom-loading' trigger='open-loading' isOpen={false} onDidDismiss={() => setInvalid(false)} message='Logging in...' duration={2000} />
-        </IonCardContent>
-        <IonCardContent>
-          <Copyright />
-        </IonCardContent>
+        <IonGrid className='form'>
+          <IonRow>
+            <IonCol size='12'>
+              <IonImg src='https://firebasestorage.googleapis.com/v0/b/skill-share-791ad.appspot.com/o/SkillSwap.png?alt=media&token=e7758927-9883-440e-b153-530f85c8d8c9' alt='SkillSwap Logo' style={{ height: '200px' }} />
+            </IonCol>
+          </IonRow>
+          <IonRow>
+            <IonCol size='12'>
+            <IonItem>
+              <IonInput type='email' labelPlacement='floating' label='Email' placeholder='Email' value={email} onIonChange={e => setEmail(e.detail.value!)} />
+            </IonItem>
+            <IonItem>
+              <IonInput type={showPassword ? 'text' : 'password'} labelPlacement='floating' label='Password' placeholder='Password' value={password} onIonChange={e => setPassword(e.detail.value!)} />
+              <IonIcon slot='end' icon={showPassword ? eye : eyeOff} size='small' color='medium' onClick={() => setShowPassword(!showPassword)} />
+            </IonItem>
+            <IonItem>
+              <IonLabel position='stacked' color='danger'>{invalid ? 'Invalid email or password' : ''}</IonLabel>
+              <IonButton slot='end' fill='clear' onClick={clickForgotPassword}>Forgot Password?</IonButton>
+              </IonItem>
+            </IonCol>
+          </IonRow>
+          <IonRow>
+            <IonCol>
+              <IonButton id='open-loading' expand='block' onClick={handleLogin}>Login</IonButton>
+            </IonCol>
+          </IonRow>
+          <IonRow>
+            <IonCol>
+              <IonButton color={'secondary'} expand='block' routerLink='/register'>Register</IonButton>
+            </IonCol>
+          </IonRow>
+          <IonRow>
+            <IonCol>
+              <Copyright />
+            </IonCol>
+          </IonRow>
+        </IonGrid>
+        
+            <IonLoading className='custom-loading' trigger='open-loading' isOpen={false} onDidDismiss={() => setInvalid(false)} message='Logging in...' duration={2000} />
+
+
+
 
         {/* Reset Password Modal */}
         <IonModal isOpen={showModal} onDidDismiss={() => setShowModal(false)}>
