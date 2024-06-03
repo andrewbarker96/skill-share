@@ -53,6 +53,7 @@ import '@ionic/react/css/palettes/dark.system.css';
 
 /* Theme variables */
 import './theme/variables.css';
+import ProfilePage from './pages/Profile';
 
 setupIonicReact();
 
@@ -89,12 +90,18 @@ const App: React.FC = () => {
       <IonContent className='main-content'>
         <IonReactRouter>
           <IonTabs>
+
+            {/* Routing */}
             <IonRouterOutlet>
               <Route exact path="/">
                 {authUser ? <HomePage /> : <LoginPage />}
               </Route>
-
+              <Route exact path="/Profile">
+                <ProfilePage />
+              </Route>
             </IonRouterOutlet>
+
+            {/* Tab Bar */}
             <IonTabBar slot={'bottom'}>
               <IonTabButton tab="tab1" href="/tab1">
                 <IonIcon icon={triangle} />
@@ -107,6 +114,10 @@ const App: React.FC = () => {
               <IonTabButton tab="tab3" href="/tab3">
                 <IonIcon icon={square} />
                 <IonLabel>Tab 3</IonLabel>
+              </IonTabButton>
+              <IonTabButton tab='Profile' href='/Profile'>
+                <IonIcon icon={square} />
+                <IonLabel>Profile</IonLabel>
               </IonTabButton>
             </IonTabBar>
           </IonTabs>
