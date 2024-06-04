@@ -17,9 +17,6 @@ import { IonReactRouter } from '@ionic/react-router';
 import { onAuthStateChanged } from 'firebase/auth';
 import { adminAuth, auth } from '../util/firebase';
 import { ellipse, square, triangle } from 'ionicons/icons';
-import Tab1 from './pages/Tab1';
-import Tab2 from './pages/Tab2';
-import Tab3 from './pages/Tab3';
 import TopMenu from './components/TopMenu';
 import HomePage from './pages/Home';
 import LoginPage from './pages/Login';
@@ -103,17 +100,9 @@ const App: React.FC = () => {
 
             {/* Tab Bar */}
             <IonTabBar slot={'bottom'}>
-              <IonTabButton tab="tab1" href="/tab1">
+              <IonTabButton tab='Home' href='/'>
                 <IonIcon icon={triangle} />
-                <IonLabel>Tab 1</IonLabel>
-              </IonTabButton>
-              <IonTabButton tab="tab2" href="/tab2">
-                <IonIcon icon={ellipse} />
-                <IonLabel>Tab 2</IonLabel>
-              </IonTabButton>
-              <IonTabButton tab="tab3" href="/tab3">
-                <IonIcon icon={square} />
-                <IonLabel>Tab 3</IonLabel>
+                <IonLabel>Home</IonLabel>
               </IonTabButton>
               <IonTabButton tab='Profile' href='/Profile'>
                 <IonIcon icon={square} />
