@@ -1,7 +1,7 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 import { getAnalytics } from "firebase/analytics";
-import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
+import { createUserWithEmailAndPassword, getAuth, onAuthStateChanged } from "firebase/auth";
 import { create } from "ionicons/icons";
 
 const firebaseConfig = {
@@ -20,13 +20,16 @@ const adminAuth = [
   "RmgwiiugPWTEL3YyfJOyro3aq3I2",
 ];
 
+
 // Initialize Firebase
 const firebase = initializeApp(firebaseConfig);
 const analytics = getAnalytics(firebase);
 const db = getFirestore(firebase);
 const firestore = getFirestore(firebase);
 const auth = getAuth(firebase);
-const user = auth.currentUser;
+
+
+
 
 
 
