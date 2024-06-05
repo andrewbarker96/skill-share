@@ -25,7 +25,6 @@ import { close, create } from 'ionicons/icons';
 import Copyright from '../components/Copyright';
 import { IonLoading } from '@ionic/react';
 import ForgotPasswordForm from '../components/Forms/ForgotPassword';
-import CreateAccountForm from '../components/Forms/CreateAccount';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 
 export default function LoginPage() {
@@ -79,8 +78,8 @@ export default function LoginPage() {
               </IonItem>
             </IonCol>
             <IonCol size='12'>
-              <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-                <ForgotPasswordForm />
+              <div className='ion-text-end'>
+                <IonButton fill='clear' color={'primary'} routerLink='/password-reset'>Forgot Password</IonButton>
               </div>
             </IonCol>
           </IonRow>
@@ -91,7 +90,7 @@ export default function LoginPage() {
           </IonRow>
           <IonRow>
             <IonCol>
-              <IonButton color={'secondary'} shape='round' expand='block' onClick={() => window.location.href = '/create-account'}>Create Account</IonButton>
+              <IonButton color={'secondary'} shape='round' expand='block' routerLink='/create-account'>Create Account</IonButton>
             </IonCol>
           </IonRow>
           <IonRow>
@@ -100,20 +99,6 @@ export default function LoginPage() {
             </IonCol>
           </IonRow>
         </IonGrid>
-
-        <IonModal isOpen={modal} onDidDismiss={() => showModal(false)}>
-          <IonHeader>
-            <IonToolbar>
-              <IonButtons slot='start'>
-                <IonButton slot='icon-only' onClick={() => showModal(false)}>
-                  <IonIcon icon={close} />
-                </IonButton>
-              </IonButtons>
-              <IonTitle>Create Account</IonTitle>
-            </IonToolbar>
-          </IonHeader>
-          <CreateAccountForm />
-        </IonModal>
         <IonLoading className='custom-loading' trigger='open-loading' isOpen={false} onDidDismiss={() => setInvalid(false)} message='Logging in...' duration={500} />
         <IonToast isOpen={invalid} color={'danger'} onDidDismiss={() => setInvalid(false)} message='Invalid email or password' duration={2000} />
       </IonContent>

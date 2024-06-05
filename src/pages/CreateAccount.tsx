@@ -25,7 +25,7 @@ import Copyright from '../components/Copyright';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { arrowBack } from 'ionicons/icons';
 
-export default function LoginPage() {
+export default function CreateAccountPage() {
   const [invalid, setInvalid] = useState(false);
   const [success, setSuccess] = useState(false);
   const [email, setEmail] = useState('');
@@ -59,7 +59,7 @@ export default function LoginPage() {
               <IonIcon icon={arrowBack} />
             </IonButton>
           </IonButtons>
-          <IonTitle>Create Account</IonTitle>
+          <IonTitle>Return to Login</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent className='ion-padding'>
@@ -76,7 +76,7 @@ export default function LoginPage() {
                 />
               </IonItem>
             </IonCol>
-          </IonRow> 
+          </IonRow>
           <IonRow>
             <IonCol size='12'>
               <IonItem lines='none'>
