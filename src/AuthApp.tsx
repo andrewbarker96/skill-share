@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Redirect, Route } from 'react-router-dom';
 import {
   IonApp,
+  IonButton,
   IonContent,
   IonHeader,
   IonIcon,
@@ -61,11 +62,10 @@ const AuthApp: React.FC = () => {
         <IonReactRouter>
           <IonTabs>
             <IonRouterOutlet>
-              <Redirect exact path="/home" to="/" />
               <Route exact path="/">
                 <HomePage />
               </Route>
-              <Route exact path="/Profile" render={(props) => <ProfilePage {...props} />} />
+              <Route exact path="/profile" render={(props) => <ProfilePage {...props} />} />
             </IonRouterOutlet>
 
             <IonTabBar slot={'bottom'}>
@@ -73,7 +73,7 @@ const AuthApp: React.FC = () => {
                 <IonIcon icon={home} />
                 <IonLabel>Home</IonLabel>
               </IonTabButton>
-              <IonTabButton tab='Profile' href='/Profile'>
+              <IonTabButton tab='Profile' href='/profile'>
                 <IonIcon icon={person} />
                 <IonLabel>Profile</IonLabel>
               </IonTabButton>

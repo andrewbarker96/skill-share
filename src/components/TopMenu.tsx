@@ -13,7 +13,7 @@ import {
   IonText,
   IonLoading,
 } from '@ionic/react';
-import { logOutOutline, close, calendarOutline, shieldHalf, home, personAdd } from 'ionicons/icons';
+import { logOutOutline, close, calendarOutline, shieldHalf, home, personAdd, person } from 'ionicons/icons';
 import Copyright from './Copyright';
 import { adminAuth, auth } from '../../util/firebase';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
@@ -59,6 +59,30 @@ const TopMenu: React.FC = () => {
           </IonToolbar>
         </IonHeader>
         <IonContent className="ion-padding">
+          <IonButtons className='top-menu-button'>
+            <IonButton
+              id='open-loading'
+              fill="clear"
+              expand="block"
+              routerLink='/'
+              style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+            >
+              <IonIcon slot="start" icon={home} style={{ marginRight: '10px' }} />
+              <IonText>Home</IonText>
+            </IonButton>
+          </IonButtons>
+          <IonButtons className='top-menu-button'>
+            <IonButton
+              id='open-loading'
+              fill="clear"
+              expand="block"
+              routerLink = '/profile'
+              style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+            >
+              <IonIcon slot="start" icon={person} style={{ marginRight: '10px' }} />
+              <IonText>Profile</IonText>
+            </IonButton>
+          </IonButtons>
           <IonButtons className='top-menu-button'>
             <IonButton
               id='open-loading'

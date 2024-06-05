@@ -6,14 +6,7 @@ import { firebase, auth } from '../../util/firebase';
 import { onAuthStateChanged } from 'firebase/auth';
 
 const ProfilePage: FC<RouteComponentProps> = ({ match }) => {
-  const [uid, setUid] = useState<string | null>(null);
-
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
-      setUid(user.uid);
-    }
-  }
-  );
+  const uid = auth.currentUser?.uid;
 
   return (
     <IonPage>
