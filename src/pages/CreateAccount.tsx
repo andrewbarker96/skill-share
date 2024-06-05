@@ -49,7 +49,7 @@ export default function CreateAccountPage() {
 
         await addDoc(collection(firestore, 'userProfiles'), {
           email: email,
-          uid: user.uid,
+          userId: user.uid,
           admin: false,
           profileImage: '',
           firstName: '',
