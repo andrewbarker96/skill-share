@@ -13,7 +13,7 @@ import {
   IonText,
   IonLoading,
 } from '@ionic/react';
-import { logOutOutline, close, calendarOutline, shieldHalf, home, personAdd } from 'ionicons/icons';
+import { logOutOutline, close, calendarOutline, shieldHalf, home, personAdd, person } from 'ionicons/icons';
 import Copyright from './Copyright';
 import { adminAuth, auth } from '../../util/firebase';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
@@ -27,18 +27,11 @@ const TopMenu: React.FC = () => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
         setAuthUser(true);
-        if (adminAuth.includes(user.uid)) {
-          setAdminUser(true);
-        } else {
-          setAdminUser(false);
-        }
       } else {
         setAuthUser(false);
-        setAdminUser(false);
       }
     });
 
-    // Cleanup subscription on unmount
     return () => unsubscribe();
   }, []);
 
@@ -53,6 +46,7 @@ const TopMenu: React.FC = () => {
 
   return (
     <>
+      {/* How Menu Appears after Clicked */}
       <IonMenu contentId="main-content">
         <IonHeader>
           <IonToolbar>
@@ -70,6 +64,30 @@ const TopMenu: React.FC = () => {
               id='open-loading'
               fill="clear"
               expand="block"
+              routerLink='/'
+              style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+            >
+              <IonIcon slot="start" icon={home} style={{ marginRight: '10px' }} />
+              <IonText>Home</IonText>
+            </IonButton>
+          </IonButtons>
+          <IonButtons className='top-menu-button'>
+            <IonButton
+              id='open-loading'
+              fill="clear"
+              expand="block"
+              routerLink = '/profile'
+              style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+            >
+              <IonIcon slot="start" icon={person} style={{ marginRight: '10px' }} />
+              <IonText>Profile</IonText>
+            </IonButton>
+          </IonButtons>
+          <IonButtons className='top-menu-button'>
+            <IonButton
+              id='open-loading'
+              fill="clear"
+              expand="block"
               onClick={handleLogout}
               style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
             >
@@ -82,6 +100,7 @@ const TopMenu: React.FC = () => {
         </IonContent>
       </IonMenu>
 
+      {/* Menu Appears when not clicked. */}
       <IonPage id="main-content">
         <IonHeader>
           <IonToolbar>
