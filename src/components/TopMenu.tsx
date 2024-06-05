@@ -27,18 +27,11 @@ const TopMenu: React.FC = () => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
         setAuthUser(true);
-        if (adminAuth.includes(user.uid)) {
-          setAdminUser(true);
-        } else {
-          setAdminUser(false);
-        }
       } else {
         setAuthUser(false);
-        setAdminUser(false);
       }
     });
 
-    // Cleanup subscription on unmount
     return () => unsubscribe();
   }, []);
 
@@ -53,6 +46,7 @@ const TopMenu: React.FC = () => {
 
   return (
     <>
+      {/* How Menu Appears after Clicked */}
       <IonMenu contentId="main-content">
         <IonHeader>
           <IonToolbar>
@@ -82,6 +76,7 @@ const TopMenu: React.FC = () => {
         </IonContent>
       </IonMenu>
 
+      {/* Menu Appears when not clicked. */}
       <IonPage id="main-content">
         <IonHeader>
           <IonToolbar>

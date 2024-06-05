@@ -48,25 +48,43 @@ import CreateAccountPage from './pages/CreateAccount';
 
 setupIonicReact();
 
-const App: React.FC = () => {
+const AuthApp: React.FC = () => {
 
   return (
     <IonApp>
+      <IonHeader>
+        <IonToolbar>
+          <TopMenu />
+        </IonToolbar>
+      </IonHeader>
       <IonContent className='main-content'>
         <IonReactRouter>
-          <IonRouterOutlet>
-            <Redirect exact path="/home" to="/" />
-            <Route exact path="/">
-              <LoginPage />
-            </Route>
-            <Route exact path="/create-account">
-              <CreateAccountPage />
-            </Route>
-          </IonRouterOutlet>
+          <IonTabs>
+            <IonRouterOutlet>
+              <Redirect exact path="/home" to="/" />
+              <Route exact path="/">
+                <HomePage />
+              </Route>
+              <Route exact path="/Profile">
+                <ProfilePage />
+              </Route>
+            </IonRouterOutlet>
+
+            <IonTabBar slot={'bottom'}>
+              <IonTabButton tab='Home' href='/'>
+                <IonIcon icon={triangle} />
+                <IonLabel>Home</IonLabel>
+              </IonTabButton>
+              <IonTabButton tab='Profile' href='/Profile'>
+                <IonIcon icon={square} />
+                <IonLabel>Profile</IonLabel>
+              </IonTabButton>
+            </IonTabBar>
+          </IonTabs>
         </IonReactRouter>
       </IonContent>
     </IonApp>
   );
 };
 
-export default App;
+export default AuthApp;

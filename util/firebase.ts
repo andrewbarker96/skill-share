@@ -1,10 +1,9 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 import { getAnalytics } from "firebase/analytics";
-import { getAuth } from "firebase/auth";
+import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
+import { create } from "ionicons/icons";
 
-// TODO: Replace the following with your app's Firebase project configuration
-// See: https://support.google.com/firebase/answer/7015592
 const firebaseConfig = {
   apiKey: "AIzaSyCIqlrGmhT01Py0PFzpZzfpeLzyfdb94Vs",
   authDomain: "skill-share-791ad.firebaseapp.com",
@@ -27,5 +26,9 @@ const analytics = getAnalytics(firebase);
 const db = getFirestore(firebase);
 const firestore = getFirestore(firebase);
 const auth = getAuth(firebase);
+const user = auth.currentUser;
+
+
+
 
 export { db, analytics, firebase, firestore, auth, adminAuth };
