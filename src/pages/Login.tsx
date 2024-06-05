@@ -63,14 +63,7 @@ export default function LoginPage() {
         <IonGrid className='form'>
           <IonRow>
             <IonCol size='12'>
-              <IonImg src='https://firebasestorage.googleapis.com/v0/b/skill-share-791ad.appspot.com/o/SkillSwap-Horizontal.png?alt=media&token=b1ac2ccd-0de3-4997-b50a-6ee7a07580a2' alt='SkillSwap Logo' style={{ height: '75px' }} />
-            </IonCol>
-          </IonRow>
-          <IonRow>
-            <IonCol size='12'>
-              <IonText>
-                <h2 className='ion-text-center'>Login</h2>
-              </IonText>
+              <IonImg src='https://firebasestorage.googleapis.com/v0/b/skill-share-791ad.appspot.com/o/SkillSwap-Horizontal.png?alt=media&token=b1ac2ccd-0de3-4997-b50a-6ee7a07580a2' alt='SkillSwap Logo' style={{ height: '75px', marginBottom: '5%' }} />
             </IonCol>
           </IonRow>
           <IonRow>
