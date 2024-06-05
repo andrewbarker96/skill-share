@@ -18,13 +18,13 @@ import {
   IonToast,
   IonImg,
   IonInputPasswordToggle,
+  IonRouterLink,
 } from '@ionic/react';
 import { getAuth, signInWithEmailAndPassword, sendPasswordResetEmail } from 'firebase/auth';
 import { firebase } from '../../util/firebase';
 import { close, create } from 'ionicons/icons';
 import Copyright from '../components/Copyright';
 import { IonLoading } from '@ionic/react';
-import ForgotPasswordForm from '../components/Forms/ForgotPassword';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 
 export default function LoginPage() {
@@ -33,6 +33,7 @@ export default function LoginPage() {
   const [emailVerification, setEmailVerification] = useState('');
   const [invalid, setInvalid] = useState(false);
   const [modal, showModal] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const auth = getAuth(firebase);
 
@@ -42,15 +43,14 @@ export default function LoginPage() {
         const user = userCredential.user;
         const uid = user.uid;
         console.log('User signed in:', user, uid);
-        window.location.href = '/';
       })
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
         console.error('Error signing in:', errorCode, errorMessage);
         setInvalid(true);
-        setEmail('');
         setPassword('');
+        setErrorMessage("Error Signing In. Verify Email & Password");
       });
   };
 
@@ -63,8 +63,17 @@ export default function LoginPage() {
         <IonGrid className='form'>
           <IonRow>
             <IonCol size='12'>
-              <IonImg src='https://firebasestorage.googleapis.com/v0/b/skill-share-791ad.appspot.com/o/SkillSwap.png?alt=media&token=e7758927-9883-440e-b153-530f85c8d8c9' alt='SkillSwap Logo' style={{ height: '175px' }} />
+              <IonImg src='https://firebasestorage.googleapis.com/v0/b/skill-share-791ad.appspot.com/o/SkillSwap-Horizontal.png?alt=media&token=b1ac2ccd-0de3-4997-b50a-6ee7a07580a2' alt='SkillSwap Logo' style={{ height: '75px' }} />
             </IonCol>
+          </IonRow>
+          <IonRow>
+            <IonCol size='12'>
+              <IonText>
+                <h2 className='ion-text-center'>Login</h2>
+              </IonText>
+            </IonCol>
+          </IonRow>
+          <IonRow>
             <IonCol size='12'>
               <IonItem lines='none'>
                 <IonInput type='email' labelPlacement='stacked' label='Email' placeholder='Email' value={email} onIonChange={e => setEmail(e.detail.value!)} />
@@ -100,7 +109,7 @@ export default function LoginPage() {
           </IonRow>
         </IonGrid>
         <IonLoading className='custom-loading' trigger='open-loading' isOpen={false} onDidDismiss={() => setInvalid(false)} message='Logging in...' duration={500} />
-        <IonToast isOpen={invalid} color={'danger'} onDidDismiss={() => setInvalid(false)} message='Invalid email or password' duration={2000} />
+        <IonToast isOpen={invalid} color={'danger'} onDidDismiss={() => setInvalid(false)} message={errorMessage} duration={2000} />
       </IonContent>
     </IonPage>
   );

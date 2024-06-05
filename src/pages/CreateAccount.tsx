@@ -20,10 +20,11 @@ import {
   IonInputPasswordToggle,
 } from '@ionic/react';
 import { getAuth, signInWithEmailAndPassword, sendPasswordResetEmail } from 'firebase/auth';
-import { firebase } from '../../util/firebase';
+import { firebase, firestore } from '../../util/firebase';
 import Copyright from '../components/Copyright';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { createUserWithEmailAndPassword, verifyBeforeUpdateEmail } from 'firebase/auth';
 import { arrowBack } from 'ionicons/icons';
+import { addDoc, collection, doc } from 'firebase/firestore';
 
 export default function CreateAccountPage() {
   const [invalid, setInvalid] = useState(false);
@@ -34,23 +35,40 @@ export default function CreateAccountPage() {
 
   const auth = getAuth(firebase);
 
-  const handleLogin = () => {
-    createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
+  const handleCreateAccount = async () => {
+    if (password.length < 6) {
+      setInvalid(true);
+      setErrorMessage('Password must be at least 6 characters');
+      return;
+    } else {
+      try {
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
         const user = userCredential.user;
         console.log('User created:', user);
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
+        setSuccess(true);
+
+        await addDoc(collection(firestore, 'userProfiles'), {
+          email: email,
+          uid: user.uid,
+          admin: false,
+          profileImage: '',
+          firstName: '',
+          lastName: '',
+          birthday: '',
+          profileDescription: '',
+          skillsOffered: [],
+        });
+
+        console.log('User Profile Created', user.uid);
+      } catch (error) {
+        const errorCode = error;
+        setErrorMessage('Error creating user');
         console.error('Error creating user:', errorCode, errorMessage);
-      });
+      }
+    }
   };
 
-
   return (
-
-    // Main Login Form
     <IonPage>
       <IonHeader>
         <IonToolbar>
@@ -66,7 +84,14 @@ export default function CreateAccountPage() {
         <IonGrid className='form'>
           <IonRow>
             <IonCol size='12'>
-              <IonImg src='https://firebasestorage.googleapis.com/v0/b/skill-share-791ad.appspot.com/o/SkillSwap.png?alt=media&token=e7758927-9883-440e-b153-530f85c8d8c9' alt='SkillSwap Logo' style={{ height: '175px' }} />
+              <IonImg src='https://firebasestorage.googleapis.com/v0/b/skill-share-791ad.appspot.com/o/SkillSwap-Horizontal.png?alt=media&token=b1ac2ccd-0de3-4997-b50a-6ee7a07580a2' alt='SkillSwap Logo' style={{ height: '75px' }} />
+            </IonCol>
+          </IonRow>
+          <IonRow>
+            <IonCol size='12'>
+              <IonText>
+                <h2>Create Account</h2>
+              </IonText>
             </IonCol>
           </IonRow>
           <IonRow>
@@ -88,12 +113,11 @@ export default function CreateAccountPage() {
           </IonRow>
           <IonRow>
             <IonCol size='12'>
-              <IonButton expand='block' color={'secondary'} shape='round' onClick={handleLogin}>Create Account</IonButton>
+              <IonButton expand='block' color={'secondary'} shape='round' onClick={handleCreateAccount}>Create Account</IonButton>
             </IonCol>
           </IonRow>
           <Copyright />
         </IonGrid>
-
       </IonContent>
       <IonToast color={'danger'} isOpen={invalid} onDidDismiss={() => setInvalid(false)} message={errorMessage} duration={2000} />
       <IonToast color={'success'} isOpen={success} onDidDismiss={() => setSuccess(false)} message='Account Created' duration={2000} />
