@@ -45,6 +45,7 @@ import '@ionic/react/css/palettes/dark.system.css';
 import './theme/variables.css';
 import ProfilePage from './pages/Profile';
 import CreateAccountPage from './pages/CreateAccount';
+import ForgotPasswordPage from './pages/ForgotPassword';
 
 setupIonicReact();
 
@@ -61,6 +62,9 @@ const App: React.FC = () => {
             </Route>
             <Route exact path="/create-account">
               <CreateAccountPage />
+            </Route>
+            <Route exact path="/password-reset">
+              <ForgotPasswordPage />
             </Route>
           </IonRouterOutlet>
         </IonReactRouter>
