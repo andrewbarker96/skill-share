@@ -16,7 +16,7 @@ import {
 import { IonReactRouter } from '@ionic/react-router';
 import { onAuthStateChanged } from 'firebase/auth';
 import { adminAuth, auth } from '../util/firebase';
-import { ellipse, square, triangle } from 'ionicons/icons';
+import { ellipse, home, person, square, triangle } from 'ionicons/icons';
 import TopMenu from './components/TopMenu';
 import HomePage from './pages/Home';
 import LoginPage from './pages/Login';
@@ -65,18 +65,16 @@ const AuthApp: React.FC = () => {
               <Route exact path="/">
                 <HomePage />
               </Route>
-              <Route exact path="/Profile">
-                <ProfilePage />
-              </Route>
+              <Route exact path="/Profile" render={(props) => <ProfilePage {...props} />} />
             </IonRouterOutlet>
 
             <IonTabBar slot={'bottom'}>
               <IonTabButton tab='Home' href='/'>
-                <IonIcon icon={triangle} />
+                <IonIcon icon={home} />
                 <IonLabel>Home</IonLabel>
               </IonTabButton>
               <IonTabButton tab='Profile' href='/Profile'>
-                <IonIcon icon={square} />
+                <IonIcon icon={person} />
                 <IonLabel>Profile</IonLabel>
               </IonTabButton>
             </IonTabBar>

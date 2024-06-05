@@ -24,7 +24,7 @@ import { firebase, firestore } from '../../util/firebase';
 import Copyright from '../components/Copyright';
 import { createUserWithEmailAndPassword, verifyBeforeUpdateEmail } from 'firebase/auth';
 import { arrowBack } from 'ionicons/icons';
-import { addDoc, collection, doc } from 'firebase/firestore';
+import { doc, setDoc } from 'firebase/firestore';
 
 export default function CreateAccountPage() {
   const [invalid, setInvalid] = useState(false);
@@ -47,9 +47,8 @@ export default function CreateAccountPage() {
         console.log('User created:', user);
         setSuccess(true);
 
-        await addDoc(collection(firestore, 'userProfiles'), {
+        await setDoc(doc(firestore, 'userProfiles', user.uid), {
           email: email,
-          userId: user.uid,
           admin: false,
           profileImage: '',
           firstName: '',
@@ -57,6 +56,7 @@ export default function CreateAccountPage() {
           birthday: '',
           profileDescription: '',
           skillsOffered: [],
+          uid: user.uid,
         });
 
         console.log('User Profile Created', user.uid);
@@ -67,6 +67,7 @@ export default function CreateAccountPage() {
       }
     }
   };
+
 
   return (
     <IonPage>
