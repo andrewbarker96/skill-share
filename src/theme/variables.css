@@ -311,3 +311,116 @@ html {
   https://ionicframework.com/docs/layout/dynamic-font-scaling */
   --ion-dynamic-font: var(--ion-default-dynamic-font);
 }
+
+
+/* Custom Styles Here */
+
+.button {
+  height: 36px;
+  padding: 0px 15.4px;
+  justify-self: center;
+  align-items: center;
+  gap: 4px;
+  border-radius:4px;
+  align-self:stretch;
+}
+
+.primary-button {
+  background-color: var(--ion-color-primary);
+  height: 36px;
+  padding: 0px 15.4px;
+  justify-self: center;
+  align-items: center;
+  gap: 4px;
+  border-radius:4px;
+  align-self:stretch;
+/*color:white;*/
+}
+
+
+.secondary-button {
+  background-color: var(--ion-color-secondary);
+  height: 36px;
+  padding: 0px 15.4px;
+  justify-self: center;
+  align-items: center;
+  gap: 4px;
+  border-radius:4px;
+  align-self:stretch;
+  /*color:white;*/
+}
+
+/* Fonts*/
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+h1, h2, h3, h4, ion-label, p, ion-input, button {
+  font-family: 'Roboto', sans-serif!important;
+}
+
+
+h1 {
+  font-size:24px;
+  font-weight:700;
+  line-height:16px;
+  letter-spacing: 0.4px;
+  color:#000;
+}
+
+
+h2 {
+  font-size:20px;
+  font-weight:700;
+  line-height:16px;
+  letter-spacing: 0.4px;
+  color:#000;
+}
+
+h3 {
+  font-size:16px;
+  font-weight:600;
+  line-height:16px;
+  letter-spacing: 0.4px;
+  color:#000;
+}
+
+
+
+p {
+  font-size:14px;
+  font-weight:400;
+  line-height:20px;
+  letter-spacing: 0.4px;
+  color:#000;
+}
+
+ion-label {
+  font-family:'Roboto', sans-serif!important;
+  margin-bottom:10px;
+  font-size:14px;
+  font-weight:500;
+  line-height:20px;
+  letter-spacing: 0.4px;
+  color:#000;
+}
+
+ion-input{
+  font-size:12px;
+  font-weight:400;
+  line-height:16px;
+  letter-spacing: 0.4px;
+  background-color:rgba(168,168,168,0.29);
+  border-radius:4px;
+  outline: none;
+  padding:10px;
+  width: 296px;
+  height:27px;
+}
+
+input::placeholder{
+  color:rgba(0,0,0,0.5)
+}
+
+
+input:focus {
+  box-shadow: 0 0 5px rgba(0,0,255,0.5);
+}

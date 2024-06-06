@@ -1,4 +1,4 @@
-import { IonPage, IonRouterOutlet } from '@ionic/react';
+import { IonButton, IonContent, IonInput, IonItem, IonLabel, IonPage, IonRouterOutlet } from '@ionic/react';
 import React, { FC, useEffect, useState } from 'react';
 import UserProfilePage from '../components/UserProfilePage';
 import { Redirect, Route, RouteComponentProps } from 'react-router-dom';
@@ -15,6 +15,7 @@ const ProfilePage: FC<RouteComponentProps> = ({ match }) => {
         <Route path={`${match.url}/:uid`} component={UserProfilePage} />
         <Route render={() => <Redirect to={match.url} />} />
       </IonRouterOutlet>
+
     </IonPage>
   );
 };
