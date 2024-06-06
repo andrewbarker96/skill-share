@@ -5,6 +5,11 @@ import { Redirect, Route, RouteComponentProps } from 'react-router-dom';
 import { firebase, auth } from '../../util/firebase';
 import { onAuthStateChanged } from 'firebase/auth';
 
+
+// DO NOT MODIFY THIS FILE
+// File is routing to specific UID Profile Page
+// see UserProfilePage.tsx for profile editing. 
+
 const ProfilePage: FC<RouteComponentProps> = ({ match }) => {
   const uid = auth.currentUser?.uid;
 
