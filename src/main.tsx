@@ -6,6 +6,7 @@ import TopMenu from './components/TopMenu';
 import { auth } from '../util/firebase';
 import { onAuthStateChanged } from 'firebase/auth';
 import { defineCustomElements } from '@ionic/pwa-elements/loader';
+import AuthApp from './AuthApp';
 
 const container = document.getElementById('root');
 const root = createRoot(container!);
@@ -16,13 +17,13 @@ onAuthStateChanged(auth, (user) => {
     root.render(
       <React.StrictMode>
         <TopMenu />
-        <App />
+        <AuthApp />
       </React.StrictMode>
     );
   } else {
     root.render(
       <React.StrictMode>
-        <LoginPage />
+        <App />
       </React.StrictMode>
     );
   }

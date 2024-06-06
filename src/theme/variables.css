@@ -76,9 +76,6 @@ http://ionicframework.com/docs/theming/ */
   --ion-color-light-tint: #f5f6f9;
 }
 
-.fullheight {
-  height: 100%;
-}
 
 .xc {
   display: flex;
@@ -96,46 +93,6 @@ http://ionicframework.com/docs/theming/ */
   display: flex;
   flex-direction: row;
   align-items: center;
-}
-
-.sticky {
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-}
-
-.contact-name {
-  font-size: 1.5rem;
-  text-align: center;
-  justify-content: center;
-  align-items: center;
-}
-
-.contact-company {
-  font-size: 1.25rem;
-  text-align: center;
-  justify-content: center;
-  align-items: center;
-}
-
-.contact-buttons {
-  display: flex;
-  text-align: center;
-  justify-content: space-evenly;
-  align-items: center;
-}
-
-.tab-bar [selected-tab='login'] {
-  display: none;
-}
-
-.login-tab {
-  display: flex;
-  justify-content: center;
-  align-content: center;
-  align-content: space-between;
-  background-color: white;
-  padding: 5%;
 }
 
 .main-content {
@@ -159,23 +116,6 @@ http://ionicframework.com/docs/theming/ */
   color: #5d5d5d;
 
 }
-
-.StockLogo {
-  padding: 10%;
-  width: fill;
-  max-width: 500px;
-  margin: auto;
-}
-
-.searchbar {
-  background-color: var(--ion-color-primary-contrast);
-}
-
-.accordion {
-  background-color: var(--ion-color-primary-contrast);
-  margin-bottom: 1.5%;
-}
-
 
 .top-menu-button {
   padding: 10px;
@@ -220,22 +160,24 @@ http://ionicframework.com/docs/theming/ */
 
 }
 
-/* @media (prefers-color-scheme: dark) {
+@media (prefers-color-scheme: dark) {
 
   body {
-    --ion-color-primary: #222428;
-    --ion-color-primary-rgb: 34, 36, 40;
+  /** primary **/
+    --ion-color-primary: #53aee6;
+    --ion-color-primary-rgb: 117, 199, 251;
     --ion-color-primary-contrast: #ffffff;
-    --ion-color-primary-contrast-rgb: 255, 255, 255;
-    --ion-color-primary-shade: #1e2023;
-    --ion-color-primary-tint: #383a3e;
-
-    --ion-color-secondary: #50c8ff;
-    --ion-color-secondary-rgb: 80,200,255;
-    --ion-color-secondary-contrast: #ffffff;
-    --ion-color-secondary-contrast-rgb: 255,255,255;
-    --ion-color-secondary-shade: #46b0e0;
-    --ion-color-secondary-tint: #62ceff;
+    --ion-color-primary-contrast-rgb: 0, 0, 0;
+    --ion-color-primary-shade: #363839;
+    --ion-color-primary-tint: #f5f6f9;
+  
+    /** secondary **/
+    --ion-color-secondary: #F83747;
+    --ion-color-secondary-rgb: 248, 55, 71;
+    --ion-color-secondary-contrast: #dcdcdc;
+    --ion-color-secondary-contrast-rgb: 255, 255, 255;
+    --ion-color-secondary-shade: #4c4c4c;
+    --ion-color-secondary-tint: #383838;
 
     --ion-color-tertiary: #6a64ff;
     --ion-color-tertiary-rgb: 106,100,255;
@@ -362,10 +304,123 @@ http://ionicframework.com/docs/theming/ */
 
     --ion-card-background: #1e1e1e;
   }
-} */
+}
 
 html {
   /* For more information on dynamic font scaling, visit the documentation: 
   https://ionicframework.com/docs/layout/dynamic-font-scaling */
   --ion-dynamic-font: var(--ion-default-dynamic-font);
+}
+
+
+/* Custom Styles Here */
+
+.button {
+  height: 36px;
+  padding: 0px 15.4px;
+  justify-self: center;
+  align-items: center;
+  gap: 4px;
+  border-radius:4px;
+  align-self:stretch;
+}
+
+.primary-button {
+  background-color: var(--ion-color-primary);
+  height: 36px;
+  padding: 0px 15.4px;
+  justify-self: center;
+  align-items: center;
+  gap: 4px;
+  border-radius:4px;
+  align-self:stretch;
+/*color:white;*/
+}
+
+
+.secondary-button {
+  background-color: var(--ion-color-secondary);
+  height: 36px;
+  padding: 0px 15.4px;
+  justify-self: center;
+  align-items: center;
+  gap: 4px;
+  border-radius:4px;
+  align-self:stretch;
+  /*color:white;*/
+}
+
+/* Fonts*/
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+h1, h2, h3, h4, ion-label, p, ion-input, button {
+  font-family: 'Roboto', sans-serif!important;
+}
+
+
+h1 {
+  font-size:24px;
+  font-weight:700;
+  line-height:16px;
+  letter-spacing: 0.4px;
+  color:#000;
+}
+
+
+h2 {
+  font-size:20px;
+  font-weight:700;
+  line-height:16px;
+  letter-spacing: 0.4px;
+  color:#000;
+}
+
+h3 {
+  font-size:16px;
+  font-weight:600;
+  line-height:16px;
+  letter-spacing: 0.4px;
+  color:#000;
+}
+
+
+
+p {
+  font-size:14px;
+  font-weight:400;
+  line-height:20px;
+  letter-spacing: 0.4px;
+  color:#000;
+}
+
+ion-label {
+  font-family:'Roboto', sans-serif!important;
+  margin-bottom:10px;
+  font-size:14px;
+  font-weight:500;
+  line-height:20px;
+  letter-spacing: 0.4px;
+  color:#000;
+}
+
+ion-input{
+  font-size:12px;
+  font-weight:400;
+  line-height:16px;
+  letter-spacing: 0.4px;
+  background-color:rgba(168,168,168,0.29);
+  border-radius:4px;
+  outline: none;
+  padding:10px;
+  width: 296px;
+  height:27px;
+}
+
+input::placeholder{
+  color:rgba(0,0,0,0.5)
+}
+
+
+input:focus {
+  box-shadow: 0 0 5px rgba(0,0,255,0.5);
 }
