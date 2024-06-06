@@ -2,6 +2,7 @@ import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 import { getAnalytics } from "firebase/analytics";
 import { getAuth } from "firebase/auth";
+import { getStorage } from "firebase/storage"
 
 // TODO: Replace the following with your app's Firebase project configuration
 // See: https://support.google.com/firebase/answer/7015592
@@ -27,5 +28,6 @@ const analytics = getAnalytics(firebase);
 const db = getFirestore(firebase);
 const firestore = getFirestore(firebase);
 const auth = getAuth(firebase);
+const storage = getStorage(firebase);
 
-export { db, analytics, firebase, firestore, auth, adminAuth };
+export { db, analytics, firebase, firestore, auth, adminAuth, storage };
