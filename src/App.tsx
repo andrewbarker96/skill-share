@@ -46,6 +46,7 @@ import './theme/variables.css';
 import ProfilePage from './pages/Profile';
 import CreateAccountPage from './pages/CreateAccount';
 import ForgotPasswordPage from './pages/ForgotPassword';
+import ProfileForm from './components/ProfileForm';
 
 setupIonicReact();
 

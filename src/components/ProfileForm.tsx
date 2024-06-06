@@ -7,6 +7,8 @@ import { createProfile, getSkills, updateProfile } from '../services/firestoreSe
 import { uploadImage } from '../services/storageService';
 import { compressImage } from '../../util/imageCompression';
 import { InputChangeEventDetail, IonButton } from '@ionic/react';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../../util/firebase';
 
 interface Props {
   mode: 'create' | 'update';
@@ -45,15 +47,32 @@ const ProfileForm: React.FC<Props> = ({ mode, initialProfileData }) => {
     }
   }, [initialProfileData]);
 
-  const handleNext = () => {
+  const handleNext = async () => {
     if (step === 1) {
       // Validate passwords match
       if (formData.password !== formData.confirmPassword) {
         alert("Passwords do not match");
         return;
       }
+  
+      try {
+        // Create user in Firebase Authentication
+        const userCredential = await createUserWithEmailAndPassword(auth, formData.email, formData.password);
+        const user = userCredential.user;
+  
+        // Update formData with the user's UID
+        setFormData(prev => ({ ...prev, userID: user.uid }));
+  
+        // Proceed to the next step
+        setStep(step + 1);
+      } catch (error) {
+        console.error("Error creating user:", error);
+        // Handle error
+      }
+    } else {
+      // Proceed to the next step
+      setStep(step + 1);
     }
-    setStep(step + 1);
   };
 
   const handlePrev = () => {

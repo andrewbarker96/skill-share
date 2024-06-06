@@ -3,6 +3,7 @@ import { getFirestore } from "firebase/firestore";
 import { getAnalytics } from "firebase/analytics";
 import { createUserWithEmailAndPassword, getAuth, onAuthStateChanged } from "firebase/auth";
 import { create } from "ionicons/icons";
+import { getStorage } from "firebase/storage";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCIqlrGmhT01Py0PFzpZzfpeLzyfdb94Vs",
@@ -27,6 +28,7 @@ const analytics = getAnalytics(firebase);
 const db = getFirestore(firebase);
 const firestore = getFirestore(firebase);
 const auth = getAuth(firebase);
+const storage = getStorage(firebase);
 
 
 
