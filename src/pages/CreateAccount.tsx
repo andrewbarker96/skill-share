@@ -25,6 +25,7 @@ import Copyright from '../components/Copyright';
 import { createUserWithEmailAndPassword, verifyBeforeUpdateEmail } from 'firebase/auth';
 import { arrowBack } from 'ionicons/icons';
 import { doc, setDoc } from 'firebase/firestore';
+import ProfileForm from '../components/ProfileForm';
 
 export default function CreateAccountPage() {
   const [invalid, setInvalid] = useState(false);
@@ -95,6 +96,10 @@ export default function CreateAccountPage() {
               </IonText>
             </IonCol>
           </IonRow>
+          {/* <IonRow>
+
+            <ProfileForm mode={'create'}></ProfileForm>
+          </IonRow> */}
           <IonRow>
             <IonCol size='12'>
               <IonItem lines='none'>
