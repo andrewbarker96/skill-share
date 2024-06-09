@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Redirect, Route } from 'react-router-dom';
 import {
   IonApp,
+  IonButton,
   IonContent,
   IonHeader,
   IonIcon,
@@ -16,7 +17,7 @@ import {
 import { IonReactRouter } from '@ionic/react-router';
 import { onAuthStateChanged } from 'firebase/auth';
 import { adminAuth, auth } from '../util/firebase';
-import { ellipse, square, triangle } from 'ionicons/icons';
+import { ellipse, home, person, square, triangle } from 'ionicons/icons';
 import TopMenu from './components/TopMenu';
 import HomePage from './pages/Home';
 import LoginPage from './pages/Login';
@@ -45,33 +46,43 @@ import '@ionic/react/css/palettes/dark.system.css';
 import './theme/variables.css';
 import ProfilePage from './pages/Profile';
 import CreateAccountPage from './pages/CreateAccount';
-import ForgotPasswordPage from './pages/ForgotPassword';
-import ProfileForm from './components/ProfileForm';
 
 setupIonicReact();
 
-const App: React.FC = () => {
+const AuthApp: React.FC = () => {
 
   return (
     <IonApp>
+      <IonHeader>
+        <IonToolbar>
+          <TopMenu />
+        </IonToolbar>
+      </IonHeader>
       <IonContent className='main-content'>
         <IonReactRouter>
-          <IonRouterOutlet>
-            <Redirect exact path="/home" to="/" />
-            <Route exact path="/">
-              <LoginPage />
-            </Route>
-            <Route exact path="/create-account">
-              <CreateAccountPage />
-            </Route>
-            <Route exact path="/password-reset">
-              <ForgotPasswordPage />
-            </Route>
-          </IonRouterOutlet>
+          <IonTabs>
+            <IonRouterOutlet>
+              <Route exact path="/">
+                <HomePage />
+              </Route>
+              <Route exact path="/profile" render={(props) => <ProfilePage {...props} />} />
+            </IonRouterOutlet>
+
+            <IonTabBar slot={'bottom'}>
+              <IonTabButton tab='Home' href='/'>
+                <IonIcon icon={home} />
+                <IonLabel>Home</IonLabel>
+              </IonTabButton>
+              <IonTabButton tab='Profile' href='/profile'>
+                <IonIcon icon={person} />
+                <IonLabel>Profile</IonLabel>
+              </IonTabButton>
+            </IonTabBar>
+          </IonTabs>
         </IonReactRouter>
       </IonContent>
     </IonApp>
   );
 };
 
-export default App;
+export default AuthApp;
