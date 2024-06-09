@@ -78,90 +78,6 @@ http://ionicframework.com/docs/theming/ */
   --ion-color-light-tint: #f5f6f9;
 }
 
-
-.xc {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.vcs {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.hcs {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-}
-
-.main-content {
-  display: flex;
-  justify-content: center;
-  align-content: center;
-  align-content: space-between;
-  background-color: white;
-  padding: 2.5%;
-}
-
-.form {
-  padding-left: 25%;
-  padding-right: 25%;
-}
-
-.copyright {
-  display: block;
-  text-align: center;
-  font-size: x-small;
-  color: #5d5d5d;
-
-}
-
-.top-menu-button {
-  padding: 10px;
-  margin-top: 5px;
-  margin-bottom: 5px;
-  align-content: center;
-  align-items: center;
-  width: 100%;
-}
-
-@media screen and (max-width: 920px) {
-  .top-menu-button {
-    padding: 5px;
-    margin-top: 5px;
-    margin-bottom: 5px;
-    align-content: center;
-    align-items: center;
-    width: 100%;
-  }
-
-  .form {
-    padding-left: 15%;
-    padding-right: 15%;
-  }
-
-}
-
-@media screen and (max-width: 460px) {
-  .top-menu-button {
-    padding: 5px;
-    margin-top: 5px;
-    margin-bottom: 5px;
-    align-content: center;
-    align-items: center;
-    width: 100%;
-  }
-
-  .form {
-    padding-left: 2.5%;
-    padding-right: 2.5%;
-  }
-
-}
-
 @media (prefers-color-scheme: dark) {
 
   body {
@@ -317,7 +233,56 @@ html {
 
 /* Custom Styles Here */
 
-.button {
+.xc {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.vcs {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.hcs {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.main-content {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  align-content: space-between;
+  background-color: white;
+  padding: 2.5%;
+}
+
+.form {
+  padding-left: 25%;
+  padding-right: 25%;
+}
+
+.copyright {
+  display: block;
+  text-align: center;
+  font-size: x-small;
+  color: #5d5d5d;
+
+}
+
+.top-menu-button {
+  padding: 10px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  align-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+/* .button {
   height: 36px;
   padding: 0px 15.4px;
   justify-self: center;
@@ -336,8 +301,7 @@ html {
   gap: 4px;
   border-radius:4px;
   align-self:stretch;
-/*color:white;*/
-}
+} */
 
 
 .secondary-button {
@@ -381,8 +345,6 @@ h3 {
   letter-spacing: 0.4px;
 }
 
-
-
 p {
   font-size:14px;
   font-weight:400;
@@ -419,4 +381,38 @@ input::placeholder{
 
 input:focus {
   box-shadow: 0 0 5px rgba(0,0,255,0.5);
+}
+
+@media screen and (max-width: 920px) {
+  .top-menu-button {
+    padding: 5px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    align-content: center;
+    align-items: center;
+    width: 100%;
+  }
+
+  .form {
+    padding-left: 15%;
+    padding-right: 15%;
+  }
+
+}
+
+@media screen and (max-width: 460px) {
+  .top-menu-button {
+    padding: 5px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    align-content: center;
+    align-items: center;
+    width: 100%;
+  }
+
+  .form {
+    padding-left: 2.5%;
+    padding-right: 2.5%;
+  }
+
 }

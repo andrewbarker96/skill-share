@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 import { firestore } from '../../util/firebase';
 import { doc, getDoc } from 'firebase/firestore';
-import { IonContent, IonImg, IonPage, IonText } from '@ionic/react';
+import { IonCol, IonContent, IonGrid, IonImg, IonInput, IonLabel, IonPage, IonRow, IonText } from '@ionic/react';
 
 interface UserProfilePageProps extends RouteComponentProps<{ uid: string }> { }
 
@@ -38,6 +38,12 @@ const UserProfilePage: React.FC<UserProfilePageProps> = ({ match }) => {
         <IonText className='ion-text-center'>
           <p>{profile.profileDescription}</p>
         </IonText>
+        <IonGrid className='form'>
+          <IonRow>
+            <IonCol size='12'>
+            </IonCol>
+          </IonRow>
+        </IonGrid>
       </IonContent>
     </IonPage>
   );
