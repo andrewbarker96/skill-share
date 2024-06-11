@@ -414,9 +414,4 @@ input::placeholder{
     align-items: center;
     width: 100%;
   }
-
-  .form {
-   max-width: 257px;
-  }
-
 }

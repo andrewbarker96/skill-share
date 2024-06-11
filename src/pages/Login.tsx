@@ -75,7 +75,7 @@ export default function LoginPage() {
                 <IonInputPasswordToggle color={'medium'} slot='end' />
               </IonInput>
             </IonCol>
-            <IonCol size='12'>
+            <IonCol size='12' className='ion-text-end'>
               <div className='ion-text-end'>
                 <IonButton fill='clear' color={'primary'} routerLink='/password-reset'>Forgot Password</IonButton>
               </div>
