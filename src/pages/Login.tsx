@@ -68,16 +68,12 @@ export default function LoginPage() {
           </IonRow>
           <IonRow>
             <IonCol size='12'>
-              <IonItem lines='none'>
-                <IonInput type='email' labelPlacement='stacked' label='Email' placeholder='Email' value={email} onIonChange={e => setEmail(e.detail.value!)} />
-              </IonItem>
+              <IonInput type='email' labelPlacement='stacked' label='Email' placeholder='Email' value={email} onIonChange={e => setEmail(e.detail.value!)} />
             </IonCol>
             <IonCol size='12'>
-              <IonItem lines='none'>
-                <IonInput type='password' labelPlacement='stacked' label='Password' placeholder='Password' value={password} onIonChange={e => setPassword(e.detail.value!)}>
-                  <IonInputPasswordToggle color={'medium'} slot='end' />
-                </IonInput>
-              </IonItem>
+              <IonInput type='password' labelPlacement='stacked' label='Password' placeholder='Password' value={password} onIonChange={e => setPassword(e.detail.value!)}>
+                <IonInputPasswordToggle color={'medium'} slot='end' />
+              </IonInput>
             </IonCol>
             <IonCol size='12'>
               <div className='ion-text-end'>

@@ -102,19 +102,15 @@ export default function CreateAccountPage() {
           </IonRow> */}
           <IonRow>
             <IonCol size='12'>
-              <IonItem lines='none'>
-                <IonInput value={email} label='Email' labelPlacement='stacked' placeholder='Email' type='email' onIonChange={e => setEmail(e.detail.value || '')}
-                />
-              </IonItem>
+              <IonInput value={email} label='Email' labelPlacement='stacked' placeholder='Email' type='email' onIonChange={e => setEmail(e.detail.value || '')}
+              />
             </IonCol>
           </IonRow>
           <IonRow>
             <IonCol size='12'>
-              <IonItem lines='none'>
-                <IonInput value={password} label='Password' labelPlacement='stacked' placeholder='Password' type='password' onIonChange={e => setPassword(e.detail.value || '')} >
-                  <IonInputPasswordToggle color={'medium'} slot='end' />
-                </IonInput>
-              </IonItem>
+              <IonInput value={password} label='Password' labelPlacement='stacked' placeholder='Password' type='password' onIonChange={e => setPassword(e.detail.value || '')} >
+                <IonInputPasswordToggle color={'medium'} slot='end' />
+              </IonInput>
             </IonCol>
           </IonRow>
           <IonRow>
