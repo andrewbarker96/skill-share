@@ -61,10 +61,9 @@ const TopMenu: React.FC = () => {
         <IonContent className="ion-padding">
           <IonButtons className='top-menu-button'>
             <IonButton
-              id='open-loading'
               fill="clear"
               expand="block"
-              routerLink='/'
+              href='/'
               style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
             >
               <IonIcon slot="start" icon={home} style={{ marginRight: '10px' }} />
@@ -73,10 +72,9 @@ const TopMenu: React.FC = () => {
           </IonButtons>
           <IonButtons className='top-menu-button'>
             <IonButton
-              id='open-loading'
               fill="clear"
               expand="block"
-              routerLink = '/profile'
+              href='/profile'
               style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
             >
               <IonIcon slot="start" icon={person} style={{ marginRight: '10px' }} />

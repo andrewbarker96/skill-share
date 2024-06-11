@@ -17,7 +17,7 @@ import {
 import { IonReactRouter } from '@ionic/react-router';
 import { onAuthStateChanged } from 'firebase/auth';
 import { adminAuth, auth } from '../util/firebase';
-import { ellipse, home, person, square, triangle } from 'ionicons/icons';
+import { add, addCircle, calendar, ellipse, home, person, search, square, triangle } from 'ionicons/icons';
 import TopMenu from './components/TopMenu';
 import HomePage from './pages/Home';
 import LoginPage from './pages/Login';
@@ -47,6 +47,8 @@ import './theme/variables.css';
 import ProfilePage from './pages/Profile';
 import CreateAccountPage from './pages/CreateAccount';
 import UserProfilePage from './components/UserProfilePage';
+import EventsPage from './pages/Events';
+import SkillSwapPage from './pages/SkillSwap';
 
 setupIonicReact();
 
@@ -57,22 +59,34 @@ const AuthApp: React.FC = () => {
       <IonHeader>
         <IonToolbar>
           <TopMenu />
+          <IonButton fill='clear' slot='icon-only'>
+            <IonIcon icon={search} />
+          </IonButton>
         </IonToolbar>
       </IonHeader>
       <IonContent className='main-content'>
         <IonReactRouter>
           <IonTabs>
             <IonRouterOutlet>
-              <Route exact path="/">
-                <HomePage />
-              </Route>
+              <Redirect exact path="/home" to="/" />
+              <Route exact path="/" component={HomePage} />
               <Route exact path="/profile" component={UserProfilePage} />
+              <Route exact path="/events" component={EventsPage} />
+              <Route exact path="/skills" component={SkillSwapPage} />
             </IonRouterOutlet>
 
             <IonTabBar slot={'bottom'}>
               <IonTabButton tab='Home' href='/'>
                 <IonIcon icon={home} />
                 <IonLabel>Home</IonLabel>
+              </IonTabButton>
+              <IonTabButton tab='Skills' href='/skills'>
+                <IonIcon icon={addCircle} />
+                <IonLabel>Skills</IonLabel>
+              </IonTabButton>
+              <IonTabButton tab='Calendar' href='/events'>
+                <IonIcon icon={calendar} />
+                <IonLabel>Events</IonLabel>
               </IonTabButton>
               <IonTabButton tab='Profile' href='/profile'>
                 <IonIcon icon={person} />
