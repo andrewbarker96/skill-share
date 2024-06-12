@@ -17,7 +17,7 @@ import {
 import { IonReactRouter } from '@ionic/react-router';
 import { onAuthStateChanged } from 'firebase/auth';
 import { adminAuth, auth } from '../util/firebase';
-import { add, addCircle, calendar, chatbubble, ellipse, home, person, search, square, triangle } from 'ionicons/icons';
+import { add, addCircle, calendar, chatbubble, chatbubbleEllipses, ellipse, home, person, search, square, triangle } from 'ionicons/icons';
 import TopMenu from './components/TopMenu';
 import HomePage from './pages/Home';
 import LoginPage from './pages/Login';
@@ -49,7 +49,9 @@ import CreateAccountPage from './pages/CreateAccount';
 import UserProfilePage from './components/UserProfilePage';
 import EventsPage from './pages/Events';
 import SkillSwapPage from './pages/SkillSwap';
-import MessagesPage from './pages/Messages';
+import MessageDashboard from './pages/Messages';
+import { Message } from './components/Messaging/MessageBox';
+import { NewMessage } from './components/Messaging/NewMessage';
 
 setupIonicReact();
 
@@ -74,7 +76,9 @@ const AuthApp: React.FC = () => {
               <Route exact path="/profile" component={UserProfilePage} />
               <Route exact path="/events" component={EventsPage} />
               <Route exact path="/skills" component={SkillSwapPage} />
-              <Route exact path="/messages" component={MessagesPage} />
+              <Route exact path="/chat" component={MessageDashboard} />
+              <Route exact path="/chat/:id" component={Message} />
+              <Route exact path="/chat/new" component={NewMessage} />
             </IonRouterOutlet>
 
             <IonTabBar slot={'bottom'}>
@@ -86,9 +90,9 @@ const AuthApp: React.FC = () => {
                 <IonIcon icon={addCircle} />
                 <IonLabel>Skills</IonLabel>
               </IonTabButton>
-              <IonTabButton tab='Messages' href='/messages'>
-                <IonIcon icon={chatbubble} />
-                <IonLabel>Messages</IonLabel>
+              <IonTabButton tab='Messages' href='/chat'>
+                <IonIcon icon={chatbubbleEllipses} />
+                <IonLabel>Chat</IonLabel>
               </IonTabButton>
               <IonTabButton tab='Profile' href='/profile'>
                 <IonIcon icon={person} />

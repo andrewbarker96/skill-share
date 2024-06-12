@@ -4,17 +4,17 @@ import { firestore, auth } from '../../util/firebase';
 import { doc, getDoc } from 'firebase/firestore';
 import { IonCol, IonContent, IonGrid, IonImg, IonInput, IonLabel, IonPage, IonRow, IonText } from '@ionic/react';
 
-interface UserProfilePageProps extends RouteComponentProps<{ uid: string }> { }
 
 const UserProfilePage: React.FC = () => {
-  const uid = auth.currentUser?.uid;
   const [profile, setProfile] = useState<any>({});
+  const uid = auth.currentUser?.uid;
 
   useEffect(() => {
     const fetchProfile = async () => {
       if (!uid) {
         console.error('UID is undefined. User might not be logged in.');
-        return; // Exit the function if uid is undefined.
+        window.location.href = '/';
+        return;
       }
       const docRef = await getDoc(doc(firestore, 'userProfiles', uid));
       if (docRef.exists()) {

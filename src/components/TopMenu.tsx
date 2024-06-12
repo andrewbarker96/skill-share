@@ -13,7 +13,7 @@ import {
   IonText,
   IonLoading,
 } from '@ionic/react';
-import { logOutOutline, close, calendarOutline, shieldHalf, home, personAdd, person } from 'ionicons/icons';
+import { logOutOutline, close, calendarOutline, shieldHalf, home, personAdd, person, add, chatbubble, chatbubbleEllipses, addCircle } from 'ionicons/icons';
 import Copyright from './Copyright';
 import { adminAuth, auth } from '../../util/firebase';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
@@ -63,7 +63,7 @@ const TopMenu: React.FC = () => {
             <IonButton
               fill="clear"
               expand="block"
-              href='/'
+              routerLink='/'
               style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
             >
               <IonIcon slot="start" icon={home} style={{ marginRight: '10px' }} />
@@ -74,7 +74,7 @@ const TopMenu: React.FC = () => {
             <IonButton
               fill="clear"
               expand="block"
-              href='/profile'
+              routerLink='/profile'
               style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
             >
               <IonIcon slot="start" icon={person} style={{ marginRight: '10px' }} />
@@ -85,7 +85,29 @@ const TopMenu: React.FC = () => {
             <IonButton
               fill="clear"
               expand="block"
-              href='/events'
+              routerLink='/chat'
+              style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+            >
+              <IonIcon slot="start" icon={chatbubbleEllipses} style={{ marginRight: '10px' }} />
+              <IonText>Messages</IonText>
+            </IonButton>
+          </IonButtons>
+          <IonButtons className='top-menu-button'>
+            <IonButton
+              fill="clear"
+              expand="block"
+              routerLink='/skills'
+              style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+            >
+              <IonIcon slot="start" icon={addCircle} style={{ marginRight: '10px' }} />
+              <IonText>Swap Skills</IonText>
+            </IonButton>
+          </IonButtons>
+          <IonButtons className='top-menu-button'>
+            <IonButton
+              fill="clear"
+              expand="block"
+              routerLink='/events'
               style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
             >
               <IonIcon slot="start" icon={calendarOutline} style={{ marginRight: '10px' }} />

@@ -25,17 +25,14 @@ const SkillSwapPage: React.FC = () => {
           <IonCardContent>
             <IonGrid>
               <IonRow>
-                <IonCol size='3'>
-                  <IonImg src='https://via.placeholder.com/150' />
-                </IonCol>
-                <IonCol size='8'>
+                <IonCol size='10'>
                   <IonText>
                     <h2>Learn to Code</h2>
                     <p>Learn to code in Python, JavaScript, or Java!</p>
                   </IonText>
                 </IonCol>
-                <IonCol size='1'>
-                  <IonIcon size='large' icon={chevronForward} style={{ height: '100%' }} />
+                <IonCol size='2'>
+                  <IonIcon size='large' icon={chevronForward} style={{ float: 'right', height: '100%' }} />
                 </IonCol>
               </IonRow>
             </IonGrid>

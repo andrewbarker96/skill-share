@@ -1,20 +1,35 @@
-import { IonCol, IonContent, IonGrid, IonPage, IonRow, IonText } from '@ionic/react'
-import React from 'react'
+import { IonButton, IonCard, IonCol, IonContent, IonFabButton, IonGrid, IonIcon, IonModal, IonPage, IonRow, IonSearchbar, IonText, IonTextarea } from '@ionic/react'
+import { add, chevronForward } from 'ionicons/icons'
+import React, { useState, useEffect, useRef } from 'react'
+import { query, collection, orderBy, onSnapshot, limit, Unsubscribe } from "firebase/firestore";
+import { firebase, auth, db } from '../../util/firebase'
+// import { SendMessages } from '../components/Chat/SendMessage';
 
-const MessagesPage: React.FC = () => {
+const MessageDashboard: React.FC = () => {
+  const [username, setUsername] = useState<string>('')
+  const [error, setError] = useState<string>('')
+
+  const handleKey = (e: any) => {
+    if (e.key === 'Enter') {
+      console.log('Search for:', username)
+    }
+  }
+
   return (
     <IonPage>
       <IonContent className='ion-padding'>
-        <IonGrid>
-          <IonRow>
-            <IonCol size='12'>
-              <IonText><h1>Messages</h1></IonText>
-            </IonCol>
-          </IonRow>
-        </IonGrid>
+        <IonText><h1>Chat</h1></IonText>
+        <IonSearchbar placeholder='Search Messages' onKeyDown={handleKey} onIonChange={(e) => setUsername(e.detail.value!)}></IonSearchbar>
+        <hr />
+        <IonCard>
+
+        </IonCard>
+        <IonFabButton routerLink='/chat/new' color={'primary'} style={{ position: 'fixed', bottom: '10px', right: '10px' }}>
+          <IonIcon icon={add} />
+        </IonFabButton>
       </IonContent>
     </IonPage>
   )
 }
 
-export default MessagesPage
+export default MessageDashboard
