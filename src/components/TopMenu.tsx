@@ -83,6 +83,17 @@ const TopMenu: React.FC = () => {
           </IonButtons>
           <IonButtons className='top-menu-button'>
             <IonButton
+              fill="clear"
+              expand="block"
+              href='/events'
+              style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+            >
+              <IonIcon slot="start" icon={calendarOutline} style={{ marginRight: '10px' }} />
+              <IonText>Events</IonText>
+            </IonButton>
+          </IonButtons>
+          <IonButtons className='top-menu-button'>
+            <IonButton
               id='open-loading'
               fill="clear"
               expand="block"

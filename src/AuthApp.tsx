@@ -17,7 +17,7 @@ import {
 import { IonReactRouter } from '@ionic/react-router';
 import { onAuthStateChanged } from 'firebase/auth';
 import { adminAuth, auth } from '../util/firebase';
-import { add, addCircle, calendar, ellipse, home, person, search, square, triangle } from 'ionicons/icons';
+import { add, addCircle, calendar, chatbubble, ellipse, home, person, search, square, triangle } from 'ionicons/icons';
 import TopMenu from './components/TopMenu';
 import HomePage from './pages/Home';
 import LoginPage from './pages/Login';
@@ -49,6 +49,7 @@ import CreateAccountPage from './pages/CreateAccount';
 import UserProfilePage from './components/UserProfilePage';
 import EventsPage from './pages/Events';
 import SkillSwapPage from './pages/SkillSwap';
+import MessagesPage from './pages/Messages';
 
 setupIonicReact();
 
@@ -73,6 +74,7 @@ const AuthApp: React.FC = () => {
               <Route exact path="/profile" component={UserProfilePage} />
               <Route exact path="/events" component={EventsPage} />
               <Route exact path="/skills" component={SkillSwapPage} />
+              <Route exact path="/messages" component={MessagesPage} />
             </IonRouterOutlet>
 
             <IonTabBar slot={'bottom'}>
@@ -84,9 +86,9 @@ const AuthApp: React.FC = () => {
                 <IonIcon icon={addCircle} />
                 <IonLabel>Skills</IonLabel>
               </IonTabButton>
-              <IonTabButton tab='Calendar' href='/events'>
-                <IonIcon icon={calendar} />
-                <IonLabel>Events</IonLabel>
+              <IonTabButton tab='Messages' href='/messages'>
+                <IonIcon icon={chatbubble} />
+                <IonLabel>Messages</IonLabel>
               </IonTabButton>
               <IonTabButton tab='Profile' href='/profile'>
                 <IonIcon icon={person} />
