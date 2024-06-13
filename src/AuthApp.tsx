@@ -46,6 +46,7 @@ import '@ionic/react/css/palettes/dark.system.css';
 import './theme/variables.css';
 import ProfilePage from './pages/Profile';
 import CreateAccountPage from './pages/CreateAccount';
+import UpdateProfilePage from './pages/UpdateProfile';
 
 setupIonicReact();
 
@@ -66,6 +67,9 @@ const AuthApp: React.FC = () => {
                 <HomePage />
               </Route>
               <Route exact path="/profile" render={(props) => <ProfilePage {...props} />} />
+              <Route exact path="/update-profile">
+                <UpdateProfilePage />
+              </Route>
             </IonRouterOutlet>
 
             <IonTabBar slot={'bottom'}>
