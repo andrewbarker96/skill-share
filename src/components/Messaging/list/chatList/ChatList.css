@@ -1,0 +1,16 @@
+
+.chatList{
+    padding:10px;
+}
+
+.item {
+  padding-left: 10px;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.164);
+
+  .timeStamp {
+    color: rgba(255, 255, 255, 0.264);
+    align-content: flex-end;
+  }
+}
