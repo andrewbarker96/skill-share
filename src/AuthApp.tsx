@@ -50,6 +50,7 @@ import SkillSwapPage from './pages/SkillSwap';
 import ChatView from './components/Messaging/ChatView';
 import { NewChatView } from './components/Messaging/NewChat';
 import ChatDashboard from './pages/ChatDashboard';
+import UpdateProfilePage from './pages/UpdateProfile';
 
 setupIonicReact();
 
@@ -77,6 +78,9 @@ const AuthApp: React.FC = () => {
               <Route exact path="/chat" component={ChatDashboard} />
               <Route exact path="/chat/:id" component={ChatView} />
               <Route exact path="/chat/new" component={NewChatView} />
+              <Route exact path="/update-profile">
+                <UpdateProfilePage />
+              </Route>
             </IonRouterOutlet>
 
             <IonTabBar slot={'bottom'}>

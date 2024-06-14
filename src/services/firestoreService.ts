@@ -1,29 +1,23 @@
-import { db, uid, firestore } from "../../util/firebase";
-import {
-  collection,
-  addDoc,
-  getDoc,
-  getDocs,
-  doc,
-  updateDoc,
-  deleteDoc,
-} from "firebase/firestore";
+import { db } from '../../util/firebase';
+import { collection, addDoc, getDocs, doc, updateDoc, deleteDoc, setDoc, getDoc } from "firebase/firestore";
+import { ProfileData, Skills } from '../types';
 
 //Create new profile
 export const createProfile = async (profile: any) => {
-  try {
-    const docRef = await addDoc(collection(db, "userProfiles"), profile);
-    return docRef.id;
-  } catch (error) {
-    console.error("Error adding document: ", error);
-  }
+    try {
+        const profileDoc = doc(db, "userProfiles", profile.uid);
+        await setDoc(profileDoc, profile);
+        return profile.uid;
+    } catch (error) {
+        console.error("Error adding document: ", error);
+    }
 };
 
 //Get all profiles
 export const getProfiles = async () => {
-  const querySnapshot = await getDocs(collection(db, "userProfiles"));
-  return querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
-};
+    const querySnapshot = await getDocs(collection(db, "userProfiles"));
+    return querySnapshot.docs.map(doc => ({ ...doc.data(), id: doc.id }));
+}
 
 //Update a profile
 export const updateProfile = async (id: string, updatedProfile: any) => {
@@ -39,8 +33,8 @@ export const deleteProfile = async (id: string) => {
 
 //Get all skills
 export const getSkills = async () => {
-  const querySnapshot = await getDocs(collection(db, "skills"));
-  return querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+    const querySnapshot = await getDocs(collection(db, "skills"));
+    return querySnapshot.docs.map(doc => ({ ...doc.data(), id: doc.id }));
 };
 
 //Add new skill

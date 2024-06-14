@@ -1,23 +1,25 @@
 import React, { useState, useEffect, ChangeEvent } from 'react';
 import AccountInformationForm from './AccounInformationForm';
-import PersonalInformationForm from './PersonalInformationForm';
 import SkillsForm from './SkillsForm';
 import ProfilePictureForm from './ProfilePictureForm';
-import { createProfile, getSkills, updateProfile } from '../services/firestoreService';
+import { createProfile, getSkills, getUserProfile, updateProfile } from '../services/firestoreService';
 import { uploadImage } from '../services/storageService';
 import { compressImage } from '../../util/imageCompression';
-import { InputChangeEventDetail, IonButton } from '@ionic/react';
+import { InputChangeEventDetail, IonButton, IonCol, IonRow } from '@ionic/react';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../../util/firebase';
+import { useHistory } from 'react-router';
+import { ProfileData, Skills } from '../types';
 
 interface Props {
   mode: 'create' | 'update';
-  initialProfileData?: any;
+  initialProfileData?: ProfileData;
+  initialStep?: number;
 }
 
-const ProfileForm: React.FC<Props> = ({ mode, initialProfileData }) => {
-  const [step, setStep] = useState(1);
-  const [formData, setFormData] = useState({
+const ProfileForm: React.FC<Props> = ({ mode, initialProfileData, initialStep = 0 }) => {
+  const [step, setStep] = useState(initialStep);
+  const [formData, setFormData] = useState<ProfileData>({
     firstName: '',
     lastName: '',
     username: '',
@@ -27,65 +29,117 @@ const ProfileForm: React.FC<Props> = ({ mode, initialProfileData }) => {
     birthdate: '',
     city: '',
     state: '',
-    skills: {},
+    skillsOffered: {},
+    // skillsWanted: {},
     profilePicture: '',
-    profilePictureFile: null as File | null
+    profilePictureFile: null as File | null,
+    uid: ''
   });
-  const [allSkills, setAllSkills] = useState<any[]>([]);
+  const [allSkills, setAllSkills] = useState<Skills>({});
+  const [loadingSkills, setLoadingSkills] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const history = useHistory();
 
+  // Log Current Step
+  useEffect(() => {
+    console.log("Current step:", step);
+  }, [step]);
+
+  // Fetch skills
   useEffect(() => {
     const fetchSkills = async () => {
-      const skills = await getSkills();
-      setAllSkills(skills);
+      try {
+        const skills = await getSkills();
+        console.log('Skills data:', skills); // Debug log
+        setAllSkills(skills);
+      } catch (error) {
+        console.error('Error fetching skills:', error);
+        setError('Failed to fetch skills');
+      } finally {
+        setLoadingSkills(false);
+      }
     };
     fetchSkills();
   }, []);
 
+  // fetch profile data
   useEffect(() => {
-    if (initialProfileData) {
+    if (mode === 'update' && initialProfileData) {
       setFormData(initialProfileData);
+    } else if (mode === 'update' && !initialProfileData) {
+      // Fetch the user's profile data if not provided
+      const fetchUserProfile = async () => {
+        try {
+          const userProfile = await getUserProfile(auth.currentUser?.uid || '');
+          setFormData(userProfile);
+        } catch (error) {
+          console.error('Error fetching user profile:', error);
+        }
+      };
+      fetchUserProfile();
     }
-  }, [initialProfileData]);
-
-  const handleNext = async () => {
-    if (step === 1) {
-      // Validate passwords match
-      if (formData.password !== formData.confirmPassword) {
-        alert("Passwords do not match");
-        return;
-      }
-  
-      try {
-        // Create user in Firebase Authentication
-        const userCredential = await createUserWithEmailAndPassword(auth, formData.email, formData.password);
-        const user = userCredential.user;
-  
-        // Update formData with the user's UID
-        setFormData(prev => ({ ...prev, userID: user.uid }));
-  
-        // Proceed to the next step
-        setStep(step + 1);
-      } catch (error) {
-        console.error("Error creating user:", error);
-        // Handle error
-      }
-    } else {
-      // Proceed to the next step
-      setStep(step + 1);
-    }
-  };
-
-  const handlePrev = () => {
-    setStep(step - 1);
-  };
+  }, [mode, initialProfileData]);
 
   const handleChange = (name: string, value: string) => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
   
+  const saveProfileData = async () => {
+    const { password, confirmPassword, ...profileData } = formData;
+    try {
+      await updateProfile(formData.uid, profileData);
+      console.log("Profile data saved successfully");
+    } catch (error) {
+      console.error("Error saving profile data:", error);
+    }
+  };
+
+  const handleAccountCreation = async (redirectHome: boolean) => {
+    if (formData.password !== formData.confirmPassword) {
+      alert("Passwords do not match");
+      return;
+    }
+
+    try {
+      // Create user in Firebase Authentication
+      const userCredential = await createUserWithEmailAndPassword(auth, formData.email, formData.password);
+      const user = userCredential.user;
+
+      // Update formData with the user's UID
+      const updatedFormData = { ...formData, uid: user.uid };
+
+      // Create initial user profile in Firestore without password stored
+      const { password, confirmPassword, ...profileData } = updatedFormData;
+      await createProfile(profileData);
+
+      alert("Account created successfully!");
+
+      if (redirectHome) {
+        // Redirect to home page
+        history.push('/');
+      } else {
+        // Proceed to the next step
+        setFormData(updatedFormData);
+        history.push('/update-profile');
+      }
+    } catch (error) {
+      console.error("Error creating user:", error);
+      // Handle error
+    }
+  };
+  
+  const handlePrev = async () => {
+    await saveProfileData();
+    setStep(prevStep => prevStep - 1);
+  };
+
+  const handleNext = async () => {
+    await saveProfileData();
+    setStep(prevStep => prevStep + 1);
+  };
 
   const handleSkillChange = (category: string, subcategory: string, skill: string, isChecked: boolean) => {
-    const updatedSkills: { [key: string]: { [key: string]: string[] } } = { ...formData.skills };
+    const updatedSkills: { [key: string]: { [key: string]: string[] } } = { ...formData.skillsOffered };
     if (!updatedSkills[category]) {
       updatedSkills[category] = {};
     }
@@ -97,7 +151,7 @@ const ProfileForm: React.FC<Props> = ({ mode, initialProfileData }) => {
     } else {
       updatedSkills[category][subcategory] = updatedSkills[category][subcategory].filter((s: string) => s !== skill);
     }
-    setFormData({ ...formData, skills: updatedSkills });
+    setFormData({ ...formData, skillsOffered: updatedSkills });
   };
   
 
@@ -114,51 +168,22 @@ const ProfileForm: React.FC<Props> = ({ mode, initialProfileData }) => {
   };
 
   const handleSubmit = async () => {
-    let profilePictureURL = null;
-    if (formData.profilePictureFile) {
-      const userId = formData.email;  
-      profilePictureURL = await uploadImage(formData.profilePictureFile, userId);
-    }
-  
-    const { profilePictureFile, ...profileWithoutProfilePictureFile } = formData;
-  
-    if (profilePictureURL !== null) {
-      profileWithoutProfilePictureFile.profilePicture = profilePictureURL;
-    }
-  
-    if (mode === 'create') {
-      await createProfile(profileWithoutProfilePictureFile);
-    } else if (mode === 'update') {
-      // Assuming you have the profile id stored somewhere in your component state or props
-      await updateProfile("22", profileWithoutProfilePictureFile);
-    }
+    await saveProfileData();
     alert("Profile updated successfully!");
-    // reset the form or navigate to another page
+    // Redirect to profile page
+    history.push('/profile');
   };
-  
-  
-  
-  
-  
+
+  const steps = [
+    <AccountInformationForm formData={formData} handleChange={handleChange} handleContinueHome={() => handleAccountCreation(true)} handleContinueProfile={() => handleAccountCreation(false)} handleNext={handleNext}/>,
+    <SkillsForm formData={formData} allSkills={allSkills} handleSkillChange={handleSkillChange} handleNext={handleNext} handlePrev={handlePrev} />,
+    <ProfilePictureForm formData={formData} setFormData={setFormData} handleImageUpload={handleImageUpload} handleSubmit={handleSubmit} handlePrev={handlePrev} />
+  ];
 
   return (
-    <div>
-      {step === 1 && (
-        <AccountInformationForm formData={formData} handleChange={handleChange} handleNext={handleNext} />
-      )}
-      {step === 2 && (
-        <PersonalInformationForm formData={formData} handleChange={handleChange} handleNext={handleNext} handlePrev={handlePrev} />
-      )}
-      {step === 3 && (
-        <SkillsForm formData={formData} allSkills={allSkills} handleSkillChange={handleSkillChange} handleNext={handleNext} handlePrev={handlePrev} />
-      )}
-      {step === 4 && (
-        <ProfilePictureForm formData={formData} setFormData={setFormData} handleImageUpload={handleImageUpload} handleSubmit={handleSubmit} handlePrev={handlePrev} />
-      )}
-      <IonButton expand="block" onClick={handlePrev} disabled={step === 1}>Previous</IonButton>
-      {step < 4 && <IonButton expand="block" onClick={handleNext}>Next</IonButton>}
-      {step === 4 && <IonButton expand="block" onClick={handleSubmit}>Submit Profile</IonButton>}
-    </div>
+    <form onSubmit={handleSubmit}>
+      {mode === 'create' ? steps[0] : steps[step]}
+    </form>
   );
 };
 
