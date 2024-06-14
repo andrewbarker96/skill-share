@@ -1,4 +1,4 @@
-import { db } from "../../util/firebase";
+import { db, auth } from "../../util/firebase";
 import {
   collection,
   addDoc,
@@ -6,22 +6,49 @@ import {
   doc,
   updateDoc,
   deleteDoc,
+  serverTimestamp,
 } from "firebase/firestore";
 
+const user = auth.currentUser;
 
-// Get Messages
-export const getMessages = async () => {
-  const querySnapshot = await getDocs(collection(db, "messages"));
+export const getUsers = async () => {
+  const querySnapshot = await getDocs(collection(db, "userProfiles"));
   return querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
 };
 
-// Send Message
-export const sendMessage = async (message: any) => {
+export const findUser = async (email: string) => {
   try {
-    const docRef = await addDoc(collection(db, "messages"), message);
-    return docRef.id;
+    const usersRef = collection(db, "userProfiles");
+    const querySnapshot = await getDocs(usersRef);
+    return querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
   } catch (error) {
-    console.error("Error adding document: ", error);
+    console.error("Error finding user: ", error);
   }
 };
 
+export const sendMessage = async (
+  chatId: string,
+  email: string,
+  message: any,
+  senderID: string
+) => {
+  try {
+    const messagesRef = collection(db, `chats/${chatId}/messages`);
+    senderID = user?.uid || "";
+    await addDoc(messagesRef, message),
+      {
+        sender: senderID,
+        to: "",
+        text: message,
+        timestamp: serverTimestamp(),
+      };
+  } catch (error) {
+    console.error("Error sending message: ", error);
+  }
+};
+
+export const receiveMessage = async (chatId: string) => {
+  const messagesRef = collection(db, `chats/${chatId}/messages`);
+  const querySnapshot = await getDocs(messagesRef);
+  return querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+};

@@ -89,7 +89,7 @@ const TopMenu: React.FC = () => {
               style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
             >
               <IonIcon slot="start" icon={chatbubbleEllipses} style={{ marginRight: '10px' }} />
-              <IonText>Messages</IonText>
+              <IonText>Chat</IonText>
             </IonButton>
           </IonButtons>
           <IonButtons className='top-menu-button'>

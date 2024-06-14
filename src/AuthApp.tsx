@@ -44,14 +44,12 @@ import '@ionic/react/css/palettes/dark.system.css';
 
 /* Theme variables */
 import './theme/variables.css';
-import ProfilePage from './pages/Profile';
-import CreateAccountPage from './pages/CreateAccount';
 import UserProfilePage from './components/UserProfilePage';
 import EventsPage from './pages/Events';
 import SkillSwapPage from './pages/SkillSwap';
-import MessageDashboard from './pages/Messages';
-import { Message } from './components/Messaging/MessageBox';
-import { NewMessage } from './components/Messaging/NewMessage';
+import ChatView from './components/Messaging/ChatView';
+import { NewChatView } from './components/Messaging/NewChat';
+import ChatDashboard from './pages/ChatDashboard';
 
 setupIonicReact();
 
@@ -76,9 +74,9 @@ const AuthApp: React.FC = () => {
               <Route exact path="/profile" component={UserProfilePage} />
               <Route exact path="/events" component={EventsPage} />
               <Route exact path="/skills" component={SkillSwapPage} />
-              <Route exact path="/chat" component={MessageDashboard} />
-              <Route exact path="/chat/:id" component={Message} />
-              <Route exact path="/chat/new" component={NewMessage} />
+              <Route exact path="/chat" component={ChatDashboard} />
+              <Route exact path="/chat/:id" component={ChatView} />
+              <Route exact path="/chat/new" component={NewChatView} />
             </IonRouterOutlet>
 
             <IonTabBar slot={'bottom'}>
