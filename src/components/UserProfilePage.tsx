@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { RouteComponentProps } from 'react-router-dom';
+import { Link, RouteComponentProps } from 'react-router-dom';
 import { firestore } from '../../util/firebase';
 import { doc, getDoc } from 'firebase/firestore';
-import { IonCol, IonContent, IonGrid, IonImg, IonInput, IonLabel, IonPage, IonRow, IonText } from '@ionic/react';
+import { IonButton, IonCol, IonContent, IonGrid, IonImg, IonPage, IonRow, IonText } from '@ionic/react';
 
 interface UserProfilePageProps extends RouteComponentProps<{ uid: string }> { }
 
@@ -27,7 +27,7 @@ const UserProfilePage: React.FC<UserProfilePageProps> = ({ match }) => {
     <IonPage>
       <IonContent className='ion-padding'>
         <div style={{ display: 'flex', justifyContent: 'center', borderRadius: '50%' }}>
-          <IonImg style={{ height: '100px', width: '100px' }} src={profile.profileImage} />
+          <IonImg style={{ height: '100px', width: '100px' }} src={profile.profilePicture} />
         </div>
         <IonText className='ion-text-center'>
           <h1>{profile.firstName} {profile.lastName}</h1>
@@ -39,10 +39,16 @@ const UserProfilePage: React.FC<UserProfilePageProps> = ({ match }) => {
           <p>{profile.profileDescription}</p>
         </IonText>
         <IonGrid className='form'>
-          <IonRow>
+          {/* <IonRow>
             <IonCol size='12'>
+              <Link to={{
+                pathname: '/update-profile',
+                state: { initialStep: 0 } 
+              }}>
+                <IonButton expand="block">Edit Profile</IonButton>
+              </Link>
             </IonCol>
-          </IonRow>
+          </IonRow> */}
         </IonGrid>
       </IonContent>
     </IonPage>

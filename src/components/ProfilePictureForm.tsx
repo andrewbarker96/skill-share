@@ -1,6 +1,5 @@
-// src/components/ProfilePictureForm.tsx
 import React from 'react';
-import { IonButton, IonItem, IonLabel, IonInput, IonImg, IonRow, IonCol, IonText } from '@ionic/react';
+import { IonButton, IonItem, IonLabel, IonImg, IonRow, IonCol, IonText } from '@ionic/react';
 
 interface Props {
   formData: any;
@@ -21,6 +20,7 @@ const ProfilePictureForm: React.FC<Props> = ({ formData, setFormData, handleImag
       }));
     }
   };
+
   return (
     <IonRow>
       <IonCol size='12'>
@@ -29,7 +29,7 @@ const ProfilePictureForm: React.FC<Props> = ({ formData, setFormData, handleImag
         </IonText>
         <IonItem>
           <IonLabel position="stacked">Upload Profile Picture</IonLabel>
-          <input type="file" accept="image/*" onChange={handleImageUpload} />
+          <input type="file" accept="image/*" onChange={handleImageChange} />
         </IonItem>
         {formData.profilePicture && (
           <IonItem>

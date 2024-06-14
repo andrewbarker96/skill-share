@@ -8,8 +8,8 @@ export interface ProfileData {
     birthdate: string;
     city: string;
     state: string;
-    skillsOffered: { [category: string]: { [subcategory: string]: string[] } };
-    // skillsWanted: { [key: string]: { [key: string]: string[] } };
+    skillsOffered: Skills;
+    // skillsWanted: Skills;
     profilePicture: string;
     profilePictureFile: File | null;
     uid: string;

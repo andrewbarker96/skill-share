@@ -1,23 +1,27 @@
-import React, { useState, useEffect, ChangeEvent } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useHistory, useLocation } from 'react-router-dom';
 import AccountInformationForm from './AccounInformationForm';
 import SkillsForm from './SkillsForm';
 import ProfilePictureForm from './ProfilePictureForm';
 import { createProfile, getSkills, getUserProfile, updateProfile } from '../services/firestoreService';
-import { uploadImage } from '../services/storageService';
 import { compressImage } from '../../util/imageCompression';
-import { InputChangeEventDetail, IonButton, IonCol, IonRow } from '@ionic/react';
+import { IonToast } from '@ionic/react';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../../util/firebase';
-import { useHistory } from 'react-router';
 import { ProfileData, Skills } from '../types';
+import { uploadImage } from '../services/storageService';
 
 interface Props {
   mode: 'create' | 'update';
   initialProfileData?: ProfileData;
   initialStep?: number;
+  initialSkills: Skills;
+  setInvalid:(state: boolean) => void;
+  setSuccess:(state: boolean) => void;
+  setErrorMessage:(message: string) => void;
 }
 
-const ProfileForm: React.FC<Props> = ({ mode, initialProfileData, initialStep = 0 }) => {
+const ProfileForm: React.FC<Props> = ({ mode, initialProfileData, initialStep = 0, initialSkills, setInvalid,setSuccess, setErrorMessage }) => {
   const [step, setStep] = useState(initialStep);
   const [formData, setFormData] = useState<ProfileData>({
     firstName: '',
@@ -30,50 +34,42 @@ const ProfileForm: React.FC<Props> = ({ mode, initialProfileData, initialStep = 
     city: '',
     state: '',
     skillsOffered: {},
-    // skillsWanted: {},
     profilePicture: '',
-    profilePictureFile: null as File | null,
+    profilePictureFile: null,
     uid: ''
   });
-  const [allSkills, setAllSkills] = useState<Skills>({});
-  const [loadingSkills, setLoadingSkills] = useState(true);
+  const [allSkills, setAllSkills] = useState<Skills>(initialSkills);
   const [error, setError] = useState<string | null>(null);
+  const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState('');
   const history = useHistory();
+  const location = useLocation();
 
-  // Log Current Step
   useEffect(() => {
-    console.log("Current step:", step);
-  }, [step]);
+    console.log("Component mounted. Current step:", step);
+    console.log("Initial skills:", initialSkills);
+  }, [step, initialSkills]);
 
-  // Fetch skills
-  useEffect(() => {
-    const fetchSkills = async () => {
-      try {
-        const skills = await getSkills();
-        console.log('Skills data:', skills); // Debug log
-        setAllSkills(skills);
-      } catch (error) {
-        console.error('Error fetching skills:', error);
-        setError('Failed to fetch skills');
-      } finally {
-        setLoadingSkills(false);
-      }
-    };
-    fetchSkills();
-  }, []);
-
-  // fetch profile data
   useEffect(() => {
     if (mode === 'update' && initialProfileData) {
+      console.log('Setting initial profile data:', initialProfileData);
       setFormData(initialProfileData);
     } else if (mode === 'update' && !initialProfileData) {
-      // Fetch the user's profile data if not provided
       const fetchUserProfile = async () => {
         try {
-          const userProfile = await getUserProfile(auth.currentUser?.uid || '');
-          setFormData(userProfile);
+          if (auth.currentUser) {
+            console.log('Fetching user profile...');
+            const userProfile = await getUserProfile(auth.currentUser.uid);
+            console.log('Fetched user profile:', userProfile);
+            setFormData(userProfile);
+          } else {
+            console.error('No authenticated user found');
+          }
         } catch (error) {
           console.error('Error fetching user profile:', error);
+          setError('Failed to fetch user profile');
+          setToastMessage('Failed to fetch user profile');
+          setShowToast(true);
         }
       };
       fetchUserProfile();
@@ -81,9 +77,10 @@ const ProfileForm: React.FC<Props> = ({ mode, initialProfileData, initialStep = 
   }, [mode, initialProfileData]);
 
   const handleChange = (name: string, value: string) => {
+    console.log(`Changing ${name} to ${value}`);
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
-  
+
   const saveProfileData = async () => {
     const { password, confirmPassword, ...profileData } = formData;
     try {
@@ -91,43 +88,43 @@ const ProfileForm: React.FC<Props> = ({ mode, initialProfileData, initialStep = 
       console.log("Profile data saved successfully");
     } catch (error) {
       console.error("Error saving profile data:", error);
+      setToastMessage('Failed to save profile data');
+      setShowToast(true);
     }
   };
 
   const handleAccountCreation = async (redirectHome: boolean) => {
     if (formData.password !== formData.confirmPassword) {
-      alert("Passwords do not match");
+      setToastMessage('Passwords do not match');
+      setShowToast(true);
       return;
     }
 
     try {
-      // Create user in Firebase Authentication
+      console.log("Creating account...");
       const userCredential = await createUserWithEmailAndPassword(auth, formData.email, formData.password);
       const user = userCredential.user;
 
-      // Update formData with the user's UID
       const updatedFormData = { ...formData, uid: user.uid };
 
-      // Create initial user profile in Firestore without password stored
       const { password, confirmPassword, ...profileData } = updatedFormData;
       await createProfile(profileData);
 
-      alert("Account created successfully!");
+      setToastMessage("Account created successfully!");
+      setShowToast(true);
+      setSuccess(true);
 
-      if (redirectHome) {
-        // Redirect to home page
-        history.push('/');
-      } else {
-        // Proceed to the next step
-        setFormData(updatedFormData);
-        history.push('/update-profile');
-      }
+      setFormData(updatedFormData);
+      setStep(1);  // Move to the next step
     } catch (error) {
       console.error("Error creating user:", error);
-      // Handle error
+      setErrorMessage('Failed to create account');
+      setInvalid(true);
+      setToastMessage('Failed to create account');
+      setShowToast(true);
     }
   };
-  
+
   const handlePrev = async () => {
     await saveProfileData();
     setStep(prevStep => prevStep - 1);
@@ -139,7 +136,7 @@ const ProfileForm: React.FC<Props> = ({ mode, initialProfileData, initialStep = 
   };
 
   const handleSkillChange = (category: string, subcategory: string, skill: string, isChecked: boolean) => {
-    const updatedSkills: { [key: string]: { [key: string]: string[] } } = { ...formData.skillsOffered };
+    const updatedSkills = { ...formData.skillsOffered };
     if (!updatedSkills[category]) {
       updatedSkills[category] = {};
     }
@@ -153,37 +150,73 @@ const ProfileForm: React.FC<Props> = ({ mode, initialProfileData, initialStep = 
     }
     setFormData({ ...formData, skillsOffered: updatedSkills });
   };
-  
 
   const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
       const file = event.target.files[0];
       try {
+        console.log('Compressing image...');
         const compressedFile = await compressImage(file);
-        setFormData({ ...formData, profilePictureFile: compressedFile });
+        console.log('Uploading image...');
+        const downloadURL = await uploadImage(compressedFile, formData.uid);
+        console.log('downloadURL: ', downloadURL)
+        setFormData((prevData) => ({
+          ...prevData,
+          profilePicture: downloadURL,
+          profilePictureFile: null // Clear the file after uploading
+        }));
       } catch (error) {
         console.error("Error uploading image:", error);
+        setError('Failed to upload image');
+        setToastMessage('Failed to upload image');
+        setShowToast(true);
       }
     }
   };
 
   const handleSubmit = async () => {
     await saveProfileData();
-    alert("Profile updated successfully!");
-    // Redirect to profile page
+    setToastMessage("Profile updated successfully!");
+    setShowToast(true);
     history.push('/profile');
   };
 
   const steps = [
-    <AccountInformationForm formData={formData} handleChange={handleChange} handleContinueHome={() => handleAccountCreation(true)} handleContinueProfile={() => handleAccountCreation(false)} handleNext={handleNext}/>,
-    <SkillsForm formData={formData} allSkills={allSkills} handleSkillChange={handleSkillChange} handleNext={handleNext} handlePrev={handlePrev} />,
-    <ProfilePictureForm formData={formData} setFormData={setFormData} handleImageUpload={handleImageUpload} handleSubmit={handleSubmit} handlePrev={handlePrev} />
+    <AccountInformationForm
+      formData={formData}
+      handleChange={handleChange}
+      handleContinueHome={() => handleAccountCreation(true)}
+      handleContinueProfile={() => handleAccountCreation(false)}
+      handleNext={handleNext}
+    />,
+    <SkillsForm
+      formData={formData}
+      allSkills={allSkills}
+      handleSkillChange={handleSkillChange}
+      handleNext={handleNext}
+      handlePrev={handlePrev}
+    />,
+    <ProfilePictureForm
+      formData={formData}
+      setFormData={setFormData}
+      handleImageUpload={handleImageUpload}
+      handleSubmit={handleSubmit}
+      handlePrev={handlePrev}
+    />
   ];
 
   return (
-    <form onSubmit={handleSubmit}>
-      {mode === 'create' ? steps[0] : steps[step]}
-    </form>
+    <>
+      <form onSubmit={handleSubmit}>
+        {steps[step]}
+      </form>
+      <IonToast
+        isOpen={showToast}
+        message={toastMessage}
+        duration={3000}
+        onDidDismiss={() => setShowToast(false)}
+      />
+    </>
   );
 };
 

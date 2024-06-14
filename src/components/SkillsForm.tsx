@@ -1,7 +1,6 @@
-// src/components/SkillsForm.tsx
 import React, { useState } from 'react';
 import { IonButton, IonCheckbox, IonItem, IonLabel, IonList, IonListHeader, IonIcon, IonRow, IonCol, IonText } from '@ionic/react';
-import { arrowForward, arrowDown } from 'ionicons/icons';
+import { arrowForward, arrowDown, chevronDownOutline, chevronForwardOutline } from 'ionicons/icons';
 import { Skills } from '../types';
 
 interface Props {
@@ -19,8 +18,6 @@ const SkillsForm: React.FC<Props> = ({ formData, allSkills, handleSkillChange, h
     setExpandedCategory((prevCategory) => (prevCategory === categoryName ? null : categoryName));
   };
 
-  console.log('all skills: ', allSkills)
-
   return (
     <IonRow>
       <IonCol size='12'>
@@ -33,7 +30,7 @@ const SkillsForm: React.FC<Props> = ({ formData, allSkills, handleSkillChange, h
               <IonListHeader onClick={() => toggleCategory(categoryName)}>
                 <IonLabel style={{ fontSize: '1.2rem', fontWeight: 'bold'}} >{categoryName}</IonLabel>
                 <IonIcon
-                  icon={expandedCategory === categoryName ? arrowDown : arrowForward}
+                  icon={expandedCategory === categoryName ? chevronDownOutline : chevronForwardOutline}
                   slot="end"
                   style={{ fontSize: '1.2rem'}}
                 />
