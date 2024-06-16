@@ -1,11 +1,12 @@
 // src/components/SkillsForm.tsx
 import React, { useState } from 'react';
-import { IonButton, IonCheckbox, IonItem, IonLabel, IonList, IonListHeader, IonIcon } from '@ionic/react';
+import { IonButton, IonCheckbox, IonItem, IonLabel, IonList, IonListHeader, IonIcon, IonRow, IonCol, IonText } from '@ionic/react';
 import { arrowForward, arrowDown } from 'ionicons/icons';
+import { Skills } from '../types';
 
 interface Props {
   formData: any;
-  allSkills: any[];
+  allSkills: Skills;
   handleSkillChange: (category: string, subcategory: string, skill: string, isChecked: boolean) => void;
   handleNext: () => void;
   handlePrev: () => void;
@@ -18,72 +19,53 @@ const SkillsForm: React.FC<Props> = ({ formData, allSkills, handleSkillChange, h
     setExpandedCategory((prevCategory) => (prevCategory === categoryName ? null : categoryName));
   };
 
+  console.log('all skills: ', allSkills)
+
   return (
-    <div>
-      <h2>Step 3: Skills</h2>
-      <IonList>
-        {allSkills.map((category: any) => (
-          <div key={category.id}>
-            <IonListHeader onClick={() => toggleCategory(category.name)}>
-              {category.name}
-              <IonIcon
-                icon={expandedCategory === category.name ? arrowDown : arrowForward}
-                slot="end"
-              />
-            </IonListHeader>
-            {expandedCategory === category.name &&
-              category.subcategories.map((subcategory: any) => (
-                <div key={subcategory.id}>
-                  <IonItem>
-                    <IonLabel>
-                      {subcategory.name}
-                      {subcategory.subcategories.length > 0 && (
-                        <IonIcon
-                          icon={expandedCategory === subcategory.name ? arrowDown : arrowForward}
-                          slot="end"
-                          onClick={() => toggleCategory(subcategory.name)}
-                        />
-                      )}
-                    </IonLabel>
-                    {subcategory.skills.map((skill: any) => (
-                      <IonCheckbox
-                        key={skill.id}
-                        checked={formData.skills[category.name]?.[subcategory.name]?.includes(skill.name)}
-                        onIonChange={(e) =>
-                          handleSkillChange(category.name, subcategory.name, skill.name, e.detail.checked)
-                        }
-                      />
-                    ))}
-                  </IonItem>
-                  {expandedCategory === subcategory.name &&
-                    subcategory.subcategories.map((subSubcategory: any) => (
-                      <div key={subSubcategory.id}>
-                        <IonItem>
-                          <IonLabel>{subSubcategory.name}</IonLabel>
-                          {subSubcategory.skills.map((skill: any) => (
-                            <IonCheckbox
-                              key={skill.id}
-                              checked={formData.skills[category.name]?.[subcategory.name]?.includes(skill.name)}
-                              onIonChange={(e) =>
-                                handleSkillChange(category.name, subcategory.name, skill.name, e.detail.checked)
-                              }
-                            />
-                          ))}
+    <IonRow>
+      <IonCol size='12'>
+        <IonText>
+          <h2>Skills</h2>
+        </IonText>
+        <IonList>
+          {Object.keys(allSkills).map((categoryName) => (
+            <div key={categoryName}>
+              <IonListHeader onClick={() => toggleCategory(categoryName)}>
+                <IonLabel style={{ fontSize: '1.2rem', fontWeight: 'bold'}} >{categoryName}</IonLabel>
+                <IonIcon
+                  icon={expandedCategory === categoryName ? arrowDown : arrowForward}
+                  slot="end"
+                  style={{ fontSize: '1.2rem'}}
+                />
+              </IonListHeader>
+              {expandedCategory === categoryName &&
+                Object.keys(allSkills[categoryName]).map((subcategoryName) => (
+                  <div key={subcategoryName} style={{ marginLeft:'1.25rem'}}>
+                    <IonItem>
+                      <IonLabel style={{ fontSize: '1rem', fontWeight: 'bold'}}>
+                        {subcategoryName}
+                      </IonLabel>
+                      {allSkills[categoryName][subcategoryName].map((skill, index) => (
+                        <IonItem key={index} lines="none" style={{ display: 'flex', alignItems: 'center' }}>
+                          <IonCheckbox
+                            checked={formData.skillsOffered[categoryName]?.[subcategoryName]?.includes(skill)}
+                            onIonChange={(e) =>
+                              handleSkillChange(categoryName, subcategoryName, skill, e.detail.checked)
+                            }
+                          />
+                          <IonLabel style={{ marginLeft: '.625rem' }}>{skill}</IonLabel>
                         </IonItem>
-                      </div>
-                    ))}
-                </div>
-              ))}
-          </div>
-        ))}
-      </IonList>
-      <IonButton expand="block" onClick={handlePrev}>
-        Previous
-      </IonButton>
-      <IonButton expand="block" onClick={handleNext}>
-        Next
-      </IonButton>
-    </div>
+                      ))}
+                    </IonItem>
+                  </div>
+                ))}
+            </div>
+          ))}
+        </IonList>
+        <IonButton expand="block" onClick={handlePrev}>Previous</IonButton>
+        <IonButton expand="block" onClick={handleNext}>Next</IonButton>
+      </IonCol>
+    </IonRow>
   );
 };
 
