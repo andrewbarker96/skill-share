@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonList, IonItem, IonLabel, IonButton, IonButtons, IonIcon, IonFabButton, IonFab } from '@ionic/react';
-import { firebase, firestore } from '../../util/firebase';
-import { collection, query, onSnapshot } from 'firebase/firestore';
-import { add, create, createOutline } from 'ionicons/icons';
+import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonList, IonItem, IonLabel, IonButton, IonFabButton, IonFab, IonIcon, IonSearchbar } from '@ionic/react';
+import { firebase, firestore, db } from '../../util/firebase';
+import { collection, query, onSnapshot, getDoc, doc } from 'firebase/firestore';
+import { add } from 'ionicons/icons';
 import MessageDashboard from '../components/Messaging/list/dashboard';
 import ChatList from '../components/Messaging/list/chatList/ChatList';
 
@@ -10,8 +10,7 @@ const ChatDashboard: React.FC = () => {
   const [chats, setChats] = useState<any[]>([]);
 
   useEffect(() => {
-    const chatsRef = collection(firestore, 'chats');
-    const q = query(chatsRef);
+    const q = query(collection(firestore, 'chats'));
 
     const unsubscribe = onSnapshot(q, (snapshot) => {
       const chatData = snapshot.docs.map(doc => ({
@@ -26,23 +25,27 @@ const ChatDashboard: React.FC = () => {
 
   return (
     <IonPage>
-      <IonFab slot='fixed' vertical='bottom' horizontal='end' style={{ margin: 15 }}>
-        <IonFabButton routerLink='/chat/new'>
-          <IonIcon icon={add} />
-        </IonFabButton>
-      </IonFab>
+      <IonContent scrollY={false} style={{ flexGrow: '1' }}>
+        <IonSearchbar /> 
+      </IonContent>
       <IonContent className='ion-padding'>
-        <MessageDashboard />
+        {/* <MessageDashboard /> */}
         <IonList>
           {chats.map(chat => (
-            <IonItem key={chat.id} routerLink={`/chat/${chat.id}`}>
+            <IonItem lines='none' key={chat.id} routerLink={`/chats/${chat.id}`}>
               <IonLabel>
-                <h2>Chat with {chat.users.join(', ')}</h2>
+                <h2>{chat.id}</h2>
+                <h2>{chat.name}</h2>
                 <p>{chat.lastMessage}</p>
               </IonLabel>
             </IonItem>
           ))}
         </IonList>
+        <IonFab slot='fixed' vertical='bottom' horizontal='end' style={{ margin: 15 }}>
+          <IonFabButton routerLink='/chat/new'>
+            <IonIcon icon={add} />
+          </IonFabButton>
+        </IonFab>
       </IonContent>
     </IonPage>
   );
