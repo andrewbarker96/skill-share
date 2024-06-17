@@ -43,7 +43,7 @@ import '@ionic/react/css/palettes/dark.system.css';
 
 /* Theme variables */
 import './theme/variables.css';
-import ProfilePage from './pages/Profile';
+import ProfilePage from './pages/UserProfile';
 import CreateAccountPage from './pages/CreateAccount';
 import ForgotPasswordPage from './pages/ForgotPassword';
 import ProfileForm from './components/ProfileForm';
