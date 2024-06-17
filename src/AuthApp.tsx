@@ -47,11 +47,10 @@ import './theme/variables.css';
 import UserProfilePage from './pages/UserProfile';
 import EventsPage from './pages/Events';
 import SkillSwapPage from './pages/SkillSwap';
-import ChatView from './components/Messaging/ChatView';
-import { NewChatView } from './components/Messaging/NewChat';
 import ChatDashboard from './pages/ChatDashboard';
 import UpdateProfilePage from './pages/UpdateProfile';
 import NewChatPage from './pages/NewChatPage';
+import IndividualChat from './components/Messaging/chat/chat';
 
 setupIonicReact();
 
@@ -78,7 +77,7 @@ const AuthApp: React.FC = () => {
               <Route exact path="/skills" component={SkillSwapPage} />
               <Route exact path="/chat" component={ChatDashboard} />
               <Route exact path="/chat/new" component={NewChatPage} />
-              <Route exact path="/chat/:id" component={ChatView} />
+              <Route exact path="/chats/:chatId" component={IndividualChat} />
               <Route exact path="/update-profile" component={UpdateProfilePage} />
             </IonRouterOutlet>
 

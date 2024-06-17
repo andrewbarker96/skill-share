@@ -5,8 +5,8 @@ import {
   where,
   getDocs,
   addDoc,
-  Firestore,
-  DocumentData,
+  updateDoc,
+  doc,
 } from "firebase/firestore";
 
 interface User {
@@ -16,138 +16,113 @@ interface User {
   UID: string;
 }
 
-export const listUsers = async (): Promise<User[]> => {
-  try {
-    const snapshot = await getDocs(collection(db, "userProfiles"));
-    const users: User[] = snapshot.docs.map((doc) => {
-      const user = doc.data() as User;
-      return {
-        id: doc.id,
-        username: user.username,
-        email: user.email,
-        UID: user.UID,
-      };
-    });
-    console.log(users);
-    return users;
-  } catch (error) {
-    console.error("Error getting document:", error);
-    return [];
-  }
-};
-
 export const findUsers = async (search: string): Promise<User[]> => {
   try {
-    // Query for matching emails
     const emailQuery = query(
       collection(db, "userProfiles"),
       where("email", "==", search)
     );
     const emailSnapshot = await getDocs(emailQuery);
 
-    // Query for matching usernames
     const usernameQuery = query(
       collection(db, "userProfiles"),
       where("username", "==", search)
     );
     const usernameSnapshot = await getDocs(usernameQuery);
 
-    // Combine and deduplicate results
-    const usersMap = new Map<string, User>();
+    const usersMap = new Map();
     emailSnapshot.docs.forEach((doc) => {
-      const user = doc.data() as User;
-      console.log("Found by Email", user);
+      const user = doc.data();
       usersMap.set(doc.id, {
         id: doc.id,
         username: user.username,
         email: user.email,
-        UID: user.UID,
+        UID: user.uid,
       });
     });
     usernameSnapshot.docs.forEach((doc) => {
-      const user = doc.data() as User;
-      console.log("Found by Username", user);
+      const user = doc.data();
       if (!usersMap.has(doc.id)) {
-        // Avoid duplicates
         usersMap.set(doc.id, {
           id: doc.id,
           username: user.username,
           email: user.email,
-          UID: user.UID,
+          UID: user.uid,
         });
       }
     });
 
-    const users: User[] = Array.from(usersMap.values());
-    return users;
+    return Array.from(usersMap.values());
   } catch (error) {
-    console.error("Error getting document:", error);
+    console.error("Error finding users:", error);
     return [];
   }
 };
 
-export const createChat = async (search: string): Promise<string> => {
+export const createChat = async (targetUID: string): Promise<string> => {
   try {
-    // Find the target user
-    const targetUsers = await findUsers(search);
+    const currentUserUID = auth.currentUser?.uid;
+    if (!currentUserUID) {
+      throw new Error("User not authenticated");
+    }
 
-    if (targetUsers.length === 0) {
+    // Ensure the target user exists
+    const targetUserSnapshot = await getDocs(
+      query(collection(db, "userProfiles"), where("uid", "==", targetUID))
+    );
+    if (targetUserSnapshot.empty) {
       throw new Error("No user found with the provided search criteria");
     }
 
-    const targetUser = targetUsers[0]; // Assuming we take the first matched user
-    const targetUID = targetUser.UID;
-
-    const currentUser = auth.currentUser;
-    if (!currentUser) {
-      throw new Error("No authenticated user found");
-    }
-
-    const currentUID = currentUser.uid;
-
-    // Check if a chat already exists between the two users
-    const chatQuery = query(
-      collection(db, "Chats"),
-      where("user1", "in", [currentUID, targetUID]),
-      where("user2", "in", [currentUID, targetUID])
+    const chatsQuery = query(
+      collection(db, "chats"),
+      where("users", "array-contains", currentUserUID)
     );
-    const chatSnapshot = await getDocs(chatQuery);
+    const chatsSnapshot = await getDocs(chatsQuery);
 
-    if (!chatSnapshot.empty) {
-      // Chat already exists, reuse the existing chat document ID
-      const existingChatDoc = chatSnapshot.docs[0];
-      console.log(
-        "Chat already exists, reusing chat document ID:",
-        existingChatDoc.id
-      );
-      return existingChatDoc.id;
+    for (const doc of chatsSnapshot.docs) {
+      const chat = doc.data();
+      if (chat.users.includes(targetUID)) {
+        return doc.id;
+      }
     }
 
-    // Create a new document in the "Chats" collection with the UIDs of both users
-    const chatDocRef = await addDoc(collection(db, "Chats"), {
-      user1: currentUID,
-      user2: targetUID,
+    const newChatRef = await addDoc(collection(db, "chats"), {
+      users: [currentUserUID, targetUID],
       createdAt: new Date(),
     });
 
-    // Create a sub-collection for messages within the new chat document
-    const messagesCollectionRef = collection(
-      db,
-      "Chats",
-      chatDocRef.id,
-      "Messages"
-    );
-    // Optionally, you can initialize with some data if needed
-    await addDoc(messagesCollectionRef, {
-      text: "Chat created",
-      createdAt: new Date(),
-      sender: currentUID,
+    await updateDoc(doc(db, "chats", newChatRef.id), {
+      chatId: newChatRef.id,
     });
-
-    console.log("Chat and Messages collection created successfully");
-    return chatDocRef.id;
+    const chatId = newChatRef.id;
+    console.log(chatId, targetUID);
+    return chatId;
   } catch (error) {
-    console.error("Error creating chat document:", error);
+    console.error("Error creating chat:", error);
+    throw error;
+  }
+};
+
+export const sendMessage = async (chatId: string, text: string) => {
+  try {
+    if (!chatId) {
+      throw new Error("Invalid chat ID");
+    }
+    const currentUserUID = auth.currentUser?.uid;
+    if (!currentUserUID) {
+      throw new Error("User not authenticated");
+    }
+    const messagesRef = collection(db, `chats/${chatId}/messages`);
+    await addDoc(messagesRef, {
+      senderId: currentUserUID,
+      message: text,
+      timestamp: new Date(),
+    });
+    console.log("Message sent:", text);
+    return text;
+  } catch (error) {
+    console.error("Error sending message: ", error);
     throw error;
   }
 };
