@@ -7,6 +7,7 @@ import {
   addDoc,
   updateDoc,
   doc,
+  orderBy,
 } from "firebase/firestore";
 
 interface User {
@@ -123,6 +124,22 @@ export const sendMessage = async (chatId: string, text: string) => {
     return text;
   } catch (error) {
     console.error("Error sending message: ", error);
+    throw error;
+  }
+};
+
+export const getMessages = async (chatId: string) => {
+  try {
+    const messagesRef = collection(db, `chats/${chatId}/messages`);
+    const messagesQuery = query(messagesRef, orderBy("timestamp"));
+    const messagesSnapshot = await getDocs(messagesQuery);
+    const messages = messagesSnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+    return messages;
+  } catch (error) {
+    console.error("Error fetching messages: ", error);
     throw error;
   }
 };
