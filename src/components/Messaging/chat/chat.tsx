@@ -89,7 +89,7 @@ const IndividualChat: React.FC = () => {
       <div className="top">
         <UserInfo username={username} profilePicture={profileImage} /> {/* Pass the target user's username */}
       </div>
-      <IonContent className="chat-content" scrollY={true} id="texts" style = {{display:'flex!important'} }>
+      <IonContent className="chat-content" scrollY={true} id="texts">
         {messages.map((message) => {
           const messageClass = message.senderId === currentUserId ? 'sender' : 'from';
           const textClass = message.senderId === currentUserId ? 'sender-text' : 'from-text';

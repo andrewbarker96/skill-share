@@ -1,52 +1,32 @@
-/* Ensure these styles are applied after Ionic's default styles */
-.inner-scroll {
-  display: flex !important;
-  flex-direction: column !important;
-  left: 0px !important;
-  right: 0px !important;
-  top: calc(var(--offset-top) * -1) !important;
-  bottom: calc(var(--offset-bottom) * -1) !important;
-  padding-inline-start: var(--padding-start) !important;
-  padding-inline-end: var(--padding-end) !important;
-  padding-top: calc(var(--padding-top) + var(--offset-top)) !important;
-  padding-bottom: calc(var(--padding-bottom) + var(--keyboard-offset) + var(--offset-bottom)) !important;
-  position: absolute !important;
-  color: var(--color) !important;
-  box-sizing: border-box !important;
-  overflow: hidden !important;
-  touch-action: pan-x pan-y pinch-zoom !important;
+/* chat.css */
 
-}
-
-#chat-content {
-  display: flex;
-  flex-direction: column;
-  height: 100%; /* Ensure it takes the full height */
-}
 
 .message {
   margin-top: 10px;
   margin-bottom: 10px;
+  max-width: 45%;
   width: fit-content;
   border-radius: 10px;
   padding: 10px;
+  clear:both;
+  
 }
 
-.from {
+ .from {
   background-color: #f50057;
   align-self: flex-start; /* Align received messages to the left */
-
+  justify-content:right;
+  float:right;
 }
 
 .sender {
   background-color: #3f51b5;
   align-self: flex-end; /* Align sent messages to the right */
-
+  float:left;
 }
 
 .from-text {
   color: black;
-  
 }
 
 .sender-text {
@@ -57,4 +37,5 @@
   flex-grow: 0;
   border-top: 1px solid rgba(255, 255, 255, 0.164);
 }
+
 
