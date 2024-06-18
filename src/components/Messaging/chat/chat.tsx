@@ -8,7 +8,6 @@ import {
   IonIcon,
   IonInput,
   IonItem,
-  IonLabel,
   IonPage,
   IonPopover,
   IonRow,
@@ -16,14 +15,19 @@ import {
 } from '@ionic/react';
 import { camera, happy, send } from 'ionicons/icons';
 import EmojiPicker from 'emoji-picker-react';
-import { sendMessage, getMessages } from '../../../services/messageService';
+import { sendMessage, getMessages, getChat } from '../../../services/messageService';
 import UserInfo from '../list/userInfo/UserInfo';
+import { auth } from "../../../../util/firebase";
+import { getUserProfile } from '../../../services/firestoreService';
 
 const IndividualChat: React.FC = () => {
   const [open, setOpen] = useState(false);
   const [text, setText] = useState('');
   const [chatId, setChatId] = useState<string>('');
   const [messages, setMessages] = useState<any[]>([]);
+  const [targetUserId, setTargetUserId] = useState<string>('');
+  const [username, setUsername] = useState<string>('');
+  const [profileImage, setProfileImage] = useState<string>('');
 
   useEffect(() => {
     const url = window.location.href;
@@ -32,11 +36,33 @@ const IndividualChat: React.FC = () => {
     setChatId(chatIdFromUrl);
 
     if (chatIdFromUrl) {
-      const fetchMessages = async () => {
-        const messages = await getMessages(chatIdFromUrl);
-        setMessages(messages);
+      const fetchChatData = async () => {
+        try {
+          // Fetch chat details to get target user ID
+          const chat = await getChat(chatIdFromUrl);
+          const currentUserId = auth.currentUser?.uid;
+          if (chat && chat.users && currentUserId) {
+            const otherUserId = chat.users.find((id: string) => id !== currentUserId);
+            if (otherUserId) {
+              setTargetUserId(otherUserId);
+
+              // Fetch target user's profile to get the username
+              const userProfile = await getUserProfile(otherUserId);
+              console.log("Fetched user data: ", userProfile);
+              setUsername(userProfile.username);
+              setProfileImage(userProfile.profileImage);
+              console.log('Profile Picture URL:', userProfile.profileImage);
+            }
+
+            // Fetch messages
+            const messages = await getMessages(chatIdFromUrl);
+            setMessages(messages);
+          }
+        } catch (error) {
+          console.error('Error fetching chat data:', error);
+        }
       };
-      fetchMessages();
+      fetchChatData();
     }
   }, [chatId]);
 
@@ -56,15 +82,30 @@ const IndividualChat: React.FC = () => {
     }
   };
 
+  const currentUserId = auth.currentUser?.uid;
+
   return (
     <IonPage>
-      <div className="top"><UserInfo /></div>
-      <IonContent scrollY={true} id="texts" className="center ion-padding">
-        {messages.map((text) => (
-          <IonItem lines='none' className='message' key={text.id}>
-            <IonText className='from'>{text.message}</IonText>
-          </IonItem>
-        ))}
+      <div className="top">
+        <UserInfo username={username} profilePicture={profileImage} /> {/* Pass the target user's username */}
+      </div>
+      <IonContent className="chat-content" scrollY={true} id="texts" style = {{display:'flex!important'} }>
+        {messages.map((message) => {
+          const messageClass = message.senderId === currentUserId ? 'sender' : 'from';
+          const textClass = message.senderId === currentUserId ? 'sender-text' : 'from-text';
+          console.log(`Message: ${message.message}, Sender: ${message.senderId}, Class: ${messageClass}`);
+          return (
+            <IonItem
+              lines='none'
+              className={`message ${messageClass}`}
+              key={message.id}
+            >
+              <IonText className={textClass}>
+                {message.message}
+              </IonText>
+            </IonItem>
+          );
+        })}
       </IonContent>
       <div className="bottom ion-padding">
         <IonRow className="inputField">

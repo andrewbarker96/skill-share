@@ -39,7 +39,9 @@ export const getUserProfile = async (uid: string): Promise<ProfileData> => {
     throw new Error("User profile does not exist");
   }
 
-  return userSnapshot.data() as ProfileData;
+  const profileData = userSnapshot.data() as ProfileData;
+  console.log("Fetched user profile data:", profileData); // Add this line
+  return profileData;
 };
 
 //Update a profile

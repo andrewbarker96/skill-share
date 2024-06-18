@@ -8,8 +8,10 @@ import {
   updateDoc,
   doc,
   orderBy,
+  getDoc,
 } from "firebase/firestore";
 
+// Define the User interface
 interface User {
   id: string;
   username: string;
@@ -17,20 +19,29 @@ interface User {
   UID: string;
 }
 
+interface Chat {
+  id: string;
+  users: string[];
+  createdAt: Date;
+}
+// Find users by email or username
 export const findUsers = async (search: string): Promise<User[]> => {
   try {
+    // Search by email
     const emailQuery = query(
       collection(db, "userProfiles"),
       where("email", "==", search)
     );
     const emailSnapshot = await getDocs(emailQuery);
 
+    // Search by username
     const usernameQuery = query(
       collection(db, "userProfiles"),
       where("username", "==", search)
     );
     const usernameSnapshot = await getDocs(usernameQuery);
 
+    // Combine results
     const usersMap = new Map();
     emailSnapshot.docs.forEach((doc) => {
       const user = doc.data();
@@ -60,6 +71,7 @@ export const findUsers = async (search: string): Promise<User[]> => {
   }
 };
 
+// Create a new chat between current user and target user
 export const createChat = async (targetUID: string): Promise<string> => {
   try {
     const currentUserUID = auth.currentUser?.uid;
@@ -75,6 +87,7 @@ export const createChat = async (targetUID: string): Promise<string> => {
       throw new Error("No user found with the provided search criteria");
     }
 
+    // Check if a chat already exists
     const chatsQuery = query(
       collection(db, "chats"),
       where("users", "array-contains", currentUserUID)
@@ -88,6 +101,7 @@ export const createChat = async (targetUID: string): Promise<string> => {
       }
     }
 
+    // Create a new chat if it doesn't exist
     const newChatRef = await addDoc(collection(db, "chats"), {
       users: [currentUserUID, targetUID],
       createdAt: new Date(),
@@ -105,6 +119,7 @@ export const createChat = async (targetUID: string): Promise<string> => {
   }
 };
 
+// Send a message in a chat
 export const sendMessage = async (chatId: string, text: string) => {
   try {
     if (!chatId) {
@@ -128,8 +143,35 @@ export const sendMessage = async (chatId: string, text: string) => {
   }
 };
 
+// Helper function to check if a user is part of a chat
+export const isUserInChat = async (chatId: string, userId: string): Promise<boolean> => {
+  try {
+    const chatRef = doc(db, "chats", chatId);
+    const chatDoc = await getDoc(chatRef);
+    if (chatDoc.exists()) {
+      const chatData = chatDoc.data();
+      return chatData.users.includes(userId);
+    }
+    return false;
+  } catch (error) {
+    console.error("Error checking user in chat:", error);
+    return false;
+  }
+};
+
+// Get messages from a chat
 export const getMessages = async (chatId: string) => {
   try {
+    const currentUserUID = auth.currentUser?.uid;
+    if (!currentUserUID) {
+      throw new Error("User not authenticated");
+    }
+
+    const userInChat = await isUserInChat(chatId, currentUserUID);
+    if (!userInChat) {
+      throw new Error("User is not part of the chat");
+    }
+
     const messagesRef = collection(db, `chats/${chatId}/messages`);
     const messagesQuery = query(messagesRef, orderBy("timestamp"));
     const messagesSnapshot = await getDocs(messagesQuery);
@@ -141,5 +183,14 @@ export const getMessages = async (chatId: string) => {
   } catch (error) {
     console.error("Error fetching messages: ", error);
     throw error;
+  }
+};
+
+export const getChat = async (chatId: string): Promise<Chat | null> => {
+  const chatDoc = await getDoc(doc(db, "chats", chatId));
+  if (chatDoc.exists()) {
+    return chatDoc.data() as Chat;
+  } else {
+    return null;
   }
 };

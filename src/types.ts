@@ -10,7 +10,7 @@ export interface ProfileData {
     state: string;
     skillsOffered: { [category: string]: { [subcategory: string]: string[] } };
     // skillsWanted: { [key: string]: { [key: string]: string[] } };
-    profilePicture: string;
+    profileImage: string;
     profilePictureFile: File | null;
     uid: string;
 }
