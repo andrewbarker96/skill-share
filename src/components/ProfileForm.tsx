@@ -3,9 +3,9 @@ import { useHistory, useLocation } from 'react-router-dom';
 import AccountInformationForm from './AccounInformationForm';
 import SkillsForm from './SkillsForm';
 import ProfilePictureForm from './ProfilePictureForm';
-import { createProfile, getSkills, getUserProfile, updateProfile } from '../services/firestoreService';
+import { createProfile, getUserProfile, updateProfile } from '../services/firestoreService';
 import { compressImage } from '../../util/imageCompression';
-import { IonToast } from '@ionic/react';
+import { IonLoading, IonToast } from '@ionic/react';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../../util/firebase';
 import { ProfileData, Skills } from '../types';
@@ -14,14 +14,15 @@ import { uploadImage } from '../services/storageService';
 interface Props {
   mode: 'create' | 'update';
   initialProfileData?: ProfileData;
-  initialStep?: number;
+  initialStep: number;
   initialSkills: Skills;
-  setInvalid:(state: boolean) => void;
-  setSuccess:(state: boolean) => void;
-  setErrorMessage:(message: string) => void;
+  setInvalid: (state: boolean) => void;
+  setSuccess: (state: boolean) => void;
+  setErrorMessage: (message: string) => void;
+  handleContinueProfile?: (uid: string) => void;
 }
 
-const ProfileForm: React.FC<Props> = ({ mode, initialProfileData, initialStep = 0, initialSkills, setInvalid,setSuccess, setErrorMessage }) => {
+const ProfileForm: React.FC<Props> = ({ mode, initialProfileData, initialStep = 0, initialSkills, setInvalid, setSuccess, setErrorMessage, handleContinueProfile }) => {
   const [step, setStep] = useState(initialStep);
   const [formData, setFormData] = useState<ProfileData>({
     firstName: '',
@@ -34,14 +35,16 @@ const ProfileForm: React.FC<Props> = ({ mode, initialProfileData, initialStep = 
     city: '',
     state: '',
     skillsOffered: {},
-    profilePicture: '',
+    profileImage: '',
     profilePictureFile: null,
     uid: ''
   });
   const [allSkills, setAllSkills] = useState<Skills>(initialSkills);
+  const [loading, setLoading] = useState(false); 
   const [error, setError] = useState<string | null>(null);
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
+  
   const history = useHistory();
   const location = useLocation();
 
@@ -99,23 +102,42 @@ const ProfileForm: React.FC<Props> = ({ mode, initialProfileData, initialStep = 
       setShowToast(true);
       return;
     }
-
+  
     try {
       console.log("Creating account...");
       const userCredential = await createUserWithEmailAndPassword(auth, formData.email, formData.password);
+      console.log("... created account");
+  
       const user = userCredential.user;
-
+  
       const updatedFormData = { ...formData, uid: user.uid };
-
+      console.log("updated form data: ", updatedFormData);
       const { password, confirmPassword, ...profileData } = updatedFormData;
-      await createProfile(profileData);
-
-      setToastMessage("Account created successfully!");
-      setShowToast(true);
-      setSuccess(true);
-
-      setFormData(updatedFormData);
-      setStep(1);  // Move to the next step
+      try {
+        await createProfile(profileData);
+        console.log("Profile data created: ", profileData);
+  
+        setToastMessage("Account created successfully!");
+        setShowToast(true);
+        setSuccess(true);
+        setFormData(updatedFormData);
+  
+        if (!redirectHome && handleContinueProfile) {
+          setTimeout(() => {
+            handleContinueProfile(user.uid);
+          }, 2000);
+        }
+        if (redirectHome) {
+          history.push('/');
+        }
+  
+      } catch (error) {
+        console.error("Error creating profile:", error);
+        setErrorMessage('Failed to create profile');
+        setInvalid(true);
+        setShowToast(true);
+      }
+  
     } catch (error) {
       console.error("Error creating user:", error);
       setErrorMessage('Failed to create account');
@@ -124,15 +146,29 @@ const ProfileForm: React.FC<Props> = ({ mode, initialProfileData, initialStep = 
       setShowToast(true);
     }
   };
+  
+  
+  
+  
 
   const handlePrev = async () => {
     await saveProfileData();
-    setStep(prevStep => prevStep - 1);
+    console.log("Current step before decrement: ", step);
+    setStep((prevStep) => {
+      const newStep = prevStep - 1;
+      console.log("Step updated to: ", newStep);
+      return newStep;
+    });
   };
 
   const handleNext = async () => {
     await saveProfileData();
-    setStep(prevStep => prevStep + 1);
+    console.log("Moving to next step from:", step);
+    setStep((prevStep) => {
+      const newStep = prevStep + 1;
+      console.log("Next step is:", newStep);
+      return newStep;
+    });
   };
 
   const handleSkillChange = (category: string, subcategory: string, skill: string, isChecked: boolean) => {
@@ -162,7 +198,7 @@ const ProfileForm: React.FC<Props> = ({ mode, initialProfileData, initialStep = 
         console.log('downloadURL: ', downloadURL)
         setFormData((prevData) => ({
           ...prevData,
-          profilePicture: downloadURL,
+          profileImage: downloadURL,
           profilePictureFile: null // Clear the file after uploading
         }));
       } catch (error) {
@@ -205,11 +241,24 @@ const ProfileForm: React.FC<Props> = ({ mode, initialProfileData, initialStep = 
     />
   ];
 
+  useEffect(() => {
+    if (mode === 'create' && step === 0 && formData.uid) {
+      // Increment the step from 0 to 1 after uid is set
+      setStep(1);
+      console.log("Step incremented to 1 after UID is set", step);
+    }
+  }, [formData.uid, mode, step]);
+
   return (
     <>
       <form onSubmit={handleSubmit}>
-        {steps[step]}
+      {loading ? (
+        <IonLoading isOpen={loading} message="Processing..." />
+      ) : (
+        steps[step]
+      )}
       </form>
+      
       <IonToast
         isOpen={showToast}
         message={toastMessage}
@@ -221,3 +270,4 @@ const ProfileForm: React.FC<Props> = ({ mode, initialProfileData, initialStep = 
 };
 
 export default ProfileForm;
+

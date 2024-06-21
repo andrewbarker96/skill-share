@@ -27,7 +27,7 @@ const UserProfilePage: React.FC<UserProfilePageProps> = ({ match }) => {
     <IonPage>
       <IonContent className='ion-padding'>
         <div style={{ display: 'flex', justifyContent: 'center', borderRadius: '50%' }}>
-          <IonImg style={{ height: '100px', width: '100px' }} src={profile.profilePicture} />
+          <IonImg style={{ height: '100px', width: '100px' }} src={profile.profileImage} />
         </div>
         <IonText className='ion-text-center'>
           <h1>{profile.firstName} {profile.lastName}</h1>

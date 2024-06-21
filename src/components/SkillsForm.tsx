@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { IonButton, IonCheckbox, IonItem, IonLabel, IonList, IonListHeader, IonIcon, IonRow, IonCol, IonText } from '@ionic/react';
-import { arrowForward, arrowDown, chevronDownOutline, chevronForwardOutline } from 'ionicons/icons';
+import { chevronDownOutline, chevronForwardOutline } from 'ionicons/icons';
 import { Skills } from '../types';
 
 interface Props {

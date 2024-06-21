@@ -10,7 +10,7 @@ export interface ProfileData {
     state: string;
     skillsOffered: Skills;
     // skillsWanted: Skills;
-    profilePicture: string;
+    profileImage: string;
     profilePictureFile: File | null;
     uid: string;
 }
@@ -19,5 +19,5 @@ export interface Skills {
     [category: string]: {
       [subcategory: string]: string[];
     };
-  }
+}
   

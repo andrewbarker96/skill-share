@@ -72,7 +72,7 @@ export const getSkills = async (): Promise<Skills> => {
       console.error('Error fetching skills:', error);
       throw error; // Re-throw error to handle it in the calling function
     }
-  };
+};
 
 //Add new skill
 export const addSkill = async (skill: string) => {

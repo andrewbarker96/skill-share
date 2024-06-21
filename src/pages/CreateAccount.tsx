@@ -4,7 +4,6 @@ import {
   IonContent,
   IonImg,
   IonPage,
-  IonText,
   IonGrid,
   IonCol,
   IonRow,
@@ -21,6 +20,7 @@ import { Skills } from '../types';
 import ProfileForm from '../components/ProfileForm';
 import Copyright from '../components/Copyright';
 import { arrowBack } from 'ionicons/icons';
+import { useHistory } from 'react-router-dom';
 
 export default function CreateAccountPage() {
   const [skills, setSkills] = useState<Skills>({});
@@ -29,27 +29,50 @@ export default function CreateAccountPage() {
   const [invalid, setInvalid] = useState(false);
   const [success, setSuccess] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  const history = useHistory();
 
   useEffect(() => {
+    let didCancel = false;
+
     const fetchSkills = async () => {
       try {
+        console.log('Fetching skills...');
         const skillsData = await getSkills();
-        setSkills(skillsData);
-        console.log('skills data: ', skillsData)
+        if (!didCancel) {
+          setSkills(skillsData);
+          console.log('Fetched skills data: ', skillsData);
+        }
       } catch (error) {
-        console.error('Error fetching skills:', error);
-        setError('Failed to fetch skills');
+        if (!didCancel) {
+          console.error('Error fetching skills:', error);
+          setError('Failed to fetch skills');
+          setErrorMessage('Failed to fetch skills');
+          setInvalid(true);
+        }
       } finally {
-        setLoadingSkills(false);
+        if (!didCancel) {
+          setLoadingSkills(false);
+        }
       }
     };
 
     fetchSkills();
+
+    return () => {
+      didCancel = true;
+    };
   }, []);
 
   if (loadingSkills) {
     return <IonLoading isOpen={loadingSkills} message="Loading skills..." />;
   }
+
+  const handleContinueProfile = (uid: string) => {
+    history.push({
+      pathname: '/update-profile',
+      state: { initialStep: 1, initialSkills: skills, uid }
+    });
+  };
 
   return (
     <IonPage>
@@ -83,6 +106,7 @@ export default function CreateAccountPage() {
                 setInvalid={setInvalid}
                 setSuccess={setSuccess}
                 setErrorMessage={setErrorMessage}
+                handleContinueProfile={handleContinueProfile}
               />
             </IonCol>
           </IonRow>

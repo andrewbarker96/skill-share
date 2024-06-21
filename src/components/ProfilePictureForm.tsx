@@ -16,7 +16,7 @@ const ProfilePictureForm: React.FC<Props> = ({ formData, setFormData, handleImag
       const fileURL = URL.createObjectURL(event.target.files[0]);
       setFormData((prevData: any) => ({
         ...prevData,
-        profilePicture: fileURL,
+        profileImage: fileURL,
       }));
     }
   };
@@ -31,9 +31,9 @@ const ProfilePictureForm: React.FC<Props> = ({ formData, setFormData, handleImag
           <IonLabel position="stacked">Upload Profile Picture</IonLabel>
           <input type="file" accept="image/*" onChange={handleImageChange} />
         </IonItem>
-        {formData.profilePicture && (
+        {formData.profileImage && (
           <IonItem>
-            <IonImg src={formData.profilePicture} />
+            <IonImg src={formData.profileImage} />
           </IonItem>
         )}
         <IonButton expand="block" onClick={handlePrev}>Previous</IonButton>

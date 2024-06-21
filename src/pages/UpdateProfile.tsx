@@ -1,16 +1,25 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import ProfileForm from '../components/ProfileForm';
-import { IonPage, IonGrid, IonRow, IonCol } from '@ionic/react';
+import { IonPage, IonGrid, IonRow, IonCol, IonLoading } from '@ionic/react';
 import { auth } from '../../util/firebase';
 import { getUserProfile } from '../services/firestoreService';
 import { ProfileData } from '../types';
+
+// Define the type for location state
+interface LocationState {
+  initialStep?: number;
+  initialSkills?: any;
+}
 
 const UpdateProfilePage: React.FC = () => {
   const [initialProfileData, setInitialProfileData] = useState<ProfileData | undefined>(undefined);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const location = useLocation();
+  const location = useLocation<LocationState>();
+
+  const initialStep = location.state?.initialStep ?? 0;
+  const initialSkills = location.state?.initialSkills ?? {};
 
   useEffect(() => {
     const fetchProfileData = async () => {
@@ -36,16 +45,12 @@ const UpdateProfilePage: React.FC = () => {
   }, []);
 
   if (loading) {
-    // Replace this with a loading spinner
-    return <div>Loading...</div>;
+    return <IonLoading isOpen={loading} message="Loading profile..." />;
   }
 
   if (error) {
     return <div>{error}</div>;
   }
-
-  // Determine the initial step based on the navigation state
-  const initialStep = location.state && (location.state as any).initialStep !== undefined ? (location.state as any).initialStep : 0;
 
   return (
     <IonPage>
@@ -56,7 +61,7 @@ const UpdateProfilePage: React.FC = () => {
               mode="update"
               initialProfileData={initialProfileData}
               initialStep={initialStep}
-              initialSkills={{}} // You can pass an empty object or fetch skills separately if needed
+              initialSkills={initialSkills}
               setInvalid={() => {}}
               setSuccess={() => {}}
               setErrorMessage={() => {}}
