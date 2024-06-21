@@ -1,7 +1,11 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 import { getAnalytics } from "firebase/analytics";
-import { createUserWithEmailAndPassword, getAuth, onAuthStateChanged } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  getAuth,
+  onAuthStateChanged,
+} from "firebase/auth";
 import { create } from "ionicons/icons";
 import { getStorage } from "firebase/storage";
 
@@ -21,7 +25,6 @@ const adminAuth = [
   "RmgwiiugPWTEL3YyfJOyro3aq3I2",
 ];
 
-
 // Initialize Firebase
 const firebase = initializeApp(firebaseConfig);
 const analytics = getAnalytics(firebase);
@@ -29,11 +32,6 @@ const db = getFirestore(firebase);
 const firestore = getFirestore(firebase);
 const auth = getAuth(firebase);
 const storage = getStorage(firebase);
+const uid = auth.currentUser?.uid;
 
-
-
-
-
-
-
-export { db, analytics, firebase, firestore, auth, adminAuth, storage };
+export { uid, db, analytics, firebase, firestore, auth, adminAuth, storage };

@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import CustomIonInput from './CustomIonInput';
 import { IonButton, IonItem, IonLabel, IonText, IonRow, IonCol, IonIcon } from '@ionic/react';
-import { eyeOff, eye } from 'ionicons/icons';
 
 interface Props {
   formData: any;

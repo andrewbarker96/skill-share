@@ -17,7 +17,7 @@ import {
 import { IonReactRouter } from '@ionic/react-router';
 import { onAuthStateChanged } from 'firebase/auth';
 import { adminAuth, auth } from '../util/firebase';
-import { ellipse, home, person, square, triangle } from 'ionicons/icons';
+import { add, addCircle, calendar, chatbubble, chatbubbleEllipses, ellipse, home, person, search, square, triangle } from 'ionicons/icons';
 import TopMenu from './components/TopMenu';
 import HomePage from './pages/Home';
 import LoginPage from './pages/Login';
@@ -44,9 +44,13 @@ import '@ionic/react/css/palettes/dark.system.css';
 
 /* Theme variables */
 import './theme/variables.css';
-import ProfilePage from './pages/Profile';
-import CreateAccountPage from './pages/CreateAccount';
+import UserProfilePage from './pages/UserProfile';
+import EventsPage from './pages/Events';
+import SkillSwapPage from './pages/SkillSwap';
+import ChatDashboard from './pages/ChatDashboard';
 import UpdateProfilePage from './pages/UpdateProfile';
+import NewChatPage from './pages/NewChatPage';
+import IndividualChat from './components/Messaging/chat/chat';
 
 setupIonicReact();
 
@@ -57,25 +61,38 @@ const AuthApp: React.FC = () => {
       <IonHeader>
         <IonToolbar>
           <TopMenu />
+          <IonButton fill='clear' slot='icon-only'>
+            <IonIcon icon={search} />
+          </IonButton>
         </IonToolbar>
       </IonHeader>
       <IonContent className='main-content'>
         <IonReactRouter>
           <IonTabs>
             <IonRouterOutlet>
-              <Route exact path="/">
-                <HomePage />
-              </Route>
-              <Route exact path="/profile" render={(props) => <ProfilePage {...props} />} />
-              <Route exact path="/update-profile">
-                <UpdateProfilePage />
-              </Route>
+              <Redirect exact path="/home" to="/" />
+              <Route exact path="/" component={HomePage} />
+              <Route exact path="/profile" component={UserProfilePage} />
+              <Route exact path="/events" component={EventsPage} />
+              <Route exact path="/skills" component={SkillSwapPage} />
+              <Route exact path="/chat" component={ChatDashboard} />
+              <Route exact path="/chat/new" component={NewChatPage} />
+              <Route exact path="/chats/:chatId" component={IndividualChat} />
+              <Route exact path="/update-profile" component={UpdateProfilePage} />
             </IonRouterOutlet>
 
             <IonTabBar slot={'bottom'}>
               <IonTabButton tab='Home' href='/'>
                 <IonIcon icon={home} />
                 <IonLabel>Home</IonLabel>
+              </IonTabButton>
+              <IonTabButton tab='Skills' href='/skills'>
+                <IonIcon icon={addCircle} />
+                <IonLabel>Skills</IonLabel>
+              </IonTabButton>
+              <IonTabButton tab='Messages' href='/chat'>
+                <IonIcon icon={chatbubbleEllipses} />
+                <IonLabel>Chat</IonLabel>
               </IonTabButton>
               <IonTabButton tab='Profile' href='/profile'>
                 <IonIcon icon={person} />

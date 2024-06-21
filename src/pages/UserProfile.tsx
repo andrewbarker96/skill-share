@@ -1,17 +1,21 @@
 import React, { useEffect, useState } from 'react';
-import { Link, RouteComponentProps } from 'react-router-dom';
-import { firestore } from '../../util/firebase';
+import { RouteComponentProps } from 'react-router-dom';
+import { firestore, auth } from '../../util/firebase';
 import { doc, getDoc } from 'firebase/firestore';
-import { IonButton, IonCol, IonContent, IonGrid, IonImg, IonPage, IonRow, IonText } from '@ionic/react';
+import { IonCol, IonContent, IonGrid, IonImg, IonInput, IonLabel, IonPage, IonRow, IonText } from '@ionic/react';
 
-interface UserProfilePageProps extends RouteComponentProps<{ uid: string }> { }
 
-const UserProfilePage: React.FC<UserProfilePageProps> = ({ match }) => {
-  const { uid } = match.params;
+const UserProfilePage: React.FC = () => {
   const [profile, setProfile] = useState<any>({});
+  const uid = auth.currentUser?.uid;
 
   useEffect(() => {
     const fetchProfile = async () => {
+      if (!uid) {
+        console.error('UID is undefined. User might not be logged in.');
+        window.location.href = '/';
+        return;
+      }
       const docRef = await getDoc(doc(firestore, 'userProfiles', uid));
       if (docRef.exists()) {
         setProfile(docRef.data());
@@ -39,16 +43,10 @@ const UserProfilePage: React.FC<UserProfilePageProps> = ({ match }) => {
           <p>{profile.profileDescription}</p>
         </IonText>
         <IonGrid className='form'>
-          {/* <IonRow>
+          <IonRow>
             <IonCol size='12'>
-              <Link to={{
-                pathname: '/update-profile',
-                state: { initialStep: 0 } 
-              }}>
-                <IonButton expand="block">Edit Profile</IonButton>
-              </Link>
             </IonCol>
-          </IonRow> */}
+          </IonRow>
         </IonGrid>
       </IonContent>
     </IonPage>

@@ -70,9 +70,7 @@ export default function ForgotPasswordPage() {
           </IonRow>
           <IonRow>
             <IonCol size='12'>
-              <IonItem lines='none'>
-                <IonInput type='email' labelPlacement='floating' label='Email' placeholder='Enter Email Address' value={emailVerification} onIonChange={e => setEmailVerification(e.detail.value!)} />
-              </IonItem>
+              <IonInput type='email' labelPlacement='floating' label='Email' placeholder='Enter Email Address' value={emailVerification} onIonChange={e => setEmailVerification(e.detail.value!)} />
             </IonCol>
           </IonRow>
           <IonRow>
