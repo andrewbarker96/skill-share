@@ -8,8 +8,8 @@ export interface ProfileData {
     birthdate: string;
     city: string;
     state: string;
-    skillsOffered: { [category: string]: { [subcategory: string]: string[] } };
-    // skillsWanted: { [key: string]: { [key: string]: string[] } };
+    skillsOffered: Skills;
+    // skillsWanted: Skills;
     profileImage: string;
     profilePictureFile: File | null;
     uid: string;
@@ -19,5 +19,5 @@ export interface Skills {
     [category: string]: {
       [subcategory: string]: string[];
     };
-  }
+}
   
