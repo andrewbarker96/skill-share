@@ -58,32 +58,33 @@ export const deleteProfile = async (id: string) => {
 
 //Get all skills
 export const getSkills = async (): Promise<Skills> => {
-    try {
-      console.log('Initializing getSkills function');
-      const skillsDoc = doc(db, 'skills', '471rn4UyI8WDOGW3R15N');
-      console.log('Fetching skills from document path: ', skillsDoc.path);
-      const skillsSnapshot = await getDoc(skillsDoc);
-      console.log('skillsSnapshot exists:', skillsSnapshot.exists());
-  
-      if (!skillsSnapshot.exists()) {
-        console.error('Skills document does not exist');
-        throw new Error('Skills document does not exist');
-      }
-  
-      const data = skillsSnapshot.data();
-      console.log('Fetched skills data:', data);
-  
-      if (!data) {
-        console.error('Skills data is undefined');
-        throw new Error('Skills data is undefined');
-      }
-  
-      return data as Skills;
-    } catch (error) {
-      console.error('Error fetching skills:', error);
-      throw error; // Re-throw error to handle it in the calling function
+  try {
+    console.log('Initializing getSkills function');
+    const skillsDoc = doc(db, 'skills', '471rn4UyI8WDOGW3R15N');
+    console.log('Fetching skills from document path: ', skillsDoc.path);
+    const skillsSnapshot = await getDoc(skillsDoc);
+    console.log('skillsSnapshot exists:', skillsSnapshot.exists());
+
+    if (!skillsSnapshot.exists()) {
+      console.error('Skills document does not exist');
+      throw new Error('Skills document does not exist');
     }
+
+    const data = skillsSnapshot.data();
+    console.log('Fetched skills data:', data);
+
+    if (!data) {
+      console.error('Skills data is undefined');
+      throw new Error('Skills data is undefined');
+    }
+
+    return data as Skills;
+  } catch (error) {
+    console.error('Error fetching skills:', error);
+    throw error; // Re-throw error to handle it in the calling function
+  }
 };
+
 
 //Add new skill
 export const addSkill = async (skill: string) => {

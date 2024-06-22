@@ -68,9 +68,10 @@ export default function CreateAccountPage() {
   }
 
   const handleContinueProfile = (uid: string) => {
+    console.log("continue profile CA start: ", skills, uid);
     history.push({
       pathname: '/update-profile',
-      state: { initialStep: 1, initialSkills: skills, uid }
+      state: { mode: 'update', initialStep: 1, initialSkills: skills, uid }
     });
   };
 
