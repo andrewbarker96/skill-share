@@ -4,29 +4,45 @@
 .message {
   margin-top: 10px;
   margin-bottom: 10px;
-  max-width: 45%;
+  max-width: 55%;
   width: fit-content;
-  border-radius: 10px;
-  padding: 10px;
+  padding: 8px;
   clear:both;
+  border-radius: 10px;
+  --min-height: 20px!important;
+  --padding-start: 0px;
   
 }
 
+#texts {
+  text-align:left;
+}
+
+#texts item-native {
+  padding-left:0px!important;
+}
+
  .from {
-  background-color: #f50057;
+  border: 2px solid #f50057;
+  border-radius: 10px;
   align-self: flex-start; /* Align received messages to the left */
-  justify-content:right;
-  float:right;
+  float:left;
+  margin-left:3%;
+  
 }
 
 .sender {
-  background-color: #3f51b5;
+  border: 2px solid #3f51b5;
   align-self: flex-end; /* Align sent messages to the right */
-  float:left;
+  float:right;
+  margin-right:3%;
 }
+
+
 
 .from-text {
   color: black;
+  
 }
 
 .sender-text {
@@ -39,3 +55,8 @@
 }
 
 
+.top {
+  border-bottom: 2px solid #ffffff80;
+  
+  
+}

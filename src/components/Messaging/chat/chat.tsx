@@ -29,6 +29,10 @@ const IndividualChat: React.FC = () => {
   const [username, setUsername] = useState<string>('');
   const [profileImage, setProfileImage] = useState<string>('');
 
+
+
+  
+
   useEffect(() => {
     const url = window.location.href;
     const urlArray = url.split('/');
@@ -83,6 +87,7 @@ const IndividualChat: React.FC = () => {
   };
 
   const currentUserId = auth.currentUser?.uid;
+  
 
   return (
     <IonPage>
@@ -92,6 +97,7 @@ const IndividualChat: React.FC = () => {
       <IonContent className="chat-content" scrollY={true} id="texts">
         {messages.map((message) => {
           const messageClass = message.senderId === currentUserId ? 'sender' : 'from';
+
           const textClass = message.senderId === currentUserId ? 'sender-text' : 'from-text';
           console.log(`Message: ${message.message}, Sender: ${message.senderId}, Class: ${messageClass}`);
           return (
@@ -99,6 +105,7 @@ const IndividualChat: React.FC = () => {
               lines='none'
               className={`message ${messageClass}`}
               key={message.id}
+             
             >
               <IonText className={textClass}>
                 {message.message}

@@ -4,13 +4,15 @@ import {
   IonContent,
   IonList,
   IonItem,
+  IonImg,
   IonLabel,
   IonFabButton,
   IonFab,
   IonIcon,
-  IonSearchbar
+  IonSearchbar, 
+  
 } from '@ionic/react';
-import { collection, query, onSnapshot, where } from 'firebase/firestore';
+import { collection, query, onSnapshot, where, orderBy, limit, getDocs } from 'firebase/firestore';
 import { add } from 'ionicons/icons';
 import { auth, firestore } from '../../util/firebase'; // Adjust import as needed
 import { getUserProfile } from '../services/firestoreService'; // Adjust import as needed
@@ -18,12 +20,13 @@ import { getUserProfile } from '../services/firestoreService'; // Adjust import 
 interface Chat {
   id: string;
   users: string[];
-  lastMessage?: string;
+  lastMessage: string;
 }
 
 const ChatDashboard: React.FC = () => {
   const [chats, setChats] = useState<Chat[]>([]);
   const [usernames, setUsernames] = useState<{ [key: string]: string }>({}); // Store usernames
+  const [profileImages, setProfileImages] = useState<{ [key: string]: string }>({}); // Store profile images
 
   useEffect(() => {
     const currentUserUID = auth.currentUser?.uid;
@@ -39,6 +42,28 @@ const ChatDashboard: React.FC = () => {
         ...doc.data()
       })) as Chat[];
 
+      console.log(chatData.length);
+
+      for (const chat of chatData) {
+        const messagesQuery = query(
+          collection(firestore, `chats/${chat.id}/messages`),
+          orderBy('timestamp', 'desc'),
+          limit(1)
+        );
+      
+        for (const chat of chatData) {
+          console.log(chat)
+        }
+        const messageSnapshot = await getDocs(messagesQuery);
+        if (!messageSnapshot.empty) {
+          chat.lastMessage = messageSnapshot.docs[0].data().message;
+          console.log(chat.lastMessage); // Adjust if the field name is different
+        } else {
+          chat.lastMessage = 'No messages yet';
+          
+        }
+      }
+
       setChats(chatData);
 
       // Fetch usernames for each user in the chats
@@ -48,6 +73,15 @@ const ChatDashboard: React.FC = () => {
       });
 
       const usernamesMap: { [key: string]: string } = {};
+
+      const profileImagesMap: { [key: string]: string } = {};
+      for (const userId of userIds) {
+        if (!usernames[userId] || !profileImages[userId]) {
+          const userProfile = await getUserProfile(userId);
+          usernamesMap[userId] = userProfile.username;
+          profileImagesMap[userId] = userProfile.profileImage;
+        }
+      }
       for (const userId of userIds) {
         if (!usernames[userId]) {
           const userProfile = await getUserProfile(userId);
@@ -59,6 +93,12 @@ const ChatDashboard: React.FC = () => {
         ...prevUsernames,
         ...usernamesMap
       }));
+
+
+      setProfileImages(prevProfileImages => ({
+        ...prevProfileImages,
+        ...profileImagesMap
+      }));
     });
 
     return () => unsubscribe();
@@ -68,19 +108,23 @@ const ChatDashboard: React.FC = () => {
     if (!chat.users || chat.users.length === 0) return 'Unknown Chat';
     const otherUsers = chat.users.filter((userId: string) => userId !== auth.currentUser?.uid);
     const otherUsernames = otherUsers.map((userId: string) => usernames[userId] || 'Unknown User');
+    
     return otherUsernames.join(', ');
   };
 
+  
+
   return (
     <IonPage>
-      <IonContent scrollY={false} style={{ flexGrow: '1' }}>
+      
+      <IonContent scrollY={true} style={{ flexGrow: '1' }} className = 'ion-padding'>
+        <h1>Chats</h1>
         <IonSearchbar />
-      </IonContent>
-      <IonContent className='ion-padding'>
-        <IonList>
+              <IonList>
           {chats.map(chat => (
-            <IonItem lines='none' key={chat.id} routerLink={`/chats/${chat.id}`}>
-              <IonLabel>
+            <IonItem lines='none' key={chat.id} routerLink={`/chats/${chat.id}`} className = "chatItem">
+              <IonImg className = 'profileImage' src={profileImages[chat.users.find((userId: string) => userId !== auth.currentUser?.uid) || ''] } />
+              <IonLabel className = "chatItemContent">
                 <h2>{getChatName(chat)}</h2>
                 <p>{chat.lastMessage}</p>
               </IonLabel>

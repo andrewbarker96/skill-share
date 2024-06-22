@@ -1,0 +1,42 @@
+/* chatDashboard.css */
+
+.chatItem .profileImage  {
+    width: 40px!important; /* Adjust size as needed */
+    height: 40px!important; /* Adjust size as needed */
+    border-radius: 50%;
+    margin-right: 10px;
+  }
+  
+  .chatItem {
+    display: flex;
+    align-items: center;
+    color:black;
+  }
+
+  .item-inner img  {
+    height: 40px;
+
+  }
+  
+  .chatItemContent {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  
+  .chatItemContent h2 {
+    margin: 0;
+    font-size: 16px; /* Adjust size as needed */
+  }
+  
+  .chatItemContent p {
+    margin: 5px 0 0 0;
+    font-size: 14px; /* Adjust size as needed */
+    color: gray!important; /* Adjust color as needed */
+  }
+  
+  ion-img.profileImage.ios {
+    width: 60px !important;
+    height: 60px !important;
+    border-radius: 50% !important;
+  }
