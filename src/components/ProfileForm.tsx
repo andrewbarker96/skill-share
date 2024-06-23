@@ -181,7 +181,7 @@ const ProfileForm: React.FC<Props> = ({
     />,
     <SkillsForm
       formData={formData}
-      allSkills={allSkills}
+      // allSkills={allSkills}
       handleSkillChange={handleSkillChange}
       handleNext={handleNext}
       handlePrev={handlePrev}

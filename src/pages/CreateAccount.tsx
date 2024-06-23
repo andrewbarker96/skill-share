@@ -31,41 +31,41 @@ export default function CreateAccountPage() {
   const [errorMessage, setErrorMessage] = useState('');
   const history = useHistory();
 
-  useEffect(() => {
-    let didCancel = false;
+  // useEffect(() => {
+  //   let didCancel = false;
 
-    const fetchSkills = async () => {
-      try {
-        console.log('Fetching skills...');
-        const skillsData = await getSkills();
-        if (!didCancel) {
-          setSkills(skillsData);
-          console.log('Fetched skills data: ', skillsData);
-        }
-      } catch (error) {
-        if (!didCancel) {
-          console.error('Error fetching skills:', error);
-          setError('Failed to fetch skills');
-          setErrorMessage('Failed to fetch skills');
-          setInvalid(true);
-        }
-      } finally {
-        if (!didCancel) {
-          setLoadingSkills(false);
-        }
-      }
-    };
+  //   const fetchSkills = async () => {
+  //     try {
+  //       console.log('Fetching skills...');
+  //       const skillsData = await getSkills();
+  //       if (!didCancel) {
+  //         setSkills(skillsData);
+  //         console.log('Fetched skills data: ', skillsData);
+  //       }
+  //     } catch (error) {
+  //       if (!didCancel) {
+  //         console.error('Error fetching skills:', error);
+  //         setError('Failed to fetch skills');
+  //         setErrorMessage('Failed to fetch skills');
+  //         setInvalid(true);
+  //       }
+  //     } finally {
+  //       if (!didCancel) {
+  //         setLoadingSkills(false);
+  //       }
+  //     }
+  //   };
 
-    fetchSkills();
+  //   fetchSkills();
 
-    return () => {
-      didCancel = true;
-    };
-  }, []);
+  //   return () => {
+  //     didCancel = true;
+  //   };
+  // }, []);
 
-  if (loadingSkills) {
-    return <IonLoading isOpen={loadingSkills} message="Loading skills..." />;
-  }
+  // if (loadingSkills) {
+  //   return <IonLoading isOpen={loadingSkills} message="Loading skills..." />;
+  // }
 
   const handleContinueProfile = (uid: string) => {
     console.log("continue profile CA start: ", skills, uid);

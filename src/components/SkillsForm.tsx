@@ -1,18 +1,32 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { IonButton, IonCheckbox, IonItem, IonLabel, IonList, IonListHeader, IonIcon, IonRow, IonCol, IonText, IonGrid } from '@ionic/react';
 import { chevronDownOutline, chevronForwardOutline } from 'ionicons/icons';
+import { getSkills } from '../services/firestoreService';
 import { Skills } from '../types';
 
 interface Props {
   formData: any;
-  allSkills: Skills;
   handleSkillChange: (category: string, subcategory: string, skill: string, isChecked: boolean) => void;
   handleNext: () => void;
   handlePrev: () => void;
 }
 
-const SkillsForm: React.FC<Props> = ({ formData, allSkills, handleSkillChange, handleNext, handlePrev }) => {
+const SkillsForm: React.FC<Props> = ({ formData, handleSkillChange, handleNext, handlePrev }) => {
   const [expandedCategory, setExpandedCategory] = useState<string | null>(null);
+  const [allSkills, setAllSkills] = useState<Skills>({}); 
+
+  useEffect(() => {
+    const fetchSkills = async () => {
+      try {
+        const skillsData = await getSkills();
+        setAllSkills(skillsData);
+      } catch (error) {
+        console.error('Error fetching skills:', error);
+      }
+    };
+
+    fetchSkills();
+  }, []);
 
   const toggleCategory = (categoryName: string) => {
     setExpandedCategory((prevCategory) => (prevCategory === categoryName ? null : categoryName));
@@ -28,17 +42,17 @@ const SkillsForm: React.FC<Props> = ({ formData, allSkills, handleSkillChange, h
         <IonList>
           {Object.keys(allSkills).map((categoryName) => (
             <div key={categoryName}>
-              <IonListHeader onClick={() => toggleCategory(categoryName)}>
-                <IonLabel style={{ fontSize: '1.2rem', fontWeight: 'bold'}} >{categoryName}</IonLabel>
+              <IonListHeader onClick={() => toggleCategory(categoryName)} style={{ display:'flex',alignItems:'center' }}>
                 <IonIcon
                   icon={expandedCategory === categoryName ? chevronDownOutline : chevronForwardOutline}
-                  slot="end"
-                  style={{ fontSize: '1.2rem', height:'1.2rem', marginLeft:'0.5rem'}}
+                  // slot="end"
+                  style={{ margin:'0 0.5rem 0.625rem 0rem'}}
                 />
+                <IonLabel style={{ fontSize: '1.2rem', fontWeight: 'bold'}} >{categoryName}</IonLabel>
               </IonListHeader>
               {expandedCategory === categoryName &&
                 Object.keys(allSkills[categoryName]).map((subcategoryName) => (
-                  <div key={subcategoryName} style={{ marginLeft:'1.25rem'}}>
+                  <div key={subcategoryName} style={{ marginLeft:'2.25rem'}}>
                     <IonList style={{ display:'flex', flexDirection: 'column' }}>
                       <IonLabel style={{ fontSize: '1rem', fontWeight: 'bold',marginLeft: '1rem'}}>
                         {subcategoryName}

@@ -8,7 +8,7 @@ import { ProfileData } from '../types';
 
 // Define the type for location state
 interface LocationState {
-  mode: 'update'
+  mode: 'update';
   initialStep?: number;
   initialSkills?: any;
   uid?:string;
