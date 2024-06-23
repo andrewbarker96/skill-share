@@ -127,6 +127,8 @@ const SkillsForm: React.FC<Props> = ({ mode, formData, handleSkillChange, handle
               </div>
             ))}
           </IonList>
+        </IonCol>
+        <IonCol>
           <IonButton expand="block" onClick={handlePrev}>Previous</IonButton>
           <IonButton expand="block" onClick={handleNext}>Next</IonButton>
         </IonCol>

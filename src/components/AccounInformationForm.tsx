@@ -217,6 +217,8 @@ const AccountInformationForm: React.FC<Props> = ({ formData, handleChange, handl
               </IonCol>
             </>
           )}
+          <IonCol>
+
           {formData.uid ? (
             <IonButton expand='block' onClick={handleNext}>Next</IonButton>
           ) : (
@@ -225,6 +227,7 @@ const AccountInformationForm: React.FC<Props> = ({ formData, handleChange, handl
               <IonButton expand='block' onClick={() => handleSubmit('profile')}>Continue Creating Profile</IonButton>
             </>
           )}
+          </IonCol>
         </IonCol>
       </IonRow>
     </IonGrid>
