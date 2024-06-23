@@ -1,5 +1,5 @@
 import React from 'react';
-import { IonButton, IonItem, IonLabel, IonImg, IonRow, IonCol, IonText, IonGrid } from '@ionic/react';
+import { IonButton, IonItem, IonLabel, IonImg, IonRow, IonCol, IonText } from '@ionic/react';
 
 interface Props {
   formData: any;

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useHistory, useLocation } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import AccountInformationForm from './AccounInformationForm';
 import SkillsForm from './SkillsForm';
 import ProfilePictureForm from './ProfilePictureForm';
@@ -48,13 +48,11 @@ const ProfileForm: React.FC<Props> = ({
     profilePictureFile: null,
     uid: ''
   });
-  const [allSkills, setAllSkills] = useState<Skills>(initialSkills);
   const [loading, setLoading] = useState(false);
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
 
   const history = useHistory();
-  const location = useLocation();
 
   useEffect(() => {
     if (mode === 'update' && initialProfileData) {
@@ -181,7 +179,6 @@ const ProfileForm: React.FC<Props> = ({
     />,
     <SkillsForm
       formData={formData}
-      // allSkills={allSkills}
       handleSkillChange={handleSkillChange}
       handleNext={handleNext}
       handlePrev={handlePrev}
