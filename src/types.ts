@@ -9,7 +9,7 @@ export interface ProfileData {
     city: string;
     state: string;
     skillsOffered: Skills;
-    // skillsWanted: Skills;
+    skillsWanted: Skills;
     profileImage: string;
     profilePictureFile: File | null;
     uid: string;
