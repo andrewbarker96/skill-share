@@ -1,55 +1,177 @@
-.chat {
-  display: flex;
-  flex-direction: column;
-  min-height: 100%;
+/* chat.css */
+
+
+.message {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  max-width: 55%;
+  width: fit-content;
+  padding: 8px;
+  clear:both;
+  border-radius: 10px;
+  --min-height: 25px!important;
+  --padding-start: 0px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3); /* Subtle drop shadow */
+  --inner-padding-end:0px;
+  display: -ms-flexbox;
 }
 
-.top{
-  flex-grow: 0;
-  max-height: 85px;
+#texts {
+  text-align:left;
 }
 
-.center{
-  flex-grow: 1;
+#texts item-native {
+  padding-left:0px!important;
+}
+
+ .from {
+  /*border: 2px solid #3f51b5;*/
+  border: 2px solid white;
+  border-radius: 10px;
+  align-self: flex-start; /* Align received messages to the left */
+  float:left;
+  margin-left:3%;
+  /* background-color:#3f51b5; */
+  background-color:white;
   
 }
 
-.message{
-  padding: 10px;
-}
-
-.sender{
-  max-width: 45%;
-}
-
-.from{
-  max-width: 45%;
+.sender {
+  border: 2px solid #53aee6;
+  align-self: flex-end; /* Align sent messages to the right */
+  float:right;
+  margin-right:3%;
+  background-color: #53aee6;
 }
 
 
-.from p{
+
+
+.from-text {
+  color: black;
+  width:100%
+  
+}
+
+.sender-text {
   color: white;
-  width: fit-content;
-  background-color: #f50057;
-  border-radius: 10px;
-  padding: 10px;
-}
-
-
-.sender p{
-  width: fit-content;
-  background-color: #3f51b5;
-  border-radius: 10px;
-  padding: 10px;
-}
-
-.texts{
-  display: flex;
-  font-display: flex;
-  flex-wrap: wrap;
+  margin-left:3px;
+  
 }
 
 .bottom {
   flex-grow: 0;
-  border-top: 1px solid rgba(255, 255, 255, 0.164);
+  border-top: 1px solid rgba(255, 255, 255, 0.4);
 }
+
+
+.top {
+  border-bottom: 2px solid #ffffff80;
+  
+  
+}
+
+
+#texts.ios.overscroll.content-ltr {
+  --ion-background-color: #F3F7FA !important;
+
+}
+
+#texts.ios.overscroll.content-ltr {
+  --offset-bottom: auto !important;
+  --overflow: hidden;
+  overflow: auto;
+}
+
+#texts.ios.overscroll.content-ltr::part(scroll) {
+  background-color: #F3F7FA !important;
+}
+
+
+#texts .message.sender {
+  --ion-background-color:#53aee6;
+  display:-ms-flexbox;
+  flex-direction:column!important;
+clear:both;
+align-items:end;
+
+}
+
+#texts .message.from {
+  --ion-background-color:#white;
+  
+}
+
+.wrapper {
+  display:flex;
+  flex-direction:row;
+  align-items:flex-end;
+}
+
+.message-status {
+  color:white;
+  padding-right:0;
+  --ionicon-stroke-width: 45px;
+}
+
+.message {
+  display:flex;
+  flex-direction:column!important;
+}
+
+.message-status {
+  white-space:pre-line;
+  display: flex;
+  justify-content: flex-end; /* Align checkmarks to the right */
+  flex-direction:row;
+  padding-left:5px;
+}
+
+.message-status .read {
+  color: #3f51b5; /* or any color to indicate the message is read */
+  
+}
+
+
+
+
+
+.message-status .checkmark {
+  font-size: 16px; /* Adjust size as needed */
+  --ionicon-stroke-width: 65px;
+  
+  
+
+}
+
+
+.checkmark {
+  --ionicon-color: #3f51b5; /* Example */
+  font-size: 24px;
+}
+
+
+.message-status .checkmark + .checkmark {
+  margin-left: -9px; /* Negative margin to create overlap */
+}
+
+
+
+.timestamp {
+  font-size: 0.75rem; /* Smaller font size for the timestamp */
+  color: gray; /* Lighter color for the timestamp */
+  margin-top: 5px; /* Space between the message and timestamp */
+  align-self: flex-end; /* Align timestamp to the start */
+}
+/* 
+:root {
+  --custom-flex-direction: column!important;
+}
+
+.message .item-inner .input-wrapper::part(wrapper) {
+  display: flex!important;
+  flex-direction: var(--custom-flex-direction)!important;
+}
+
+
+ */

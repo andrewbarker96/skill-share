@@ -1,6 +1,5 @@
-// src/components/ProfilePictureForm.tsx
 import React from 'react';
-import { IonButton, IonItem, IonLabel, IonInput, IonImg, IonRow, IonCol, IonText } from '@ionic/react';
+import { IonButton, IonItem, IonLabel, IonImg, IonRow, IonCol, IonText } from '@ionic/react';
 
 interface Props {
   formData: any;
@@ -17,25 +16,30 @@ const ProfilePictureForm: React.FC<Props> = ({ formData, setFormData, handleImag
       const fileURL = URL.createObjectURL(event.target.files[0]);
       setFormData((prevData: any) => ({
         ...prevData,
-        profilePicture: fileURL,
+        profileImage: fileURL,
       }));
     }
   };
+
   return (
     <IonRow>
       <IonCol size='12'>
         <IonText>
-          <h2>Step 4: Profile Picture</h2>
+          <h2>Profile Picture</h2>
         </IonText>
-        <IonItem>
-          <IonLabel position="stacked">Upload Profile Picture</IonLabel>
-          <input type="file" accept="image/*" onChange={handleImageUpload} />
-        </IonItem>
-        {formData.profilePicture && (
+        <IonCol>
           <IonItem>
-            <IonImg src={formData.profilePicture} />
+            <IonLabel position="stacked">Upload Profile Picture</IonLabel>
+            <input type="file" accept="image/*" onChange={handleImageChange} style={{ padding: '1rem 0rem 0.5rem' }} />
           </IonItem>
-        )}
+          {formData.profileImage && (
+            <IonItem>
+              <IonImg src={formData.profileImage} />
+            </IonItem>
+          )}
+        </IonCol>
+      </IonCol>
+      <IonCol>
         <IonButton expand="block" onClick={handlePrev}>Previous</IonButton>
         <IonButton expand="block" onClick={handleSubmit}>Submit Profile</IonButton>
       </IonCol>
