@@ -9,6 +9,8 @@ import {
   doc,
   orderBy,
   getDoc,
+  limit,
+  onSnapshot
 } from "firebase/firestore";
 
 // Define the User interface
@@ -24,6 +26,16 @@ interface Chat {
   users: string[];
   createdAt: Date;
 }
+
+interface Message {
+  id: string;
+  senderId: string;
+  message: string;
+  timestamp: Date;
+  status: string;
+}
+
+
 // Find users by email or username
 export const findUsers = async (search: string): Promise<User[]> => {
   try {
@@ -134,6 +146,7 @@ export const sendMessage = async (chatId: string, text: string) => {
       senderId: currentUserUID,
       message: text,
       timestamp: new Date(),
+      status: 'sent',
     });
     console.log("Message sent:", text);
     return text;
@@ -178,14 +191,43 @@ export const getMessages = async (chatId: string) => {
     const messages = messagesSnapshot.docs.map((doc) => ({
       id: doc.id,
       ...doc.data(),
-    }));
+    })) as Message[];
+
+    messagesSnapshot.docs.forEach(async (doc) => {
+      if (doc.data().senderId !== currentUserUID && doc.data().status === 'sent') {
+        await updateMessageStatusToDelivered(chatId, doc.id);
+      }
+    });
+
+    const newMessageFromOtherUser = messages.find(
+      (message) => message.senderId !== currentUserUID && message.status === 'sent'
+    );
+
+    if (newMessageFromOtherUser) {
+      await updateLastSentMessageStatus(chatId, currentUserUID);
+    }
+
+
+
     return messages;
   } catch (error) {
     console.error("Error fetching messages: ", error);
     throw error;
   }
 };
+export const onMessagesSnapshot = (chatId: string, callback: (messages: Message[]) => void) => {
+  const messagesRef = collection(db, `chats/${chatId}/messages`);
+  const messagesQuery = query(messagesRef, orderBy("timestamp"));
 
+  return onSnapshot(messagesQuery, (snapshot) => {
+    const messages = snapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    })) as Message[];
+
+    callback(messages);
+  });
+};
 export const getChat = async (chatId: string): Promise<Chat | null> => {
   const chatDoc = await getDoc(doc(db, "chats", chatId));
   if (chatDoc.exists()) {
@@ -194,3 +236,51 @@ export const getChat = async (chatId: string): Promise<Chat | null> => {
     return null;
   }
 };
+
+
+
+// Updating message statuses
+export const updateMessageStatusToDelivered = async (chatId: string, messageId: string) => {
+  try {
+    const messageRef = doc(db, `chats/${chatId}/messages/${messageId}`);
+    await updateDoc(messageRef, {
+      status: 'delivered'
+    });
+    console.log(`Message ${messageId} updated to delivered`);
+  } catch (error) {
+    console.error("Error updating message status to delivered:", error);
+    throw error;
+  }
+};
+
+export const updateMessageStatusToRead = async (chatId: string, messageId: string) => {
+  try {
+    const messageRef = doc(db, `chats/${chatId}/messages/${messageId}`);
+    await updateDoc(messageRef, {
+      status: 'read'
+    });
+    console.log(`Message ${messageId} updated to read`);
+  } catch (error) {
+    console.error("Error updating message status to read:", error);
+    throw error;
+  }
+};
+
+// Helper function to update the last message status of the current user to "receivedReply"
+export const updateLastSentMessageStatus = async (chatId: string, currentUserId: string) => {
+  const messagesRef = collection(db, `chats/${chatId}/messages`);
+  const messagesQuery = query(
+    messagesRef,
+    where("senderId", "==", currentUserId),
+    orderBy("timestamp", "desc"),
+    limit(1)
+  );
+  const messagesSnapshot = await getDocs(messagesQuery);
+  
+  if (!messagesSnapshot.empty) {
+    const lastMessageDoc = messagesSnapshot.docs[0];
+    await updateDoc(lastMessageDoc.ref, { status: 'receivedReply' });
+    console.log(`Last message of ${currentUserId} in chat ${chatId} updated to receivedReply`);
+  }
+};
+

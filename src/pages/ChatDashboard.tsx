@@ -21,6 +21,7 @@ interface Chat {
   id: string;
   users: string[];
   lastMessage: string;
+  lastMessageTime: Date | null;
 }
 
 const ChatDashboard: React.FC = () => {
@@ -58,6 +59,7 @@ const ChatDashboard: React.FC = () => {
         if (!messageSnapshot.empty) {
           chat.lastMessage = messageSnapshot.docs[0].data().message;
           console.log(chat.lastMessage); // Adjust if the field name is different
+          
         } else {
           chat.lastMessage = 'No messages yet';
           
@@ -123,7 +125,7 @@ const ChatDashboard: React.FC = () => {
               <IonList>
           {chats.map(chat => (
             <IonItem lines='none' key={chat.id} routerLink={`/chats/${chat.id}`} className = "chatItem">
-              <IonImg className = 'profileImage' src={profileImages[chat.users.find((userId: string) => userId !== auth.currentUser?.uid) || ''] } />
+              <IonImg style = {{ height: '100px', width: '100px' }}  className = 'profileImage' src={profileImages[chat.users.find((userId: string) => userId !== auth.currentUser?.uid) || ''] } />
               <IonLabel className = "chatItemContent">
                 <h2>{getChatName(chat)}</h2>
                 <p>{chat.lastMessage}</p>
