@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { useHistory, useLocation } from 'react-router-dom';
+import React, { useState, useEffect, useRef } from 'react';
+import { useHistory } from 'react-router-dom';
 import AccountInformationForm from './AccounInformationForm';
 import SkillsForm from './SkillsForm';
 import ProfilePictureForm from './ProfilePictureForm';
@@ -44,17 +44,16 @@ const ProfileForm: React.FC<Props> = ({
     city: '',
     state: '',
     skillsOffered: {},
+    skillsWanted: {},
     profileImage: '',
     profilePictureFile: null,
     uid: ''
   });
-  const [allSkills, setAllSkills] = useState<Skills>(initialSkills);
   const [loading, setLoading] = useState(false);
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
-
+  
   const history = useHistory();
-  const location = useLocation();
 
   useEffect(() => {
     if (mode === 'update' && initialProfileData) {
@@ -132,8 +131,8 @@ const ProfileForm: React.FC<Props> = ({
     setStep((prevStep) => prevStep + 1);
   };
 
-  const handleSkillChange = (category: string, subcategory: string, skill: string, isChecked: boolean) => {
-    const updatedSkills = { ...formData.skillsOffered };
+  const handleSkillChange = (type: 'offered' | 'wanted', category: string, subcategory: string, skill: string, isChecked: boolean) => {
+    const updatedSkills = { ...formData[type === 'offered' ? 'skillsOffered' : 'skillsWanted'] };
     if (!updatedSkills[category]) updatedSkills[category] = {};
     if (!updatedSkills[category][subcategory]) updatedSkills[category][subcategory] = [];
 
@@ -143,7 +142,7 @@ const ProfileForm: React.FC<Props> = ({
       updatedSkills[category][subcategory] = updatedSkills[category][subcategory].filter((s: string) => s !== skill);
     }
 
-    setFormData({ ...formData, skillsOffered: updatedSkills });
+    setFormData({ ...formData, [type === 'offered' ? 'skillsOffered' : 'skillsWanted']: updatedSkills });
   };
 
   const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -180,11 +179,19 @@ const ProfileForm: React.FC<Props> = ({
       handleNext={handleNext}
     />,
     <SkillsForm
+      mode="offered"
       formData={formData}
-      allSkills={allSkills}
-      handleSkillChange={handleSkillChange}
+      handleSkillChange={(category, subcategory, skill, isChecked) => handleSkillChange('offered', category, subcategory, skill, isChecked)}
       handleNext={handleNext}
       handlePrev={handlePrev}
+    />,
+    <SkillsForm
+      mode="wanted"
+      formData={formData}
+      handleSkillChange={(category, subcategory, skill, isChecked) => handleSkillChange('wanted', category, subcategory, skill, isChecked)}
+      handleNext={handleNext}
+      handlePrev={handlePrev}
+      filterOfferedSkills={formData.skillsOffered}
     />,
     <ProfilePictureForm
       formData={formData}
