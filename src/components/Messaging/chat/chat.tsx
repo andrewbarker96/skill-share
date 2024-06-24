@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import './chat.css';
+import React, { useState, useEffect } from "react";
+import "./chat.css";
+import { Timestamp} from 'firebase/firestore';
 import {
   IonButton,
   IonButtons,
@@ -12,30 +13,42 @@ import {
   IonPopover,
   IonRow,
   IonText,
-} from '@ionic/react';
-import { camera, happy, send } from 'ionicons/icons';
-import EmojiPicker from 'emoji-picker-react';
-import { sendMessage, getMessages, getChat } from '../../../services/messageService';
-import UserInfo from '../list/userInfo/UserInfo';
+  IonLabel,
+  IonItemDivider,
+} from "@ionic/react";
+import { camera, checkmarkOutline, happy, send, checkmarkSharp } from "ionicons/icons";
+import EmojiPicker from "emoji-picker-react";
+import {
+  sendMessage,
+  getMessages,
+  getChat,
+  updateMessageStatusToRead,
+  onMessagesSnapshot
+} from "../../../services/messageService";
+import UserInfo from "../list/userInfo/UserInfo";
 import { auth } from "../../../../util/firebase";
-import { getUserProfile } from '../../../services/firestoreService';
+import { getUserProfile } from "../../../services/firestoreService";
+
+interface Message {
+  id: string;
+  senderId: string;
+  message: string;
+  timestamp: Date;
+  status: string;
+}
 
 const IndividualChat: React.FC = () => {
   const [open, setOpen] = useState(false);
-  const [text, setText] = useState('');
-  const [chatId, setChatId] = useState<string>('');
+  const [text, setText] = useState("");
+  const [chatId, setChatId] = useState<string>("");
   const [messages, setMessages] = useState<any[]>([]);
-  const [targetUserId, setTargetUserId] = useState<string>('');
-  const [username, setUsername] = useState<string>('');
-  const [profileImage, setProfileImage] = useState<string>('');
-
-
-
-  
+  const [targetUserId, setTargetUserId] = useState<string>("");
+  const [username, setUsername] = useState<string>("");
+  const [profileImage, setProfileImage] = useState<string>("");
 
   useEffect(() => {
     const url = window.location.href;
-    const urlArray = url.split('/');
+    const urlArray = url.split("/");
     const chatIdFromUrl = urlArray[urlArray.length - 1];
     setChatId(chatIdFromUrl);
 
@@ -46,7 +59,9 @@ const IndividualChat: React.FC = () => {
           const chat = await getChat(chatIdFromUrl);
           const currentUserId = auth.currentUser?.uid;
           if (chat && chat.users && currentUserId) {
-            const otherUserId = chat.users.find((id: string) => id !== currentUserId);
+            const otherUserId = chat.users.find(
+              (id: string) => id !== currentUserId
+            );
             if (otherUserId) {
               setTargetUserId(otherUserId);
 
@@ -55,15 +70,27 @@ const IndividualChat: React.FC = () => {
               console.log("Fetched user data: ", userProfile);
               setUsername(userProfile.username);
               setProfileImage(userProfile.profileImage);
-              console.log('Profile Picture URL:', userProfile.profileImage);
+              console.log("Profile Picture URL:", userProfile.profileImage);
             }
 
-            // Fetch messages
-            const messages = await getMessages(chatIdFromUrl);
-            setMessages(messages);
+            // Set up real-time listener for messages
+            const unsubscribe = onMessagesSnapshot(chatIdFromUrl, async (messages) => {
+              setMessages(messages);
+
+              for (const message of messages) {
+                if (
+                  message.senderId !== currentUserId &&
+                  message.status === "delivered"
+                ) {
+                  await updateMessageStatusToRead(chatIdFromUrl, message.id);
+                }
+              };
+            });
+
+            return () => unsubscribe();
           }
         } catch (error) {
-          console.error('Error fetching chat data:', error);
+          console.error("Error fetching chat data:", error);
         }
       };
       fetchChatData();
@@ -78,39 +105,61 @@ const IndividualChat: React.FC = () => {
   const handleSendMessage = async () => {
     try {
       await sendMessage(chatId, text);
-      setText('');
+      setText("");
       const messages = await getMessages(chatId);
       setMessages(messages);
     } catch (error) {
-      console.error('Error sending message:', error);
+      console.error("Error sending message:", error);
     }
   };
 
   const currentUserId = auth.currentUser?.uid;
-  
 
   return (
     <IonPage>
       <div className="top">
-        <UserInfo username={username} profilePicture={profileImage} /> {/* Pass the target user's username */}
+        <UserInfo username={username} profilePicture={profileImage} />{" "}
+        {/* Pass the target user's username */}
       </div>
-      <IonContent className="chat-content" scrollY={true} id="texts">
+      <IonContent className="chat-content textBg" scrollY={true} id="texts">
         {messages.map((message) => {
-          const messageClass = message.senderId === currentUserId ? 'sender' : 'from';
+          const messageClass =
+            message.senderId === currentUserId ? "sender" : "from";
 
-          const textClass = message.senderId === currentUserId ? 'sender-text' : 'from-text';
-          console.log(`Message: ${message.message}, Sender: ${message.senderId}, Class: ${messageClass}`);
+          const textClass =
+            message.senderId === currentUserId ? "sender-text" : "from-text";
+
           return (
             <IonItem
-              lines='none'
+              lines="none"
               className={`message ${messageClass}`}
               key={message.id}
-             
+              
             >
-              <IonText className={textClass}>
-                {message.message}
-              </IonText>
+              <IonText className={textClass}>{message.message}</IonText>
+              <IonText className={'wrapper'}>
+
+  
+                {messageClass === "sender" && message.status !== 'receivedReply' && (
+                  <IonText className="message-status ">
+                    {message.status === 'sent' && <IonIcon icon={checkmarkOutline} className="checkmark" />}
+                    {message.status === 'delivered' && (
+                      <>
+                        
+                        <IonIcon icon={checkmarkOutline} className="checkmark" />
+                        <IonIcon icon={checkmarkOutline} className="checkmark"  />
+                      </>
+                    )}
+                    {message.status === 'read' && (
+                      <>
+                        <IonIcon icon={checkmarkOutline} className="checkmark read" />
+                        <IonIcon icon={checkmarkOutline} className="checkmark read" />
+                      </>
+                    )}
+                  </IonText>
+                )}</IonText>
             </IonItem>
+            
           );
         })}
       </IonContent>
