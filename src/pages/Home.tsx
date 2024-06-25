@@ -167,11 +167,11 @@ function HomePage() {
                         </IonItem>
 
                         <IonItem>
-                          <IonLabel>Item</IonLabel>
+                          <IonLabel>Accordion Place Holder</IonLabel>
                         </IonItem>
 
                         <IonItem lines="none">
-                          <IonLabel>Item</IonLabel>
+                          <IonLabel>Accordion Place Holder</IonLabel>
                         </IonItem>
                       </IonList>
                     </IonCardContent>
