@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Route } from 'react-router-dom';
+import { Route, Redirect, useHistory } from 'react-router-dom';
+
 import {
   IonApp,
   IonContent,
@@ -48,6 +49,16 @@ import './theme/variables.css';
 setupIonicReact();
 
 const App: React.FC <{ isAuthenticated: boolean }> = ({ isAuthenticated }) => {
+  const uid = auth.currentUser?.uid;
+  const history = useHistory();
+
+  const goToProfile = () => {
+    if (uid) {
+      history.push(`/profile/${uid}`);
+    } else {
+      console.error('No user is currently logged in.');
+    }
+  };
 
   return (
     <IonApp>
@@ -55,7 +66,7 @@ const App: React.FC <{ isAuthenticated: boolean }> = ({ isAuthenticated }) => {
         <IonHeader>
           <IonToolbar>
             <TopMenu />
-            <IonButton fill='clear' slot='icon-only'>
+            <IonButton fill='clear' slot='icon-only' onClick={goToProfile}>
               <IonIcon icon={search} />
             </IonButton>
           </IonToolbar>
@@ -66,6 +77,11 @@ const App: React.FC <{ isAuthenticated: boolean }> = ({ isAuthenticated }) => {
           {isAuthenticated ? (
             <IonTabs>
               <IonRouterOutlet>
+
+              <Route path="/skill-swap" component={SkillSwapPage} exact />
+              <Route path="/profile/:uid" component={UserProfilePage} exact />
+              <Redirect from="/" to="/skill-swap" exact />
+
                 <Route exact path="/" component={HomePage} />
                 <Route exact path="/profile" component={UserProfilePage} />
                 <Route exact path="/events" component={EventsPage} />
@@ -88,7 +104,7 @@ const App: React.FC <{ isAuthenticated: boolean }> = ({ isAuthenticated }) => {
                   <IonIcon icon={chatbubbleEllipses} />
                   <IonLabel>Chat</IonLabel>
                 </IonTabButton>
-                <IonTabButton tab='Profile' href='/profile'>
+                <IonTabButton tab='Profile' href={uid ? `/profile/${uid}` : '#'}>
                   <IonIcon icon={person} />
                   <IonLabel>Profile</IonLabel>
                 </IonTabButton>

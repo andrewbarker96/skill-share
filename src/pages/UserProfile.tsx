@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { RouteComponentProps } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { firestore, auth } from '../../util/firebase';
 import { doc, getDoc } from 'firebase/firestore';
-import { IonCol, IonContent, IonGrid, IonImg, IonInput, IonLabel, IonPage, IonRow, IonText } from '@ionic/react';
-
+import { IonCol, IonContent, IonGrid, IonImg, IonPage, IonRow, IonText } from '@ionic/react';
 
 const UserProfilePage: React.FC = () => {
   const [profile, setProfile] = useState<any>({});
-  const uid = auth.currentUser?.uid;
+  const { uid } = useParams<{ uid: string }>();
+  //const uid = auth.currentUser?.uid;
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -27,6 +27,30 @@ const UserProfilePage: React.FC = () => {
     fetchProfile();
   }, [uid]);
 
+  const renderSkills = (skills: any) => {
+    if (!skills) return null;
+
+    return Object.keys(skills).map((category) => (
+      <div key={category}>
+        <IonText className='ion-text-center'>
+          <h2>{category} Skills</h2>
+        </IonText>
+        {Object.keys(skills[category]).map((subcategory) => (
+          <div key={subcategory}>
+            <IonText className='ion-text-center'>
+              <h3>{subcategory}</h3>
+            </IonText>
+            <ul>
+              {(skills[category][subcategory] as string[]).map((skill, index) => (
+                <li key={index}>{skill}</li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+    ));
+  };
+
   return (
     <IonPage>
       <IonContent className='ion-padding'>
@@ -42,6 +66,7 @@ const UserProfilePage: React.FC = () => {
         <IonText className='ion-text-center'>
           <p>{profile.profileDescription}</p>
         </IonText>
+        {renderSkills(profile.skillsOffered)}
         <IonGrid className='form'>
           <IonRow>
             <IonCol size='12'>

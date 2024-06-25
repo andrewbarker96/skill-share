@@ -1,9 +1,10 @@
 import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonImg, IonText, IonCardContent, IonButton, IonModal, IonIcon, IonButtons, IonGrid, IonRow, IonCol, IonFabButton, IonSkeletonText } from '@ionic/react';
 import { person } from 'ionicons/icons';
+import { firestore, auth } from '../../util/firebase';
 
 
 const HomePage: React.FC = () => {
-
+  const uid = auth.currentUser?.uid;
 
   return (
     <IonPage>
@@ -14,7 +15,7 @@ const HomePage: React.FC = () => {
               <IonImg src='https://firebasestorage.googleapis.com/v0/b/skill-share-791ad.appspot.com/o/SkillSwap-Horizontal.png?alt=media&token=b1ac2ccd-0de3-4997-b50a-6ee7a07580a2' alt='SkillSwap Logo' style={{ height: '50px', marginBottom: '5%', float: 'left' }} />
             </IonCol>
             <IonCol size='6'>
-              <IonFabButton color='light' style={{ float: 'right' }}>
+              <IonFabButton color='light' style={{ float: 'right' }} href='/profile/:uid'>
                 <IonIcon icon={person} />
               </IonFabButton>
             </IonCol>
