@@ -67,10 +67,10 @@ const IndividualChat: React.FC = () => {
 
               // Fetch target user's profile to get the username
               const userProfile = await getUserProfile(otherUserId);
-              console.log("Fetched user data: ", userProfile);
+              // console.log("Fetched user data: ", userProfile);
               setUsername(userProfile.username);
               setProfileImage(userProfile.profileImage);
-              console.log("Profile Picture URL:", userProfile.profileImage);
+              // console.log("Profile Picture URL:", userProfile.profileImage);
             }
 
             // Set up real-time listener for messages
