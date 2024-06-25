@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./chat.css";
-import { Timestamp} from 'firebase/firestore';
+import { Timestamp } from 'firebase/firestore';
 import {
   IonButton,
   IonButtons,
@@ -16,7 +16,7 @@ import {
   IonLabel,
   IonItemDivider,
 } from "@ionic/react";
-import { camera, checkmarkOutline, happy, send, checkmarkSharp } from "ionicons/icons";
+import { camera, checkmarkOutline, happy, send, checkmarkSharp, checkmark, checkmarkDone, checkmarkDoneCircle, checkmarkCircle } from "ionicons/icons";
 import EmojiPicker from "emoji-picker-react";
 import {
   sendMessage,
@@ -121,45 +121,46 @@ const IndividualChat: React.FC = () => {
         <UserInfo username={username} profilePicture={profileImage} />{" "}
         {/* Pass the target user's username */}
       </div>
-      <IonContent className="chat-content textBg" scrollY={true} id="texts">
+      <IonContent scrollY={true} id="texts">
         {messages.map((message) => {
           const messageClass =
-            message.senderId === currentUserId ? "sender" : "from";
+            message.senderId === currentUserId ? "message-sender" : "message-target";
 
           const textClass =
-            message.senderId === currentUserId ? "sender-text" : "from-text";
+            message.senderId === currentUserId ? "message-sender-text" : "message-target-text";
 
           return (
-            <IonItem
-              lines="none"
+            <div
               className={`message ${messageClass}`}
               key={message.id}
-              
+
             >
               <IonText className={textClass}>{message.message}</IonText>
-              <IonText className={'wrapper'}>
-
-  
-                {messageClass === "sender" && message.status !== 'receivedReply' && (
-                  <IonText className="message-status ">
-                    {message.status === 'sent' && <IonIcon icon={checkmarkOutline} className="checkmark" />}
-                    {message.status === 'delivered' && (
+              <IonText>
+                {messageClass === "message-sender" && message.status !== 'receivedReply' && (
+                  <IonText color={'medium'} className="message-status ">
+                    {message.status === 'sent' &&
                       <>
-                        
-                        <IonIcon icon={checkmarkOutline} className="checkmark" />
-                        <IonIcon icon={checkmarkOutline} className="checkmark"  />
+                        <IonText>Sent</IonText>
+                        <IonIcon icon={checkmark} />
                       </>
-                    )}
-                    {message.status === 'read' && (
+                    }
+                    {message.status === 'delivered' &&
                       <>
-                        <IonIcon icon={checkmarkOutline} className="checkmark read" />
-                        <IonIcon icon={checkmarkOutline} className="checkmark read" />
+                        <IonText color={'primary'}>Delivered</IonText>
+                        <IonIcon icon={checkmark} />
+                      </>}
+                    {message.status === 'read' &&
+                      <>
+                        <IonText>Read</IonText>
+                        <IonIcon icon={checkmarkCircle} />
                       </>
-                    )}
+                    }
                   </IonText>
-                )}</IonText>
-            </IonItem>
-            
+                )}
+              </IonText>
+            </div>
+
           );
         })}
       </IonContent>
