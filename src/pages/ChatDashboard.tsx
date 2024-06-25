@@ -43,7 +43,7 @@ const ChatDashboard: React.FC = () => {
         ...doc.data()
       })) as Chat[];
 
-      console.log(chatData.length);
+      // console.log(chatData.length);
 
       for (const chat of chatData) {
         const messagesQuery = query(
@@ -53,12 +53,12 @@ const ChatDashboard: React.FC = () => {
         );
       
         for (const chat of chatData) {
-          console.log(chat)
+          // console.log(chat)
         }
         const messageSnapshot = await getDocs(messagesQuery);
         if (!messageSnapshot.empty) {
           chat.lastMessage = messageSnapshot.docs[0].data().message;
-          console.log(chat.lastMessage); // Adjust if the field name is different
+          // console.log(chat.lastMessage); // Adjust if the field name is different
           
         } else {
           chat.lastMessage = 'No messages yet';
