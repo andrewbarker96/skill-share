@@ -143,14 +143,13 @@ const ChatDashboard: React.FC = () => {
       <IonContent>
         {filteredChats.map(chat => (
           <IonItem className='chatItem' lines='none' key={chat.id} routerLink={`/chats/${chat.id}`}>
-            <IonAvatar slot='start'>
-              <IonImg className='profileImage' src={profileImages[chat.users.find((userId: string) => userId !== auth.currentUser?.uid) || '']} />
+            <IonAvatar className='avatar' slot='start'>
+              <IonImg src={profileImages[chat.users.find((userId: string) => userId !== auth.currentUser?.uid) || '']} />
             </IonAvatar>
             <IonLabel>
               <IonText><h2>{getChatName(chat)}</h2></IonText>
               <IonText color={'medium'}><p>{chat.lastMessage}</p></IonText>
             </IonLabel>
-            <IonIcon icon={chevronForward} color={'light'} slot='end' />
           </IonItem>
         ))}
       </IonContent>

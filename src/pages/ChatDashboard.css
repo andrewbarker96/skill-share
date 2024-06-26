@@ -12,9 +12,10 @@
   height: 100%;
 }
 
-.profileImage  {
+.avatar  {
   image-rendering: optimizeSpeed;
-  
+  width:60px;
+  height:60px;
 }
 
 .content{
