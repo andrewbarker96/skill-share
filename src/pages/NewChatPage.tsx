@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
-import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonInput, IonButton, IonList, IonItem, IonLabel, IonButtons, IonSearchbar } from '@ionic/react';
+import { IonPage, IonCol, IonHeader, IonToolbar, IonTitle, IonThumbnail, IonContent, IonInput, IonButton, IonList, IonItem, IonLabel, IonButtons, IonSearchbar, IonAvatar } from '@ionic/react';
 import { createChat, findUsers } from '../services/messageService';
 import { endAt } from 'firebase/firestore';
+import { useHistory } from 'react-router-dom';
 
 const NewChatPage: React.FC = () => {
   const [search, setSearch] = useState<string>('');
   const [users, setUsers] = useState<any[]>([]);
   const [error, setError] = useState<string | null>(null);
+  const history = useHistory();
+  
 
   const handleSearch = async () => {
     setError(null);
@@ -14,6 +17,7 @@ const NewChatPage: React.FC = () => {
       const foundUsers = await findUsers(search);
       if (foundUsers.length === 0) {
         setError("No users found with the provided search criteria");
+        console.log("not found")
       }
       setUsers(foundUsers);
     } catch (error) {
@@ -22,10 +26,13 @@ const NewChatPage: React.FC = () => {
     }
   };
 
+  
+
   const handleCreateChat = async (userUID: string) => {
     try {
       const chatDocId = await createChat(userUID);
       // window.location.href = `/chat/${chatDocId}`;
+      history.push(`/chats/${chatDocId}`); 
       return chatDocId;
     } catch (error) {
       console.error("Error creating chat:", error);
@@ -43,10 +50,13 @@ const NewChatPage: React.FC = () => {
         <IonList>
           {users.map(user => (
             <IonItem key={user.UID} onClick={() => handleCreateChat(user.UID)}>
+              <IonAvatar slot = "start"><img src = {user.profileImage} alt = {user.username}></img></IonAvatar>
+              
+              <IonCol>
               <IonLabel>
                 <h2>{user.username}</h2>
                 <p>{user.email}</p>
-              </IonLabel>
+              </IonLabel></IonCol>
             </IonItem>
           ))}
         </IonList>

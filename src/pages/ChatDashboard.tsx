@@ -28,6 +28,7 @@ const ChatDashboard: React.FC = () => {
   const [chats, setChats] = useState<Chat[]>([]);
   const [usernames, setUsernames] = useState<{ [key: string]: string }>({}); // Store usernames
   const [profileImages, setProfileImages] = useState<{ [key: string]: string }>({}); // Store profile images
+  const [search, setSearch] = useState<string>(''); // State for search query
 
   useEffect(() => {
     const currentUserUID = auth.currentUser?.uid;
@@ -114,32 +115,45 @@ const ChatDashboard: React.FC = () => {
     return otherUsernames.join(', ');
   };
 
+
+    // Filter chats based on the search query
+    const filteredChats = chats.filter(chat => {
+      const chatName = getChatName(chat).toLowerCase();
+      return chatName.includes(search.toLowerCase());
+    });
   
 
   return (
     <IonPage>
-      
-      <IonContent scrollY={true} style={{ flexGrow: '1' }} className = 'ion-padding'>
-        <h1>Chats</h1>
-        <IonSearchbar />
-              <IonList>
-          {chats.map(chat => (
-            <IonItem lines='none' key={chat.id} routerLink={`/chats/${chat.id}`} className = "chatItem">
-              <IonImg style = {{ height: '100px', width: '100px' }}  className = 'profileImage' src={profileImages[chat.users.find((userId: string) => userId !== auth.currentUser?.uid) || ''] } />
-              <IonLabel className = "chatItemContent">
-                <h2>{getChatName(chat)}</h2>
-                <p>{chat.lastMessage}</p>
-              </IonLabel>
-            </IonItem>
-          ))}
-        </IonList>
-        <IonFab slot='fixed' vertical='bottom' horizontal='end' style={{ margin: 15 }}>
-          <IonFabButton routerLink='/chat/new'>
-            <IonIcon icon={add} />
-          </IonFabButton>
-        </IonFab>
-      </IonContent>
-    </IonPage>
+    <IonContent scrollY={true} style={{ flexGrow: '1' }} className='ion-padding'>
+      <h1>Chats</h1>
+      <IonSearchbar
+        placeholder='Search'
+        value={search}
+        onIonInput={(e) => setSearch(e.detail.value!)}
+      />
+      <IonList>
+        {filteredChats.map(chat => (
+          <IonItem lines='none' key={chat.id} routerLink={`/chats/${chat.id}`} className='chatItem'>
+            <IonImg
+              style={{ height: '100px', width: '100px' }}
+              className='profileImage'
+              src={profileImages[chat.users.find((userId: string) => userId !== auth.currentUser?.uid) || '']}
+            />
+            <IonLabel className='chatItemContent'>
+              <h2>{getChatName(chat)}</h2>
+              <p>{chat.lastMessage}</p>
+            </IonLabel>
+          </IonItem>
+        ))}
+      </IonList>
+      <IonFab slot='fixed' vertical='bottom' horizontal='end' style={{ margin: 15 }}>
+        <IonFabButton routerLink='/chat/new'>
+          <IonIcon icon={add} />
+        </IonFabButton>
+      </IonFab>
+    </IonContent>
+  </IonPage>
   );
 };
 

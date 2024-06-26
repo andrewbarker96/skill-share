@@ -1,0 +1,34 @@
+.ion-card .ios {
+    width:100%!important;
+}
+
+
+ion-item .item-inner {
+border-bottom:0!important;
+}
+
+
+.acc-group {
+    width:100%;
+}
+
+
+ion-card h2 {
+    margin-bottom: 10px!important;
+    font-size:1.2rem!important;
+    font-weight:700;
+}
+
+
+ion-accordion-group {
+    margin-bottom: 25px!important;
+}
+
+ion-accordion  ion-item[slot='header'] {
+    --color:white;
+    --background:rgb(39, 89, 175); 
+}
+
+ion-accordion.accordion-expanded ion-item[slot='header'] {
+    --background:#53aee6!important;
+}
