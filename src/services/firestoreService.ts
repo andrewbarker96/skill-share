@@ -40,7 +40,7 @@ export const getUserProfile = async (uid: string): Promise<ProfileData> => {
   }
 
   const profileData = userSnapshot.data() as ProfileData;
-  console.log("Fetched user profile data:", profileData); // Add this line
+  // console.log("Fetched user profile data:", profileData); // Add this line
   return profileData;
 };
 

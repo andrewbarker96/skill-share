@@ -48,7 +48,7 @@ import './theme/variables.css';
 
 setupIonicReact();
 
-const App: React.FC <{ isAuthenticated: boolean }> = ({ isAuthenticated }) => {
+const App: React.FC<{ isAuthenticated: boolean }> = ({ isAuthenticated }) => {
   const uid = auth.currentUser?.uid;
   console.log(uid)
   const history = useHistory();
@@ -81,8 +81,7 @@ const App: React.FC <{ isAuthenticated: boolean }> = ({ isAuthenticated }) => {
 
               <Route path="/skill-swap" component={SkillSwapPage} exact />
               <Route path="/profile/:uid" component={UserProfilePage} exact />
-              
-
+                <Redirect from="/" to="/skill-swap" exact />
                 <Route exact path="/" component={HomePage} />
                 <Route exact path="/profile" component={UserProfilePage} />
                 <Route exact path="/events" component={EventsPage} />
