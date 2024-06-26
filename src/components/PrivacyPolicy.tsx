@@ -1,14 +1,18 @@
 import React from 'react';
-import { IonContent, IonPage, IonHeader, IonToolbar, IonTitle, IonText, IonList, IonItem, IonLabel, IonButton, IonButtons, IonIcon } from '@ionic/react';
+import { IonContent, IonPage, IonHeader, IonToolbar, IonTitle, IonText, IonLabel, IonButton, IonButtons, IonIcon } from '@ionic/react';
 import { arrowBack } from 'ionicons/icons';
 
-const PrivacyPolicy = () => {
+interface PrivacyPolicyProps {
+  dismissModal: () => void;
+}
+
+const PrivacyPolicy: React.FC<PrivacyPolicyProps> = ({ dismissModal }) => {
   return (
     <IonPage>
       <IonHeader>
         <IonToolbar>
             <IonButtons slot='start'>
-                <IonButton size='large' slot='icon-only' fill='clear' routerLink='/create-profile'>
+                <IonButton size='large' slot='icon-only' fill='clear' onClick={dismissModal}>
                 <IonIcon icon={arrowBack} />
                 </IonButton>
             </IonButtons>
@@ -44,18 +48,18 @@ const PrivacyPolicy = () => {
               </span>
             </span>
           </div>
-          <IonList>
-            <IonItem style={{ lineHeight: '1.5', fontSize: '15px', color: 'rgb(89, 89, 89)' }}>
-              <IonLabel>
+          <ul>
+            <li style={{ lineHeight: '1.5', fontSize: '15px', color: 'rgb(89, 89, 89)' }}>
+              <IonText>
                 <span>Download and use our mobile application (Skill Swap), or any other application of ours that links to this privacy notice</span>
-              </IonLabel>
-            </IonItem>
-            <IonItem style={{ lineHeight: '1.5', fontSize: '15px', color: 'rgb(89, 89, 89)' }}>
-              <IonLabel>
+              </IonText>
+            </li>
+            <li style={{ lineHeight: '1.5', fontSize: '15px', color: 'rgb(89, 89, 89)' }}>
+              <IonText>
                 <span>Engage with us in other related ways, including any sales, marketing, or events</span>
-              </IonLabel>
-            </IonItem>
-          </IonList>
+              </IonText>
+            </li>
+          </ul>
           <div style={{ lineHeight: '1.5', fontSize: '15px', color: 'rgb(127, 127, 127)' }}>
             <strong>Questions or concerns? </strong>Reading this privacy notice will help you understand your privacy rights and choices. If you do not agree with our policies and practices, please do not use our Services. If you still have any questions or concerns, please contact us at <span>ablack5@live.maryville.edu</span>.
           </div>
@@ -119,38 +123,38 @@ const PrivacyPolicy = () => {
             <span style={{ fontSize: '26px' }}><span>TABLE OF CONTENTS</span></span>
           </div>
           <div><br /></div>
-          <IonList>
-            <IonItem>
-              <IonLabel style={{ fontSize: '15px', color: 'rgb(89, 89, 89)' }}>1. WHAT INFORMATION DO WE COLLECT?</IonLabel>
-            </IonItem>
-            <IonItem>
-              <IonLabel style={{ fontSize: '15px', color: 'rgb(89, 89, 89)' }}>2. HOW DO WE PROCESS YOUR INFORMATION?</IonLabel>
-            </IonItem>
-            <IonItem>
-              <IonLabel style={{ fontSize: '15px', color: 'rgb(89, 89, 89)' }}>3. WHEN AND WITH WHOM DO WE SHARE YOUR PERSONAL INFORMATION?</IonLabel>
-            </IonItem>
-            <IonItem>
-              <IonLabel style={{ fontSize: '15px', color: 'rgb(89, 89, 89)' }}>4. HOW DO WE KEEP YOUR INFORMATION SAFE?</IonLabel>
-            </IonItem>
-            <IonItem>
-              <IonLabel style={{ fontSize: '15px', color: 'rgb(89, 89, 89)' }}>5. WHAT ARE YOUR PRIVACY RIGHTS?</IonLabel>
-            </IonItem>
-            <IonItem>
-              <IonLabel style={{ fontSize: '15px', color: 'rgb(89, 89, 89)' }}>6. CONTROLS FOR DO-NOT-TRACK FEATURES</IonLabel>
-            </IonItem>
-            <IonItem>
-              <IonLabel style={{ fontSize: '15px', color: 'rgb(89, 89, 89)' }}>7. DO CALIFORNIA RESIDENTS HAVE SPECIFIC PRIVACY RIGHTS?</IonLabel>
-            </IonItem>
-            <IonItem>
-              <IonLabel style={{ fontSize: '15px', color: 'rgb(89, 89, 89)' }}>8. DO WE MAKE UPDATES TO THIS NOTICE?</IonLabel>
-            </IonItem>
-            <IonItem>
-              <IonLabel style={{ fontSize: '15px', color: 'rgb(89, 89, 89)' }}>9. HOW CAN YOU CONTACT US ABOUT THIS NOTICE?</IonLabel>
-            </IonItem>
-            <IonItem>
-              <IonLabel style={{ fontSize: '15px', color: 'rgb(89, 89, 89)' }}>10. HOW CAN YOU REVIEW, UPDATE, OR DELETE THE DATA WE COLLECT FROM YOU?</IonLabel>
-            </IonItem>
-          </IonList>
+          <ul>
+            <li>
+              <IonText style={{ fontSize: '15px', color: 'rgb(89, 89, 89)' }}>1. WHAT INFORMATION DO WE COLLECT?</IonText>
+            </li>
+            <li>
+              <IonText style={{ fontSize: '15px', color: 'rgb(89, 89, 89)' }}>2. HOW DO WE PROCESS YOUR INFORMATION?</IonText>
+            </li>
+            <li>
+              <IonText style={{ fontSize: '15px', color: 'rgb(89, 89, 89)' }}>3. WHEN AND WITH WHOM DO WE SHARE YOUR PERSONAL INFORMATION?</IonText>
+            </li>
+            <li>
+              <IonText style={{ fontSize: '15px', color: 'rgb(89, 89, 89)' }}>4. HOW DO WE KEEP YOUR INFORMATION SAFE?</IonText>
+            </li>
+            <li>
+              <IonText style={{ fontSize: '15px', color: 'rgb(89, 89, 89)' }}>5. WHAT ARE YOUR PRIVACY RIGHTS?</IonText>
+            </li>
+            <li>
+              <IonText style={{ fontSize: '15px', color: 'rgb(89, 89, 89)' }}>6. CONTROLS FOR DO-NOT-TRACK FEATURES</IonText>
+            </li>
+            <li>
+              <IonText style={{ fontSize: '15px', color: 'rgb(89, 89, 89)' }}>7. DO CALIFORNIA RESIDENTS HAVE SPECIFIC PRIVACY RIGHTS?</IonText>
+            </li>
+            <li>
+              <IonText style={{ fontSize: '15px', color: 'rgb(89, 89, 89)' }}>8. DO WE MAKE UPDATES TO THIS NOTICE?</IonText>
+            </li>
+            <li>
+              <IonText style={{ fontSize: '15px', color: 'rgb(89, 89, 89)' }}>9. HOW CAN YOU CONTACT US ABOUT THIS NOTICE?</IonText>
+            </li>
+            <li>
+              <IonText style={{ fontSize: '15px', color: 'rgb(89, 89, 89)' }}>10. HOW CAN YOU REVIEW, UPDATE, OR DELETE THE DATA WE COLLECT FROM YOU?</IonText>
+            </li>
+          </ul>
           <div><br /></div>
           <div id="personalinfo" style={{ lineHeight: '1.5' }}>
             <strong><span style={{ fontSize: '15px' }}>1. WHAT INFORMATION DO WE COLLECT?</span></strong>
@@ -171,18 +175,18 @@ const PrivacyPolicy = () => {
           <div style={{ lineHeight: '1.5', fontSize: '15px', color: 'rgb(89, 89, 89)' }}>
             <strong>Personal Information Provided by You.</strong> The personal information that we collect depends on the context of your interactions with us and the Services, the choices you make, and the products and features you use. The personal information we collect may include the following:
           </div>
-          <IonList>
-            <IonItem style={{ lineHeight: '1.5', fontSize: '15px', color: 'rgb(89, 89, 89)' }}>
-              <IonLabel>
+          <ul>
+            <li style={{ lineHeight: '1.5', fontSize: '15px', color: 'rgb(89, 89, 89)' }}>
+              <IonText>
                 <span>names</span>
-              </IonLabel>
-            </IonItem>
-            <IonItem style={{ lineHeight: '1.5', fontSize: '15px', color: 'rgb(89, 89, 89)' }}>
-              <IonLabel>
+              </IonText>
+            </li>
+            <li style={{ lineHeight: '1.5', fontSize: '15px', color: 'rgb(89, 89, 89)' }}>
+              <IonText>
                 <span>email addresses</span>
-              </IonLabel>
-            </IonItem>
-          </IonList>
+              </IonText>
+            </li>
+          </ul>
           <div style={{ lineHeight: '1.5', fontSize: '15px', color: 'rgb(89, 89, 89)' }}>
             <strong>Sensitive Information.</strong> We do not process sensitive information.
           </div>
@@ -212,23 +216,23 @@ const PrivacyPolicy = () => {
           <div style={{ lineHeight: '1.5' }}>
             <strong><span style={{ fontSize: '15px' }}>The information we collect includes:</span></strong>
           </div>
-          <IonList>
-            <IonItem style={{ lineHeight: '1.5', fontSize: '15px', color: 'rgb(89, 89, 89)' }}>
-              <IonLabel>
+          <ul>
+            <li style={{ lineHeight: '1.5', fontSize: '15px', color: 'rgb(89, 89, 89)' }}>
+              <IonText>
                 <strong>Log and Usage Data.</strong> Log and usage data is service-related, diagnostic, usage, and performance information our servers automatically collect when you access or use our Services and which we record in log files. Depending on how you interact with us, this log data may include your IP address, device information, browser type, and settings and information about your activity in the Services (such as the date/time stamps associated with your usage, pages and files viewed, searches, and other actions you take such as which features you use), device event information (such as system activity, error reports (sometimes called 'crash dumps'), and hardware settings).
-              </IonLabel>
-            </IonItem>
-            <IonItem style={{ lineHeight: '1.5', fontSize: '15px', color: 'rgb(89, 89, 89)' }}>
-              <IonLabel>
+              </IonText>
+            </li>
+            <li style={{ lineHeight: '1.5', fontSize: '15px', color: 'rgb(89, 89, 89)' }}>
+              <IonText>
                 <strong>Device Data.</strong> We collect device data such as information about your computer, phone, tablet, or other device you use to access the Services. Depending on the device used, this device data may include information such as your IP address (or proxy server), device and application identification numbers, location, browser type, hardware model, Internet service provider and/or mobile carrier, operating system, and system configuration information.
-              </IonLabel>
-            </IonItem>
-            <IonItem style={{ lineHeight: '1.5', fontSize: '15px', color: 'rgb(89, 89, 89)' }}>
-              <IonLabel>
+              </IonText>
+            </li>
+            <li style={{ lineHeight: '1.5', fontSize: '15px', color: 'rgb(89, 89, 89)' }}>
+              <IonText>
                 <strong>Location Data.</strong> We collect location data such as information about your device's location, which can be either precise or imprecise. How much information we collect depends on the type of settings of the device you use to access the Services. For example, we may use GPS and other technologies to collect geolocation data that tells us your current location (based on your IP address). You can opt out of allowing us to collect this information either by refusing access to the information or by disabling your Location setting on your device. Note, however, if you choose to opt out, you may not be able to use certain aspects of the Services.
-              </IonLabel>
-            </IonItem>
-          </IonList>
+              </IonText>
+            </li>
+          </ul>
           <div><br /></div>
           <div><br /></div>
           <div style={{ lineHeight: '1.5' }}>
@@ -242,73 +246,73 @@ const PrivacyPolicy = () => {
           <div style={{ lineHeight: '1.5', fontSize: '15px', color: 'rgb(89, 89, 89)' }}>
             We process your personal information for a variety of reasons, depending on how you interact with our Services, including:
           </div>
-          <IonList>
-            <IonItem style={{ lineHeight: '1.5', fontSize: '15px', color: 'rgb(89, 89, 89)' }}>
-              <IonLabel>
+          <ul>
+            <li style={{ lineHeight: '1.5', fontSize: '15px', color: 'rgb(89, 89, 89)' }}>
+              <IonText>
                 <strong>To facilitate account creation and authentication and otherwise manage user accounts.</strong> We may process your information so you can create and log in to your account, as well as keep your account in working order.
-              </IonLabel>
-            </IonItem>
-            <IonItem style={{ lineHeight: '1.5', fontSize: '15px', color: 'rgb(89, 89, 89)' }}>
-              <IonLabel>
+              </IonText>
+            </li>
+            <li style={{ lineHeight: '1.5', fontSize: '15px', color: 'rgb(89, 89, 89)' }}>
+              <IonText>
                 <strong>To deliver and facilitate delivery of services to the user.</strong> We may process your information to provide you with the requested service.
-              </IonLabel>
-            </IonItem>
-            <IonItem style={{ lineHeight: '1.5', fontSize: '15px', color: 'rgb(89, 89, 89)' }}>
-              <IonLabel>
+              </IonText>
+            </li>
+            <li style={{ lineHeight: '1.5', fontSize: '15px', color: 'rgb(89, 89, 89)' }}>
+              <IonText>
                 <strong>To respond to user inquiries/offer support to users.</strong> We may process your information to respond to your inquiries and solve any potential issues you might have with the requested service.
-              </IonLabel>
-            </IonItem>
-            <IonItem style={{ lineHeight: '1.5', fontSize: '15px', color: 'rgb(89, 89, 89)' }}>
-              <IonLabel>
+              </IonText>
+            </li>
+            <li style={{ lineHeight: '1.5', fontSize: '15px', color: 'rgb(89, 89, 89)' }}>
+              <IonText>
                 <strong>To send administrative information to you.</strong> We may process your information to send you details about our products and services, changes to our terms and policies, and other similar information.
-              </IonLabel>
-            </IonItem>
-            <IonItem style={{ lineHeight: '1.5', fontSize: '15px', color: 'rgb(89, 89, 89)' }}>
-              <IonLabel>
+              </IonText>
+            </li>
+            <li style={{ lineHeight: '1.5', fontSize: '15px', color: 'rgb(89, 89, 89)' }}>
+              <IonText>
                 <strong>To fulfill and manage your orders.</strong> We may process your information to fulfill and manage your orders, payments, returns, and exchanges made through the Services.
-              </IonLabel>
-            </IonItem>
-            <IonItem style={{ lineHeight: '1.5', fontSize: '15px', color: 'rgb(89, 89, 89)' }}>
-              <IonLabel>
+              </IonText>
+            </li>
+            <li style={{ lineHeight: '1.5', fontSize: '15px', color: 'rgb(89, 89, 89)' }}>
+              <IonText>
                 <strong>To enable user-to-user communications.</strong> We may process your information if you choose to use any of our offerings that allow for communication with another user.
-              </IonLabel>
-            </IonItem>
-            <IonItem style={{ lineHeight: '1.5', fontSize: '15px', color: 'rgb(89, 89, 89)' }}>
-              <IonLabel>
+              </IonText>
+            </li>
+            <li style={{ lineHeight: '1.5', fontSize: '15px', color: 'rgb(89, 89, 89)' }}>
+              <IonText>
                 <strong>To request feedback.</strong> We may process your information when necessary to request feedback and to contact you about your use of our Services.
-              </IonLabel>
-            </IonItem>
-            <IonItem style={{ lineHeight: '1.5', fontSize: '15px', color: 'rgb(89, 89, 89)' }}>
-              <IonLabel>
+              </IonText>
+            </li>
+            <li style={{ lineHeight: '1.5', fontSize: '15px', color: 'rgb(89, 89, 89)' }}>
+              <IonText>
                 <strong>To send you marketing and promotional communications.</strong> We may process the personal information you send to us for our marketing purposes, if this is in accordance with your marketing preferences. You can opt out of our marketing emails at any time. For more information, see "WHAT ARE YOUR PRIVACY RIGHTS?" below).
-              </IonLabel>
-            </IonItem>
-            <IonItem style={{ lineHeight: '1.5', fontSize: '15px', color: 'rgb(89, 89, 89)' }}>
-              <IonLabel>
+              </IonText>
+            </li>
+            <li style={{ lineHeight: '1.5', fontSize: '15px', color: 'rgb(89, 89, 89)' }}>
+              <IonText>
                 <strong>To deliver targeted advertising to you.</strong> We may process your information to develop and display personalized content and advertising tailored to your interests, location, and more. For more information see our <a href="https://www.termsfeed.com/live/ff8da558-66f2-45d5-bf38-d55b3a73a655" target="_blank" rel="noopener">Cookie Notice</a>.
-              </IonLabel>
-            </IonItem>
-            <IonItem style={{ lineHeight: '1.5', fontSize: '15px', color: 'rgb(89, 89, 89)' }}>
-              <IonLabel>
+              </IonText>
+            </li>
+            <li style={{ lineHeight: '1.5', fontSize: '15px', color: 'rgb(89, 89, 89)' }}>
+              <IonText>
                 <strong>To protect our Services.</strong> We may process your information as part of our efforts to keep our Services safe and secure, including fraud monitoring and prevention.
-              </IonLabel>
-            </IonItem>
-            <IonItem style={{ lineHeight: '1.5', fontSize: '15px', color: 'rgb(89, 89, 89)' }}>
-              <IonLabel>
+              </IonText>
+            </li>
+            <li style={{ lineHeight: '1.5', fontSize: '15px', color: 'rgb(89, 89, 89)' }}>
+              <IonText>
                 <strong>To identify usage trends.</strong> We may process information about how you use our Services to better understand how they are being used so we can improve them.
-              </IonLabel>
-            </IonItem>
-            <IonItem style={{ lineHeight: '1.5', fontSize: '15px', color: 'rgb(89, 89, 89)' }}>
-              <IonLabel>
+              </IonText>
+            </li>
+            <li style={{ lineHeight: '1.5', fontSize: '15px', color: 'rgb(89, 89, 89)' }}>
+              <IonText>
                 <strong>To determine the effectiveness of our marketing and promotional campaigns.</strong> We may process your information to better understand how to provide marketing and promotional campaigns that are most relevant to you.
-              </IonLabel>
-            </IonItem>
-            <IonItem style={{ lineHeight: '1.5', fontSize: '15px', color: 'rgb(89, 89, 89)' }}>
-              <IonLabel>
+              </IonText>
+            </li>
+            <li style={{ lineHeight: '1.5', fontSize: '15px', color: 'rgb(89, 89, 89)' }}>
+              <IonText>
                 <strong>To save or protect an individual's vital interest.</strong> We may process your information when necessary to save or protect an individual’s vital interest, such as to prevent harm.
-              </IonLabel>
-            </IonItem>
-          </IonList>
+              </IonText>
+            </li>
+          </ul>
           <div><br /></div>
           <div><br /></div>
           <div style={{ lineHeight: '1.5' }}>
@@ -322,23 +326,23 @@ const PrivacyPolicy = () => {
           <div style={{ lineHeight: '1.5', fontSize: '15px', color: 'rgb(89, 89, 89)' }}>
             We may need to share your personal information in the following situations:
           </div>
-          <IonList>
-            <IonItem style={{ lineHeight: '1.5', fontSize: '15px', color: 'rgb(89, 89, 89)' }}>
-              <IonLabel>
+          <ul>
+            <li style={{ lineHeight: '1.5', fontSize: '15px', color: 'rgb(89, 89, 89)' }}>
+              <IonText>
                 <strong>Business Transfers.</strong> We may share or transfer your information in connection with, or during negotiations of, any merger, sale of company assets, financing, or acquisition of all or a portion of our business to another company.
-              </IonLabel>
-            </IonItem>
-            <IonItem style={{ lineHeight: '1.5', fontSize: '15px', color: 'rgb(89, 89, 89)' }}>
-              <IonLabel>
+              </IonText>
+            </li>
+            <li style={{ lineHeight: '1.5', fontSize: '15px', color: 'rgb(89, 89, 89)' }}>
+              <IonText>
                 <strong>Affiliates.</strong> We may share your information with our affiliates, in which case we will require those affiliates to honor this privacy notice. Affiliates include our parent company and any subsidiaries, joint venture partners, or other companies that we control or that are under common control with us.
-              </IonLabel>
-            </IonItem>
-            <IonItem style={{ lineHeight: '1.5', fontSize: '15px', color: 'rgb(89, 89, 89)' }}>
-              <IonLabel>
+              </IonText>
+            </li>
+            <li style={{ lineHeight: '1.5', fontSize: '15px', color: 'rgb(89, 89, 89)' }}>
+              <IonText>
                 <strong>Business Partners.</strong> We may share your information with our business partners to offer you certain products, services, or promotions.
-              </IonLabel>
-            </IonItem>
-          </IonList>
+              </IonText>
+            </li>
+          </ul>
           <div><br /></div>
           <div style={{ lineHeight: '1.5' }}><br /></div>
           <div style={{ lineHeight: '1.5' }}>
@@ -384,18 +388,18 @@ const PrivacyPolicy = () => {
           <div style={{ lineHeight: '1.5', fontSize: '15px', color: 'rgb(89, 89, 89)' }}>
             If you would at any time like to review or change the information in your account or terminate your account, you can:
           </div>
-          <IonList>
-            <IonItem style={{ lineHeight: '1.5', fontSize: '15px', color: 'rgb(89, 89, 89)' }}>
-              <IonLabel>
+          <ul>
+            <li style={{ lineHeight: '1.5', fontSize: '15px', color: 'rgb(89, 89, 89)' }}>
+              <IonText>
                 Log in to your account settings and update your user account.
-              </IonLabel>
-            </IonItem>
-            <IonItem style={{ lineHeight: '1.5', fontSize: '15px', color: 'rgb(89, 89, 89)' }}>
-              <IonLabel>
+              </IonText>
+            </li>
+            <li style={{ lineHeight: '1.5', fontSize: '15px', color: 'rgb(89, 89, 89)' }}>
+              <IonText>
                 Contact us using the contact information provided.
-              </IonLabel>
-            </IonItem>
-          </IonList>
+              </IonText>
+            </li>
+          </ul>
           <div><br /></div>
           <div style={{ lineHeight: '1.5', fontSize: '15px', color: 'rgb(89, 89, 89)' }}>
             Upon your request to terminate your account, we will deactivate or delete your account and information from our active databases. However, we may retain some information in our files to prevent fraud, troubleshoot problems, assist with any investigations, enforce our legal terms and/or comply with applicable legal requirements.
