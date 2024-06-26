@@ -32,6 +32,7 @@ import ChatDashboard from './pages/ChatDashboard';
 import NewChatPage from './pages/NewChatPage';
 import IndividualChat from './components/Messaging/chat/chat';
 import UpdateProfilePage from './pages/UpdateProfile';
+import PrivacyPolicy from './components/PrivacyPolicy';
 
 import '@ionic/react/css/core.css';
 import '@ionic/react/css/normalize.css';
@@ -47,8 +48,11 @@ import '@ionic/react/css/palettes/dark.system.css';
 import './theme/variables.css';
 
 setupIonicReact();
+interface AppProps {
+  isAuthenticated: boolean;
+}
 
-const App: React.FC<{ isAuthenticated: boolean }> = ({ isAuthenticated }) => {
+const App: React.FC<AppProps> = ({ isAuthenticated }) => {
   const uid = auth.currentUser?.uid;
   console.log(uid)
   const history = useHistory();
@@ -89,7 +93,7 @@ const App: React.FC<{ isAuthenticated: boolean }> = ({ isAuthenticated }) => {
                 <Route exact path="/chat" component={ChatDashboard} />
                 <Route exact path="/chat/new" component={NewChatPage} />
                 <Route exact path="/chats/:chatId" component={IndividualChat} />
-                <Route exact path="/update-profile" component={UpdateProfilePage} />
+                {/* <Route exact path="/update-profile" component={UpdateProfilePage} /> */}
                 <Redirect from="/" to="/skill-swap" exact /></Switch>
               </IonRouterOutlet>
               <IonTabBar slot='bottom'>
@@ -116,6 +120,7 @@ const App: React.FC<{ isAuthenticated: boolean }> = ({ isAuthenticated }) => {
               <Route exact path="/" component={LoginPage} />
               <Route exact path="/create-account" component={CreateAccountPage} />
               <Route exact path="/password-reset" component={ForgotPasswordPage} /></Switch>
+              <Route exact path="/privacy-policy" component={PrivacyPolicy} />
             </IonRouterOutlet>
           )}
         </IonReactRouter>
