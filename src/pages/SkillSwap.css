@@ -1,0 +1,9 @@
+.card {
+    display:flex;
+}
+
+
+.card-col {
+    display:flex;
+    flex-direction:column;
+}

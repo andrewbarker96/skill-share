@@ -1,13 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { RouteComponentProps } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 import { firestore, auth } from '../../util/firebase';
 import { doc, getDoc } from 'firebase/firestore';
-import { IonCol, IonContent, IonGrid, IonImg, IonInput, IonLabel, IonPage, IonRow, IonText } from '@ionic/react';
-
+import { IonCol, IonContent, IonGrid, IonImg, IonPage, IonRow, IonText, IonButton } from '@ionic/react';
+import { createChat } from '../services/messageService';
 
 const UserProfilePage: React.FC = () => {
   const [profile, setProfile] = useState<any>({});
-  const uid = auth.currentUser?.uid;
+  const { uid } = useParams<{ uid: string }>();
+  const history = useHistory();
+  const currentUserId = auth.currentUser?.uid;
+
+  console.log(uid)
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -16,9 +20,13 @@ const UserProfilePage: React.FC = () => {
         window.location.href = '/';
         return;
       }
-      const docRef = await getDoc(doc(firestore, 'userProfiles', uid));
-      if (docRef.exists()) {
-        setProfile(docRef.data());
+
+      const docRef = doc(firestore, 'userProfiles', uid);
+      const docSnap = await getDoc(docRef);
+
+      console.log(uid)
+      if (docSnap.exists()) {
+        setProfile(docSnap.data());
       } else {
         console.error('No such document!');
       }
@@ -26,6 +34,46 @@ const UserProfilePage: React.FC = () => {
 
     fetchProfile();
   }, [uid]);
+
+
+
+  const handleEditProfile = () => {
+    history.push('/update-profile');
+  };
+
+  const handleMessageUser = async () => {
+    try {
+      const chatDocId = await createChat(uid);
+      history.push(`/chats/${chatDocId}`);
+    } catch (error) {
+      console.error("Error creating chat:", error);
+    }
+  };
+
+
+  const renderSkills = (skills: any) => {
+    if (!skills) return null;
+
+    return Object.keys(skills).map((category) => (
+      <div key={category}>
+        <IonText className='ion-text-center'>
+          <h2>{category} Skills</h2>
+        </IonText>
+        {Object.keys(skills[category]).map((subcategory) => (
+          <div key={subcategory}>
+            <IonText className='ion-text-center'>
+              <h3>{subcategory}</h3>
+            </IonText>
+            <ul>
+              {(skills[category][subcategory] as string[]).map((skill, index) => (
+                <li key={index}>{skill}</li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+    ));
+  };
 
   return (
     <IonPage>
@@ -42,9 +90,19 @@ const UserProfilePage: React.FC = () => {
         <IonText className='ion-text-center'>
           <p>{profile.profileDescription}</p>
         </IonText>
+        {renderSkills(profile.skillsOffered)}
         <IonGrid className='form'>
           <IonRow>
             <IonCol size='12'>
+            {currentUserId === uid ? (
+                    <IonButton expand="block" onClick={handleEditProfile}>
+                      Edit Profile
+                    </IonButton>
+                  ) : (
+                    <IonButton expand="block" onClick={handleMessageUser}>
+                      Message
+                    </IonButton>
+                  )}
             </IonCol>
           </IonRow>
         </IonGrid>
