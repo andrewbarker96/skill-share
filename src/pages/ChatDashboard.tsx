@@ -9,13 +9,15 @@ import {
   IonFabButton,
   IonFab,
   IonIcon,
-  IonSearchbar, 
-  
+  IonSearchbar,
+  IonText,
+
 } from '@ionic/react';
 import { collection, query, onSnapshot, where, orderBy, limit, getDocs } from 'firebase/firestore';
 import { add } from 'ionicons/icons';
 import { auth, firestore } from '../../util/firebase'; // Adjust import as needed
 import { getUserProfile } from '../services/firestoreService'; // Adjust import as needed
+import './ChatDashboard.css';
 
 interface Chat {
   id: string;
@@ -51,7 +53,7 @@ const ChatDashboard: React.FC = () => {
           orderBy('timestamp', 'desc'),
           limit(1)
         );
-      
+
         for (const chat of chatData) {
           // console.log(chat)
         }
@@ -59,10 +61,10 @@ const ChatDashboard: React.FC = () => {
         if (!messageSnapshot.empty) {
           chat.lastMessage = messageSnapshot.docs[0].data().message;
           // console.log(chat.lastMessage); // Adjust if the field name is different
-          
+
         } else {
           chat.lastMessage = 'No messages yet';
-          
+
         }
       }
 
@@ -110,25 +112,24 @@ const ChatDashboard: React.FC = () => {
     if (!chat.users || chat.users.length === 0) return 'Unknown Chat';
     const otherUsers = chat.users.filter((userId: string) => userId !== auth.currentUser?.uid);
     const otherUsernames = otherUsers.map((userId: string) => usernames[userId] || 'Unknown User');
-    
+
     return otherUsernames.join(', ');
   };
 
-  
+
 
   return (
     <IonPage>
-      
-      <IonContent scrollY={true} style={{ flexGrow: '1' }} className = 'ion-padding'>
+      <IonContent scrollY={true} style={{ flexGrow: '1' }} className='ion-padding'>
         <h1>Chats</h1>
         <IonSearchbar />
-              <IonList>
+        <IonList>
           {chats.map(chat => (
-            <IonItem lines='none' key={chat.id} routerLink={`/chats/${chat.id}`} className = "chatItem">
-              <IonImg style = {{ height: '100px', width: '100px' }}  className = 'profileImage' src={profileImages[chat.users.find((userId: string) => userId !== auth.currentUser?.uid) || ''] } />
-              <IonLabel className = "chatItemContent">
-                <h2>{getChatName(chat)}</h2>
-                <p>{chat.lastMessage}</p>
+            <IonItem lines='none' key={chat.id} routerLink={`/chats/${chat.id}`} className="chatItem">
+              <IonImg className='profileImage' src={profileImages[chat.users.find((userId: string) => userId !== auth.currentUser?.uid) || '']} />
+              <IonLabel className="content">
+                <IonText><h2>{getChatName(chat)}</h2></IonText>
+                <IonText color={'medium'}><p>{chat.lastMessage}</p></IonText>
               </IonLabel>
             </IonItem>
           ))}
