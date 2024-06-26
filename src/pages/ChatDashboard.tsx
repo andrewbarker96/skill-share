@@ -9,13 +9,15 @@ import {
   IonFabButton,
   IonFab,
   IonIcon,
-  IonSearchbar, 
-  
+  IonSearchbar,
+  IonText,
+
 } from '@ionic/react';
 import { collection, query, onSnapshot, where, orderBy, limit, getDocs } from 'firebase/firestore';
 import { add } from 'ionicons/icons';
 import { auth, firestore } from '../../util/firebase'; // Adjust import as needed
 import { getUserProfile } from '../services/firestoreService'; // Adjust import as needed
+import './ChatDashboard.css';
 
 interface Chat {
   id: string;
@@ -52,7 +54,7 @@ const ChatDashboard: React.FC = () => {
           orderBy('timestamp', 'desc'),
           limit(1)
         );
-      
+
         for (const chat of chatData) {
           // console.log(chat)
         }
@@ -60,10 +62,10 @@ const ChatDashboard: React.FC = () => {
         if (!messageSnapshot.empty) {
           chat.lastMessage = messageSnapshot.docs[0].data().message;
           // console.log(chat.lastMessage); // Adjust if the field name is different
-          
+
         } else {
           chat.lastMessage = 'No messages yet';
-          
+
         }
       }
 
@@ -111,7 +113,7 @@ const ChatDashboard: React.FC = () => {
     if (!chat.users || chat.users.length === 0) return 'Unknown Chat';
     const otherUsers = chat.users.filter((userId: string) => userId !== auth.currentUser?.uid);
     const otherUsernames = otherUsers.map((userId: string) => usernames[userId] || 'Unknown User');
-    
+
     return otherUsernames.join(', ');
   };
 
