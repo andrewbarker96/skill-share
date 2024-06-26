@@ -48,8 +48,11 @@ import '@ionic/react/css/palettes/dark.system.css';
 import './theme/variables.css';
 
 setupIonicReact();
+interface AppProps {
+  isAuthenticated: boolean;
+}
 
-const App: React.FC<{ isAuthenticated: boolean }> = ({ isAuthenticated }) => {
+const App: React.FC<AppProps> = ({ isAuthenticated }) => {
   const uid = auth.currentUser?.uid;
   console.log(uid)
   const history = useHistory();
