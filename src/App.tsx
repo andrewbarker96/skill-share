@@ -82,28 +82,24 @@ const App: React.FC<AppProps> = ({ isAuthenticated }) => {
           {isAuthenticated ? (
             <IonTabs>
               <IonRouterOutlet><Switch>
-
-              <Route path="/skill-swap" component={SkillSwapPage} exact />
-              <Route path="/profile/:uid" component={UserProfilePage} exact />
-                <Redirect from="/" to="/skill-swap" exact />
                 <Route exact path="/" component={HomePage} />
-                <Route exact path="/profile" component={UserProfilePage} />
+                <Route path="/profile/:uid" component={UserProfilePage} exact />
                 <Route exact path="/events" component={EventsPage} />
-                <Route exact path="/skills" component={SkillSwapPage} />
+                <Route exact path="/skill-swap" component={SkillSwapPage} />
                 <Route exact path="/chat" component={ChatDashboard} />
                 <Route exact path="/chat/new" component={NewChatPage} />
                 <Route exact path="/chats/:chatId" component={IndividualChat} />
-                {/* <Route exact path="/update-profile" component={UpdateProfilePage} /> */}
-                <Redirect from="/" to="/skill-swap" exact /></Switch>
+                <Route exact path="/update-profile" component={UpdateProfilePage} />
+              </Switch>
               </IonRouterOutlet>
               <IonTabBar slot='bottom'>
                 <IonTabButton tab='Home' href='/'>
                   <IonIcon icon={home} />
                   <IonLabel>Home</IonLabel>
                 </IonTabButton>
-                <IonTabButton tab='Skills' href='/skills'>
+                <IonTabButton tab='Skill Swap' href='/skill-swap'>
                   <IonIcon icon={addCircle} />
-                  <IonLabel>Skills</IonLabel>
+                  <IonLabel>Skill Swap</IonLabel>
                 </IonTabButton>
                 <IonTabButton tab='Messages' href='/chat'>
                   <IonIcon icon={chatbubbleEllipses} />

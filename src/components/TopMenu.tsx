@@ -44,14 +44,6 @@ const TopMenu: React.FC = () => {
     }
   }
 
-  const goToProfile = () => {
-    if (authUser) {
-      window.location.href = '/profile';
-    } else {
-      console.error('No user is currently logged in.');
-    }
-  }
-
   return (
     <>
       {/* How Menu Appears after Clicked */}
@@ -82,7 +74,7 @@ const TopMenu: React.FC = () => {
             <IonButton
               fill="clear"
               expand="block"
-              onClick={goToProfile}
+              routerLink={`/profile/${auth.currentUser?.uid}`}
               style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
             >
               <IonIcon slot="start" icon={person} style={{ marginRight: '10px' }} />
