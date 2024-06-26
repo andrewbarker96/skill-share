@@ -11,10 +11,15 @@ import {
   IonIcon,
   IonSearchbar,
   IonText,
+  IonAvatar,
+  IonCard,
+  IonToolbar,
+  IonHeader,
+  IonButtons,
 
 } from '@ionic/react';
 import { collection, query, onSnapshot, where, orderBy, limit, getDocs } from 'firebase/firestore';
-import { add } from 'ionicons/icons';
+import { add, chevronForward } from 'ionicons/icons';
 import { auth, firestore } from '../../util/firebase'; // Adjust import as needed
 import { getUserProfile } from '../services/firestoreService'; // Adjust import as needed
 import './ChatDashboard.css';
@@ -127,24 +132,29 @@ const ChatDashboard: React.FC = () => {
 
   return (
     <IonPage>
-      <IonContent scrollY={true} style={{ flexGrow: '1' }} className='ion-padding'>
+      <IonHeader className='ion-padding'>
         <h1>Chats</h1>
         <IonSearchbar
           placeholder='Search'
           value={search}
           onIonInput={(e) => setSearch(e.detail.value!)}
         />
-        <IonList>
-          {filteredChats.map(chat => (
-            <IonItem lines='none' key={chat.id} routerLink={`/chats/${chat.id}`} className='chatItem'>
+      </IonHeader>
+      <IonContent>
+        {filteredChats.map(chat => (
+          <IonItem className='chatItem' lines='none' key={chat.id} routerLink={`/chats/${chat.id}`}>
+            <IonAvatar slot='start'>
               <IonImg className='profileImage' src={profileImages[chat.users.find((userId: string) => userId !== auth.currentUser?.uid) || '']} />
-              <IonLabel className='chatItemContent'>
-                <IonText><h2>{getChatName(chat)}</h2></IonText>
-                <IonText color={'medium'}><p>{chat.lastMessage}</p></IonText>
-              </IonLabel>
-            </IonItem>
-          ))}
-        </IonList>
+            </IonAvatar>
+            <IonLabel>
+              <IonText><h2>{getChatName(chat)}</h2></IonText>
+              <IonText color={'medium'}><p>{chat.lastMessage}</p></IonText>
+            </IonLabel>
+            <IonIcon icon={chevronForward} color={'light'} slot='end' />
+          </IonItem>
+        ))}
+      </IonContent>
+      <IonContent>
         <IonFab slot='fixed' vertical='bottom' horizontal='end' style={{ margin: 15 }}>
           <IonFabButton routerLink='/chat/new'>
             <IonIcon icon={add} />

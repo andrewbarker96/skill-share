@@ -100,7 +100,7 @@ const TopMenu: React.FC = () => {
               <IonText>Chat</IonText>
             </IonButton>
           </IonButtons>
-          <IonButtons className='top-menu-button'>
+          {/* <IonButtons className='top-menu-button'>
             <IonButton
               fill="clear"
               expand="block"
@@ -110,8 +110,8 @@ const TopMenu: React.FC = () => {
               <IonIcon slot="start" icon={addCircle} style={{ marginRight: '10px' }} />
               <IonText>Swap Skills</IonText>
             </IonButton>
-          </IonButtons>
-          <IonButtons className='top-menu-button'>
+          </IonButtons> */}
+          {/* <IonButtons className='top-menu-button'>
             <IonButton
               fill="clear"
               expand="block"
@@ -121,7 +121,7 @@ const TopMenu: React.FC = () => {
               <IonIcon slot="start" icon={calendarOutline} style={{ marginRight: '10px' }} />
               <IonText>Events</IonText>
             </IonButton>
-          </IonButtons>
+          </IonButtons> */}
           <IonButtons className='top-menu-button'>
             <IonButton
               id='open-loading'
