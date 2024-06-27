@@ -133,7 +133,9 @@ const ChatDashboard: React.FC = () => {
   return (
     <IonPage>
       <IonHeader className='ion-padding'>
-        <h1>Chats</h1>
+        <IonText>
+          <h1>Chats</h1>
+        </IonText>
         <IonSearchbar
           placeholder='Search'
           value={search}
@@ -143,7 +145,7 @@ const ChatDashboard: React.FC = () => {
       <IonContent>
         {filteredChats.map(chat => (
           <IonItem className='chatItem' lines='none' key={chat.id} routerLink={`/chats/${chat.id}`}>
-            <IonAvatar className='avatar' slot='start'>
+            <IonAvatar className='chatAvatar' slot='start'>
               <IonImg src={profileImages[chat.users.find((userId: string) => userId !== auth.currentUser?.uid) || '']} />
             </IonAvatar>
             <IonLabel>
@@ -152,8 +154,6 @@ const ChatDashboard: React.FC = () => {
             </IonLabel>
           </IonItem>
         ))}
-      </IonContent>
-      <IonContent>
         <IonFab slot='fixed' vertical='bottom' horizontal='end' style={{ margin: 15 }}>
           <IonFabButton routerLink='/chat/new'>
             <IonIcon icon={add} />

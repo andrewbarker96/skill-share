@@ -1,6 +1,6 @@
-import { IonButton, IonCard, IonTitle,IonCardContent, IonCol, IonContent, IonGrid, IonIcon, IonImg, IonPage, IonRow, IonText, IonLabel, IonThumbnail, IonItem, IonCardSubtitle, IonCardTitle, IonCardHeader, IonList } from '@ionic/react'
+import { IonButton, IonCard, IonTitle, IonCardContent, IonCol, IonContent, IonGrid, IonIcon, IonImg, IonPage, IonRow, IonText, IonLabel, IonThumbnail, IonItem, IonCardSubtitle, IonCardTitle, IonCardHeader, IonList, IonAvatar } from '@ionic/react'
 import { chevronForward } from 'ionicons/icons'
-import React, {useEffect, useState} from 'react'
+import React, { useEffect, useState } from 'react'
 import { firestore, auth } from '../../util/firebase';
 import { doc, getDoc, getDocs, collection } from 'firebase/firestore';
 import { useHistory } from 'react-router-dom';
@@ -13,7 +13,7 @@ interface SkillCardProps {
 }
 
 interface ProfileCardProps {
-  id:string;
+  id: string;
   firstName: string;
   lastName: string;
   location: string;
@@ -55,27 +55,25 @@ const SkillSwapPage: React.FC = () => {
   };
 
 
-  
+
   return (
     <IonPage>
-      
-      <IonContent>
+
+      <IonContent className='ion-padding'>
         <h2>Swappers</h2>
         <h3>Explore other swappers!</h3>
         <IonGrid>
           {profiles.map(profile => (
-            <IonCard key={profile.id} className='card' onClick={() => handleProfileClick(profile.id)}>
-              <IonRow>
-                <IonCol size="4">
+            <IonCard key={profile.id} onClick={() => handleProfileClick(profile.id)}>
+              <IonItem lines='none' className='ion-padding-top ion-padding-bottom'>
+                <IonAvatar slot='start' className='cardAvatar'>
                   <IonImg src={profile.profileImage || "https://ionicframework.com/docs/img/demos/card-media.png"} alt="Profile Image" />
-                </IonCol>
-                <IonCol size="8">
-                  <IonCardHeader>
-                    <IonCardTitle>{profile.firstName} {profile.lastName}</IonCardTitle>
-                    <IonCardSubtitle>{profile.location}</IonCardSubtitle>
-                  </IonCardHeader>
-                </IonCol>
-              </IonRow>
+                </IonAvatar>
+                <IonCardContent>
+                  <IonText><h1>{profile.firstName} {profile.lastName}</h1></IonText>
+                  <IonCardSubtitle>{profile.location}</IonCardSubtitle>
+                </IonCardContent>
+              </IonItem>
             </IonCard>
           ))}
         </IonGrid>

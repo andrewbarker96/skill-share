@@ -1,5 +1,7 @@
-.card {
-    display:flex;
+
+.cardAvatar {
+    width:75px;
+    height:75px;
 }
 
 
