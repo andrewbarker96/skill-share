@@ -44,14 +44,6 @@ const TopMenu: React.FC = () => {
     }
   }
 
-  const goToProfile = () => {
-    if (authUser) {
-      window.location.href = '/profile';
-    } else {
-      console.error('No user is currently logged in.');
-    }
-  }
-
   return (
     <>
       {/* How Menu Appears after Clicked */}
@@ -82,7 +74,7 @@ const TopMenu: React.FC = () => {
             <IonButton
               fill="clear"
               expand="block"
-              onClick={goToProfile}
+              routerLink={`/profile/${auth.currentUser?.uid}`}
               style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
             >
               <IonIcon slot="start" icon={person} style={{ marginRight: '10px' }} />
@@ -104,14 +96,14 @@ const TopMenu: React.FC = () => {
             <IonButton
               fill="clear"
               expand="block"
-              routerLink='/skills'
+              routerLink='/skill-swap'
               style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
             >
               <IonIcon slot="start" icon={addCircle} style={{ marginRight: '10px' }} />
               <IonText>Swap Skills</IonText>
             </IonButton>
           </IonButtons>
-          <IonButtons className='top-menu-button'>
+          {/* <IonButtons className='top-menu-button'>
             <IonButton
               fill="clear"
               expand="block"
@@ -121,7 +113,7 @@ const TopMenu: React.FC = () => {
               <IonIcon slot="start" icon={calendarOutline} style={{ marginRight: '10px' }} />
               <IonText>Events</IonText>
             </IonButton>
-          </IonButtons>
+          </IonButtons> */}
           <IonButtons className='top-menu-button'>
             <IonButton
               id='open-loading'

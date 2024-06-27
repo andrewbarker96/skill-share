@@ -1,42 +1,36 @@
 /* chatDashboard.css */
 
-.chatItem .profileImage  {
-    width: 40px!important; /* Adjust size as needed */
-    height: 40px!important; /* Adjust size as needed */
-    border-radius: 50%;
-    margin-right: 10px;
-  }
-  
-  .chatItem {
-    display: flex;
-    align-items: center;
-    color:black;
-  }
 
-  .item-inner img  {
-    height: 40px;
+.chatItem{
+  gap: 10px;
+  padding: 5px;
+}
 
-  }
-  
-  .chatItemContent {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
-  
-  .chatItemContent h2 {
-    margin: 0;
-    font-size: 16px; /* Adjust size as needed */
-  }
-  
-  .chatItemContent p {
-    margin: 5px 0 0 0;
-    font-size: 14px; /* Adjust size as needed */
-    color: gray!important; /* Adjust color as needed */
-  }
-  
-  ion-img.profileImage.ios {
-    width: 60px !important;
-    height: 60px !important;
-    border-radius: 50% !important;
-  }
+.chatInfo{
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+.avatar  {
+  image-rendering: optimizeSpeed;
+  width:60px;
+  height:60px;
+}
+
+.content{
+  margin-left: 1%;
+}
+
+.chatName{
+  font-size: 20px;
+}
+
+.chatExcerpt{
+  font-size: 16px;
+}
+
+.chatItemContent h2 {
+  margin: 0;
+  font-size: 16px;
+}
