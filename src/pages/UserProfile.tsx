@@ -2,12 +2,16 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import { firestore, auth } from '../../util/firebase';
 import { doc, getDoc } from 'firebase/firestore';
-import { IonCol, IonContent, IonGrid, IonImg, IonPage, IonRow, IonText, IonButton } from '@ionic/react';
+import { IonCol, IonContent, IonGrid, IonImg, IonPage, IonRow, IonText, IonButton, IonFabButton, IonIcon } from '@ionic/react';
 import { createChat } from '../services/messageService';
+import { chatbox, pencil } from 'ionicons/icons';
+import { getUserProfile } from '../services/firestoreService';
 
 const UserProfilePage: React.FC = () => {
   const [profile, setProfile] = useState<any>({});
   const { uid } = useParams<{ uid: string }>();
+  const [selectedSkills, setSelectedSkills] = useState<{ [category: string]: { [subcategory: string]: string[] } }>({});
+
   const history = useHistory();
   const currentUserId = auth.currentUser?.uid;
 
@@ -23,6 +27,10 @@ const UserProfilePage: React.FC = () => {
 
       const docRef = doc(firestore, 'userProfiles', uid);
       const docSnap = await getDoc(docRef);
+
+      const userProfile = await getUserProfile(uid);
+      setProfile(userProfile);
+      setSelectedSkills(userProfile.skillsOffered || {});
 
       console.log(uid)
       if (docSnap.exists()) {
@@ -49,6 +57,8 @@ const UserProfilePage: React.FC = () => {
       console.error("Error creating chat:", error);
     }
   };
+
+  
 
 
   const renderSkills = (skills: any) => {
@@ -78,6 +88,7 @@ const UserProfilePage: React.FC = () => {
   return (
     <IonPage>
       <IonContent className='ion-padding'>
+        
         <div style={{ display: 'flex', justifyContent: 'center', borderRadius: '50%' }}>
           <IonImg style={{ height: '100px', width: '100px' }} src={profile.profileImage} />
         </div>
@@ -94,14 +105,14 @@ const UserProfilePage: React.FC = () => {
         <IonGrid className='form'>
           <IonRow>
             <IonCol size='12'>
-            {currentUserId === uid ? (
-                    <IonButton expand="block" onClick={handleEditProfile}>
-                      Edit Profile
-                    </IonButton>
+            {currentUserId === uid ? (     
+                    <IonFabButton onClick={handleEditProfile}>
+                      <IonIcon icon={pencil} />
+                    </IonFabButton>
                   ) : (
-                    <IonButton expand="block" onClick={handleMessageUser}>
-                      Message
-                    </IonButton>
+                    <IonFabButton  onClick={handleMessageUser}>
+                      <IonIcon icon={chatbox} />
+                    </IonFabButton>
                   )}
             </IonCol>
           </IonRow>
@@ -112,3 +123,5 @@ const UserProfilePage: React.FC = () => {
 };
 
 export default UserProfilePage;
+
+

@@ -52,7 +52,7 @@ const ProfileForm: React.FC<Props> = ({
   const [loading, setLoading] = useState(false);
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
-  
+
   const history = useHistory();
 
   useEffect(() => {
@@ -61,18 +61,21 @@ const ProfileForm: React.FC<Props> = ({
     } else if (mode === 'update') {
       const fetchUserProfile = async () => {
         if (auth.currentUser) {
+          setLoading(true);
           try {
             const userProfile = await getUserProfile(auth.currentUser.uid);
             setFormData(userProfile);
           } catch (error) {
             setErrorMessage('Failed to fetch user profile');
             setShowToast(true);
+          } finally {
+            setLoading(false);
           }
         }
       };
       fetchUserProfile();
     }
-  }, [mode, initialProfileData, setErrorMessage]);
+  }, [mode, initialProfileData, initialSkills, setErrorMessage]);
 
   const handleChange = (name: string, value: string) => {
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -132,7 +135,7 @@ const ProfileForm: React.FC<Props> = ({
   };
 
   const handleSkillChange = (type: 'offered' | 'wanted', category: string, subcategory: string, skill: string, isChecked: boolean) => {
-    const updatedSkills = { ...formData[type === 'offered' ? 'skillsOffered' : 'skillsWanted'] };
+    const updatedSkills: Skills = { ...formData[type === 'offered' ? 'skillsOffered' : 'skillsWanted'] };
     if (!updatedSkills[category]) updatedSkills[category] = {};
     if (!updatedSkills[category][subcategory]) updatedSkills[category][subcategory] = [];
 
@@ -140,6 +143,12 @@ const ProfileForm: React.FC<Props> = ({
       updatedSkills[category][subcategory].push(skill);
     } else {
       updatedSkills[category][subcategory] = updatedSkills[category][subcategory].filter((s: string) => s !== skill);
+      if (updatedSkills[category][subcategory].length === 0) {
+        delete updatedSkills[category][subcategory];
+        if (Object.keys(updatedSkills[category]).length === 0) {
+          delete updatedSkills[category];
+        }
+      }
     }
 
     setFormData({ ...formData, [type === 'offered' ? 'skillsOffered' : 'skillsWanted']: updatedSkills });
@@ -167,7 +176,7 @@ const ProfileForm: React.FC<Props> = ({
     await saveProfileData();
     setToastMessage("Profile updated successfully!");
     setShowToast(true);
-    history.push('/profile');
+    history.push(`/profile/${formData.uid}`);
   };
 
   const steps = [
