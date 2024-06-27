@@ -70,7 +70,8 @@ const App: React.FC<AppProps> = ({ isAuthenticated }) => {
           {isAuthenticated ? (
             <IonTabs>
               <IonRouterOutlet>
-                <Route exact path="/" render={() => <HomePage />} />
+                <Redirect exact path="/" to="/home" />
+                <Route exact path="/home" render={() => <HomePage />} />
                 <Route exact path="/profile/:uid" render={() => <UserProfilePage />} />
                 <Route exact path="/events" render={() => <EventsPage />} />
                 <Route exact path="/skill-swap" render={() => <SkillSwapPage />} />
@@ -80,7 +81,7 @@ const App: React.FC<AppProps> = ({ isAuthenticated }) => {
                 <Route exact path="/update-profile" render={() => <UpdateProfilePage />} />
               </IonRouterOutlet>
               <IonTabBar slot='bottom' style={{ paddingTop: '2%', paddingBottom: '1%' }}>
-                <IonTabButton tab='/' href='/' >
+                <IonTabButton tab='home' href='/home' >
                   <IonIcon icon={home} />
                   <IonLabel>Home</IonLabel>
                 </IonTabButton>
