@@ -81,41 +81,44 @@ const App: React.FC<AppProps> = ({ isAuthenticated }) => {
         <IonReactRouter>
           {isAuthenticated ? (
             <IonTabs>
-              <IonRouterOutlet><Switch>
-                <Route exact path="/" component={HomePage} />
-                <Route path="/profile/:uid" component={UserProfilePage} exact />
-                <Route exact path="/events" component={EventsPage} />
-                <Route exact path="/skill-swap" component={SkillSwapPage} />
-                <Route exact path="/chat" component={ChatDashboard} />
-                <Route exact path="/chat/new" component={NewChatPage} />
-                <Route exact path="/chats/:chatId" component={IndividualChat} />
-                <Route exact path="/update-profile" component={UpdateProfilePage} />
-              </Switch>
+              <IonRouterOutlet>
+                <Switch>
+                  <Route exact path="/" component={HomePage} />
+                  <Route path="/profile/:uid" component={UserProfilePage} exact />
+                  <Route exact path="/events" component={EventsPage} />
+                  <Route exact path="/skill-swap" component={SkillSwapPage} />
+                  <Route exact path="/chat" component={ChatDashboard} />
+                  <Route exact path="/chat/new" component={NewChatPage} />
+                  <Route exact path="/chats/:chatId" component={IndividualChat} />
+                  <Route exact path="/update-profile" component={UpdateProfilePage} />
+                </Switch>
               </IonRouterOutlet>
               <IonTabBar slot='bottom'>
-                <IonTabButton tab='Home' href='/'>
+                <IonTabButton tab='Home' href='/' selected={location.pathname === '/'}>
                   <IonIcon icon={home} />
                   <IonLabel>Home</IonLabel>
                 </IonTabButton>
-                <IonTabButton tab='Skill Swap' href='/skill-swap'>
+                <IonTabButton tab='Skill Swap' href='/skill-swap' selected={location.pathname === '/skill-swap'}>
                   <IonIcon icon={addCircle} />
                   <IonLabel>Skill Swap</IonLabel>
                 </IonTabButton>
-                <IonTabButton tab='Messages' href='/chat'>
+                <IonTabButton tab='Messages' href='/chat' selected={location.pathname === '/chat'}>
                   <IonIcon icon={chatbubbleEllipses} />
                   <IonLabel>Chat</IonLabel>
                 </IonTabButton>
-                <IonTabButton tab='Profile' href={uid ? `/profile/${uid}` : '#'}>
+                <IonTabButton tab='Profile' href={uid ? `/profile/${uid}` : '#'} selected={location.pathname.startsWith('/profile')}>
                   <IonIcon icon={person} />
                   <IonLabel>Profile</IonLabel>
                 </IonTabButton>
               </IonTabBar>
             </IonTabs>
           ) : (
-            <IonRouterOutlet><Switch>
-              <Route exact path="/" component={LoginPage} />
-              <Route exact path="/create-account" component={CreateAccountPage} />
-              <Route exact path="/password-reset" component={ForgotPasswordPage} /></Switch>
+            <IonRouterOutlet>
+              <Switch>
+                <Route exact path="/" component={LoginPage} />
+                <Route exact path="/create-account" component={CreateAccountPage} />
+                <Route exact path="/password-reset" component={ForgotPasswordPage} />
+              </Switch>
               <Route exact path="/privacy-policy" component={PrivacyPolicy} />
             </IonRouterOutlet>
           )}
