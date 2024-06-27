@@ -31,13 +31,7 @@ const auth = getAuth(firebase);
 const storage = getStorage(firebase);
 
 // Set authentication persistence to session-only
-setPersistence(auth, browserSessionPersistence)
-  .then(() => {
-    console.log("Auth persistence set to session only");
-  })
-  .catch((error) => {
-    console.error("Error setting auth persistence:", error);
-  });
+
 
 const uid = auth.currentUser?.uid;
 
