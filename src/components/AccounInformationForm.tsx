@@ -230,11 +230,11 @@ const AccountInformationForm: React.FC<Props> = ({ formData, handleChange, handl
               </IonCol>
               <IonCol>
                 <>
-                  <IonButton expand='block' onClick={() => handleSubmit('home')}>
-                    Create Account and Go to Home
-                  </IonButton>
                   <IonButton expand='block' onClick={() => handleSubmit('profile')}>
                     Continue Creating Profile
+                  </IonButton>
+                  <IonButton fill="outline" expand='block' onClick={() => handleSubmit('home')}>
+                    Create Account and Go to Home
                   </IonButton>
                   <IonPopover
                     isOpen={showPopover}
