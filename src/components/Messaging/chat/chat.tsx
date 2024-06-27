@@ -16,7 +16,7 @@ import {
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
-import { camera, checkmark, happy, send, checkmarkCircle, arrowBackCircle } from "ionicons/icons";
+import { camera, checkmark, happy, send, checkmarkCircle, arrowBackCircle, informationCircle, informationCircleOutline } from "ionicons/icons";
 import EmojiPicker from "emoji-picker-react";
 import {
   sendMessage,
@@ -30,6 +30,7 @@ import UserInfo from "../list/userInfo/UserInfo";
 import { auth } from "../../../../util/firebase";
 import { getUserProfile } from "../../../services/firestoreService";
 import TopMenu from "../../TopMenu";
+import GoBackOption from "../../GoBack";
 
 interface Message {
   id: string;
@@ -133,13 +134,13 @@ const IndividualChat: React.FC = () => {
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonButtons>
-            <IonButton routerLink="/chat">
-              <IonIcon slot="start" icon={arrowBackCircle} />
-              <IonText>Back</IonText>
+          <GoBackOption />
+          <IonTitle>{username}</IonTitle>
+          <IonButtons slot="end">
+            <IonButton>
+              <IonIcon icon={informationCircleOutline} />
             </IonButton>
           </IonButtons>
-          <IonTitle>{username}</IonTitle>
         </IonToolbar>
       </IonHeader>
       {/* <div className="top">

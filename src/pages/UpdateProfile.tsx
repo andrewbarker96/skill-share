@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import ProfileForm from '../components/ProfileForm';
-import { IonPage, IonGrid, IonRow, IonCol, IonLoading, IonContent, IonText, IonImg } from '@ionic/react';
+import { IonPage, IonGrid, IonRow, IonCol, IonLoading, IonContent, IonText, IonImg, IonHeader, IonToolbar, IonTitle, IonButtons, IonIcon } from '@ionic/react';
 import { auth } from '../../util/firebase';
 import { getUserProfile } from '../services/firestoreService';
 import { ProfileData } from '../types';
+import TopMenu from '../components/TopMenu';
+import GoBackOption from '../components/GoBack';
 
 // Define the type for location state
 interface LocationState {
@@ -68,6 +70,12 @@ const UpdateProfilePage: React.FC = () => {
 
   return (
     <IonPage>
+      <IonHeader>
+        <IonToolbar>
+          <GoBackOption />
+          <IonTitle>Edit Profile</IonTitle>
+        </IonToolbar>
+      </IonHeader>
       <IonContent className="ion-padding">
         <IonGrid class="form">
           <IonRow>

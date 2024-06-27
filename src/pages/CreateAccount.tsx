@@ -20,8 +20,9 @@ import ProfileForm from '../components/ProfileForm';
 import Copyright from '../components/Copyright';
 import { arrowBack } from 'ionicons/icons';
 import { useHistory } from 'react-router-dom';
+import GoBackOption from '../components/GoBack';
 
-export default function CreateAccountPage() {
+const CreateAccountPage: React.FC = () => {
   const [skills, setSkills] = useState<Skills>({});
   const [invalid, setInvalid] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -39,11 +40,7 @@ export default function CreateAccountPage() {
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonButtons slot="start">
-            <IonButton size="large" slot="icon-only" fill="clear" routerLink="/">
-              <IonIcon icon={arrowBack} />
-            </IonButton>
-          </IonButtons>
+          <GoBackOption />
           <IonTitle>Return to Login</IonTitle>
         </IonToolbar>
       </IonHeader>
@@ -91,3 +88,5 @@ export default function CreateAccountPage() {
     </IonPage>
   );
 }
+
+export default CreateAccountPage;

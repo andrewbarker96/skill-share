@@ -45,7 +45,7 @@ const UserProfilePage: React.FC = () => {
 
 
   const handleEditProfile = () => {
-    history.push('/update-profile');
+    history.push('/profile/update-profile');
   };
 
   const handleMessageUser = async () => {

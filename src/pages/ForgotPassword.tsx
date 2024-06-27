@@ -23,7 +23,7 @@ import { getAuth, signInWithEmailAndPassword, sendPasswordResetEmail } from 'fir
 import { firebase } from '../../util/firebase';
 import { arrowBack, close } from 'ionicons/icons';
 
-export default function ForgotPasswordPage() {
+const ForgotPasswordPage: React.FC = () =>{
   const [emailVerification, setEmailVerification] = useState('');
   const [invalid, setInvalid] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -85,3 +85,5 @@ export default function ForgotPasswordPage() {
     </IonPage>
   );
 }
+
+export default ForgotPasswordPage;
