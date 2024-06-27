@@ -1,10 +1,11 @@
-import { IonButton, IonCard, IonTitle, IonCardContent, IonCol, IonContent, IonGrid, IonIcon, IonImg, IonPage, IonRow, IonText, IonLabel, IonThumbnail, IonItem, IonCardSubtitle, IonCardTitle, IonCardHeader, IonList, IonAvatar } from '@ionic/react'
+import { IonButton, IonCard, IonTitle, IonCardContent, IonCol, IonContent, IonGrid, IonIcon, IonImg, IonPage, IonRow, IonText, IonLabel, IonThumbnail, IonItem, IonCardSubtitle, IonCardTitle, IonCardHeader, IonList, IonAvatar, IonHeader, IonToolbar } from '@ionic/react'
 import { chevronForward } from 'ionicons/icons'
 import React, { useEffect, useState } from 'react'
 import { firestore, auth } from '../../util/firebase';
 import { doc, getDoc, getDocs, collection } from 'firebase/firestore';
 import { useHistory } from 'react-router-dom';
 import "./SkillSwap.css"
+import TopMenu from '../components/TopMenu';
 
 interface SkillCardProps {
   title: string;
@@ -58,7 +59,12 @@ const SkillSwapPage: React.FC = () => {
 
   return (
     <IonPage>
-
+      <IonHeader>
+        <IonToolbar>
+          <TopMenu />
+          <IonTitle>Skill Swap</IonTitle>
+        </IonToolbar>
+      </IonHeader>
       <IonContent className='ion-padding'>
         <h2>Swappers</h2>
         <h3>Explore other swappers!</h3>

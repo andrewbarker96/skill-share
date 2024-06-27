@@ -16,6 +16,7 @@ import {
   IonToolbar,
   IonHeader,
   IonButtons,
+  IonTitle,
 
 } from '@ionic/react';
 import { collection, query, onSnapshot, where, orderBy, limit, getDocs } from 'firebase/firestore';
@@ -23,6 +24,7 @@ import { add, chevronForward } from 'ionicons/icons';
 import { auth, firestore } from '../../util/firebase'; // Adjust import as needed
 import { getUserProfile } from '../services/firestoreService'; // Adjust import as needed
 import './ChatDashboard.css';
+import TopMenu from '../components/TopMenu';
 
 interface Chat {
   id: string;
@@ -132,6 +134,12 @@ const ChatDashboard: React.FC = () => {
 
   return (
     <IonPage>
+      <IonHeader>
+        <IonToolbar>
+          <TopMenu />
+          <IonTitle>Chats</IonTitle>
+        </IonToolbar>
+      </IonHeader>
       <IonHeader className='ion-padding'>
         <IonText>
           <h1>Chats</h1>

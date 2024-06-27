@@ -12,6 +12,7 @@ import {
   IonButtons,
   IonText,
   IonLoading,
+  IonItem,
 } from '@ionic/react';
 import { logOutOutline, close, calendarOutline, shieldHalf, home, personAdd, person, add, chatbubble, chatbubbleEllipses, addCircle } from 'ionicons/icons';
 import Copyright from './Copyright';
@@ -132,16 +133,11 @@ const TopMenu: React.FC = () => {
       </IonMenu>
 
       {/* Menu Appears when not clicked. */}
-      <IonPage id="main-content">
-        <IonHeader>
-          <IonToolbar>
-            <IonButtons slot="start">
-              <IonMenuButton />
-            </IonButtons>
-          </IonToolbar>
-        </IonHeader>
-        <IonContent />
-      </IonPage>
+      <div id="main-content">
+        <IonButtons slot="start">
+          <IonMenuButton />
+        </IonButtons>
+      </div>
     </>
   );
 };

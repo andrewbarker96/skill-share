@@ -2,11 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import { firestore, auth } from '../../util/firebase';
 import { doc, getDoc } from 'firebase/firestore';
-import { IonCol, IonContent, IonGrid, IonImg, IonPage, IonRow, IonText, IonButton, IonFabButton, IonIcon, IonFab, IonAvatar } from '@ionic/react';
+import { IonCol, IonContent, IonGrid, IonImg, IonPage, IonRow, IonText, IonButton, IonFabButton, IonIcon, IonFab, IonAvatar, IonHeader, IonToolbar, IonTitle } from '@ionic/react';
 import { createChat } from '../services/messageService';
 import { chatbox, pencil } from 'ionicons/icons';
 import { getUserProfile } from '../services/firestoreService';
 import './UserProfile.css';
+import TopMenu from '../components/TopMenu';
 
 const UserProfilePage: React.FC = () => {
   const [profile, setProfile] = useState<any>({});
@@ -85,6 +86,12 @@ const UserProfilePage: React.FC = () => {
 
   return (
     <IonPage>
+      <IonHeader>
+        <IonToolbar>
+          <TopMenu />
+          <IonTitle>{profile.username}'s Profile</IonTitle>
+        </IonToolbar>
+      </IonHeader>
       <IonContent className='ion-padding'>
         <div className='avatarContainer'>
           <IonAvatar className='profileAvatar'>

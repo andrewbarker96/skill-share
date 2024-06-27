@@ -65,46 +65,34 @@ const App: React.FC<AppProps> = ({ isAuthenticated }) => {
 
   return (
     <IonApp>
-      {isAuthenticated && (
-        <IonHeader>
-          <IonToolbar>
-            <TopMenu />
-            <IonButton fill='clear' slot='icon-only' onClick={goToProfile}>
-              <IonIcon icon={search} />
-            </IonButton>
-          </IonToolbar>
-        </IonHeader>
-      )}
       <IonContent className='main-content'>
         <IonReactRouter>
           {isAuthenticated ? (
             <IonTabs>
               <IonRouterOutlet>
-                <Switch>
-                  <Route exact path="/" component={HomePage} />
-                  <Route path="/profile/:uid" component={UserProfilePage} exact />
-                  <Route path="/events" render={() => <EventsPage />} exact={true} />
-                  <Route path="/skill-swap" render={() => <SkillSwapPage />} />
-                  <Route path="/chat" render={() => <ChatDashboard />} />
-                  <Route path="/chat/new" render={() => <NewChatPage />} />
-                  <Route path="/chats/:chatId" render={() => <IndividualChat />} />
-                  <Route path="/update-profile" render={() => <UpdateProfilePage />} />
-                </Switch>
+                <Route exact path="/" render={() => <HomePage />} />
+                <Route exact path="/profile/:uid" render={() => <UserProfilePage />} />
+                <Route exact path="/events" render={() => <EventsPage />} />
+                <Route exact path="/skill-swap" render={() => <SkillSwapPage />} />
+                <Route exact path="/chat" render={() => <ChatDashboard />} />
+                <Route exact path="/chat/new" render={() => <NewChatPage />} />
+                <Route exact path="/chats/:chatId" render={() => <IndividualChat />} />
+                <Route exact path="/update-profile" render={() => <UpdateProfilePage />} />
               </IonRouterOutlet>
-              <IonTabBar slot='bottom' selectedTab='Home'>
-                <IonTabButton tab='Home' href='/' selected={location.pathname === '/'} >
+              <IonTabBar slot='bottom'>
+                <IonTabButton tab='/' href='/' >
                   <IonIcon icon={home} />
                   <IonLabel>Home</IonLabel>
                 </IonTabButton>
-                <IonTabButton tab='Skill Swap' href='/skill-swap' selected={location.pathname === '/skill-swap'}>
+                <IonTabButton tab='skill-swap' href='/skill-swap'>
                   <IonIcon icon={addCircle} />
                   <IonLabel>Skill Swap</IonLabel>
                 </IonTabButton>
-                <IonTabButton tab='Messages' href='/chat' selected={location.pathname === '/chat'}>
+                <IonTabButton tab='chat' href='/chat'>
                   <IonIcon icon={chatbubbleEllipses} />
                   <IonLabel>Chat</IonLabel>
                 </IonTabButton>
-                <IonTabButton tab='Profile' href={uid ? `/profile/${uid}` : '#'} selected={location.pathname.startsWith('/profile')}>
+                <IonTabButton tab='profile' href={uid ? `/profile/${uid}` : '#'} >
                   <IonIcon icon={person} />
                   <IonLabel>Profile</IonLabel>
                 </IonTabButton>
@@ -112,11 +100,9 @@ const App: React.FC<AppProps> = ({ isAuthenticated }) => {
             </IonTabs>
           ) : (
             <IonRouterOutlet>
-              <Switch>
-                <Route path="/" render={() => <LoginPage />} />
-                <Route path="/create-account" render={() => <CreateAccountPage />} />
-                <Route path="/password-reset" render={() => <ForgotPasswordPage />} />
-              </Switch>
+              <Route path="/" render={() => <LoginPage />} />
+              <Route path="/create-account" render={() => <CreateAccountPage />} />
+              <Route path="/password-reset" render={() => <ForgotPasswordPage />} />
               <Route exact path="/privacy-policy" component={PrivacyPolicy} />
             </IonRouterOutlet>
           )}

@@ -5,14 +5,18 @@ import {
   IonButtons,
   IonCol,
   IonContent,
+  IonHeader,
   IonIcon,
   IonInput,
+  IonLabel,
   IonPage,
   IonPopover,
   IonRow,
   IonText,
+  IonTitle,
+  IonToolbar,
 } from "@ionic/react";
-import { camera, checkmark, happy, send, checkmarkCircle } from "ionicons/icons";
+import { camera, checkmark, happy, send, checkmarkCircle, arrowBackCircle } from "ionicons/icons";
 import EmojiPicker from "emoji-picker-react";
 import {
   sendMessage,
@@ -25,6 +29,7 @@ import {
 import UserInfo from "../list/userInfo/UserInfo";
 import { auth } from "../../../../util/firebase";
 import { getUserProfile } from "../../../services/firestoreService";
+import TopMenu from "../../TopMenu";
 
 interface Message {
   id: string;
@@ -126,9 +131,20 @@ const IndividualChat: React.FC = () => {
 
   return (
     <IonPage>
-      <div className="top">
+      <IonHeader>
+        <IonToolbar>
+          <IonButtons>
+            <IonButton routerLink="/chat">
+              <IonIcon slot="start" icon={arrowBackCircle} />
+              <IonText>Back</IonText>
+            </IonButton>
+          </IonButtons>
+          <IonTitle>{username}</IonTitle>
+        </IonToolbar>
+      </IonHeader>
+      {/* <div className="top">
         <UserInfo username={username} profilePicture={profileImage} />
-      </div>
+      </div> */}
       <IonContent ref={contentRef} scrollY={true} id="texts">
         {messages.map((message) => {
           const messageClass =
