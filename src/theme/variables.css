@@ -223,6 +223,10 @@ http://ionicframework.com/docs/theming/ */
     --ion-card-background: #f9f9f9;
     --ion-item-background: #ffffff00;
 
+        --ion-item-background: #ffffff00;
+        
+          --ion-card-background: #ffffff;
+
     }
   
     .md ion-modal {
@@ -412,11 +416,6 @@ html {
   padding: 2.5%;
 }
 
-.form {
-  padding-left: 25%;
-  padding-right: 25%;
-}
-
 .copyright {
   display: block;
   text-align: center;
@@ -525,11 +524,6 @@ input::placeholder{
     align-content: center;
     align-items: center;
     width: 100%;
-  }
-
-  .form {
-    padding-left: 15%;
-    padding-right: 15%;
   }
 
 }
