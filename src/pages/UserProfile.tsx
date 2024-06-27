@@ -87,7 +87,7 @@ const UserProfilePage: React.FC = () => {
     <IonPage>
       <IonContent className='ion-padding'>
         <div className='avatarContainer'>
-          <IonAvatar className='avatar'>
+          <IonAvatar className='profileAvatar'>
             <IonImg src={profile.profileImage} />
           </IonAvatar>
         </div>
@@ -98,7 +98,7 @@ const UserProfilePage: React.FC = () => {
         </IonText>
 
         {renderSkills(profile.skillsOffered)}
-        <IonFab className='ion-padding' slot='fixed' vertical='bottom' horizontal='start'>
+        <IonFab className='ion-padding' slot='fixed' vertical='top' horizontal='end'>
           {currentUserId === uid ? (
             <IonFabButton onClick={handleEditProfile}>
               <IonIcon icon={pencil} />

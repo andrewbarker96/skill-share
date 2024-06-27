@@ -4,7 +4,7 @@
   justify-content: center;
 }
 
-.avatar{
+.profileAvatar{
   width: 100px;
   height: 100px;
   image-rendering: optimizeSpeed;
