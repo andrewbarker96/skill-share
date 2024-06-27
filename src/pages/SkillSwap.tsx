@@ -70,7 +70,7 @@ const SkillSwapPage: React.FC = () => {
                   <IonImg src={profile.profileImage || "https://ionicframework.com/docs/img/demos/card-media.png"} alt="Profile Image" />
                 </IonAvatar>
                 <IonCardContent>
-                  <IonText><h1>{profile.firstName} {profile.lastName}</h1></IonText>
+                  <IonCardTitle>{profile.firstName} {profile.lastName}</IonCardTitle>
                   <IonCardSubtitle>{profile.location}</IonCardSubtitle>
                 </IonCardContent>
               </IonItem>
