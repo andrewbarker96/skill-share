@@ -2,10 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import { firestore, auth } from '../../util/firebase';
 import { doc, getDoc } from 'firebase/firestore';
-import { IonCol, IonContent, IonGrid, IonImg, IonPage, IonRow, IonText, IonButton, IonFabButton, IonIcon } from '@ionic/react';
+import { IonCol, IonContent, IonGrid, IonImg, IonPage, IonRow, IonText, IonButton, IonFabButton, IonIcon, IonFab, IonAvatar } from '@ionic/react';
 import { createChat } from '../services/messageService';
 import { chatbox, pencil } from 'ionicons/icons';
 import { getUserProfile } from '../services/firestoreService';
+import './UserProfile.css';
 
 const UserProfilePage: React.FC = () => {
   const [profile, setProfile] = useState<any>({});
@@ -14,8 +15,6 @@ const UserProfilePage: React.FC = () => {
 
   const history = useHistory();
   const currentUserId = auth.currentUser?.uid;
-
-  console.log(uid)
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -32,7 +31,6 @@ const UserProfilePage: React.FC = () => {
       setProfile(userProfile);
       setSelectedSkills(userProfile.skillsOffered || {});
 
-      console.log(uid)
       if (docSnap.exists()) {
         setProfile(docSnap.data());
       } else {
@@ -58,7 +56,7 @@ const UserProfilePage: React.FC = () => {
     }
   };
 
-  
+
 
 
   const renderSkills = (skills: any) => {
@@ -88,35 +86,29 @@ const UserProfilePage: React.FC = () => {
   return (
     <IonPage>
       <IonContent className='ion-padding'>
-        
-        <div style={{ display: 'flex', justifyContent: 'center', borderRadius: '50%' }}>
-          <IonImg style={{ height: '100px', width: '100px' }} src={profile.profileImage} />
+        <div className='avatarContainer'>
+          <IonAvatar className='avatar'>
+            <IonImg src={profile.profileImage} />
+          </IonAvatar>
         </div>
         <IonText className='ion-text-center'>
           <h1>{profile.firstName} {profile.lastName}</h1>
-        </IonText>
-        <IonText className='ion-text-center'>
           <p>{profile.email}</p>
-        </IonText>
-        <IonText className='ion-text-center'>
           <p>{profile.profileDescription}</p>
         </IonText>
+
         {renderSkills(profile.skillsOffered)}
-        <IonGrid className='form'>
-          <IonRow>
-            <IonCol size='12'>
-            {currentUserId === uid ? (     
-                    <IonFabButton onClick={handleEditProfile}>
-                      <IonIcon icon={pencil} />
-                    </IonFabButton>
-                  ) : (
-                    <IonFabButton  onClick={handleMessageUser}>
-                      <IonIcon icon={chatbox} />
-                    </IonFabButton>
-                  )}
-            </IonCol>
-          </IonRow>
-        </IonGrid>
+        <IonFab className='ion-padding' slot='fixed' vertical='bottom' horizontal='start'>
+          {currentUserId === uid ? (
+            <IonFabButton onClick={handleEditProfile}>
+              <IonIcon icon={pencil} />
+            </IonFabButton>
+          ) : (
+            <IonFabButton onClick={handleMessageUser}>
+              <IonIcon icon={chatbox} />
+            </IonFabButton>
+          )}
+        </IonFab>
       </IonContent>
     </IonPage>
   );
