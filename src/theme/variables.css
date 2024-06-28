@@ -460,11 +460,19 @@ html {
 .profileSkills {
   margin: auto;
   background-color: white;
-  width: 325px;
+  width: 350px;
   border-radius: 3%;
-  padding-top: 5%;
+  padding: 3% 7%;
   box-shadow: 0px 2px 5px var(--ion-color-primary-shade);
 }
+
+/*swap background styling*/
+.swapBackground {
+  --background: rgb(152, 213, 252);
+}
+
+
+
 
 /* Fonts*/
 
