@@ -33,4 +33,4 @@ const Main: React.FC = () => {
   );
 };
 
-root.render(<Main />);
+root.render(<Main />); 
