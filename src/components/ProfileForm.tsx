@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useHistory } from 'react-router-dom';
-import AccountInformationForm from './AccounInformationForm';
+import AccountInformationForm from './AccountInformationForm';
 import SkillsForm from './SkillsForm';
 import ProfilePictureForm from './ProfilePictureForm';
 import { createProfile, getUserProfile, updateProfile } from '../services/firestoreService';
