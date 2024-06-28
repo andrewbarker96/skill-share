@@ -100,10 +100,10 @@ const UserProfilePage: React.FC = () => {
         <IonText className='ion-text-center'>
           <p>{profile.profileDescription}</p>
         </IonText>
-        <IonText className = 'profileSkills'>
+        <div className = 'profileSkills'>
         <h1><span className='swap'>Swappable</span> Skills</h1> <br></br>
           {renderSkills(profile.skillsOffered)}
-        </IonText>
+        </div>
 
         <IonGrid className='form'>
           <IonRow>
