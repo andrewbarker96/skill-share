@@ -21,6 +21,7 @@ const Main: React.FC = () => {
     });
   }, []);
 
+  // CAUSING ENDLESS LOAD TIMES
   if (isAuthenticated === null) {
     return (
       <IonRefresher>
