@@ -30,12 +30,19 @@ import { person } from "ionicons/icons";
 import { firestore, auth } from "../../util/firebase";
 import React from "react";
 import "./Home.css"
+import TopMenu from "../components/TopMenu";
 
 function HomePage() {
   const uid = auth.currentUser?.uid;
 
   return (
     <IonPage>
+      <IonHeader>
+        <IonToolbar>
+          <TopMenu />
+          <IonTitle>Home</IonTitle>
+        </IonToolbar>
+      </IonHeader>
       <IonContent className="ion-padding">
         <IonGrid>
           <IonRow>
