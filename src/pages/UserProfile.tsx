@@ -61,21 +61,21 @@ const UserProfilePage: React.FC = () => {
 
 
   const renderSkills = (skills: any) => {
-    if (!skills) return null;
+    if (!skills) return null
 
     return Object.keys(skills).map((category) => (
-      <div key={category}>
-        <IonText className='ion-text-center'>
+      <div key={category} style= {{paddingLeft: '20px'}}>
+        <IonText>
           <h2>{category} Skills</h2>
         </IonText>
         {Object.keys(skills[category]).map((subcategory) => (
           <div key={subcategory}>
-            <IonText className='ion-text-center'>
-              <h3>{subcategory}</h3>
+            <IonText>
+              <h3><strong>{subcategory}</strong></h3>
             </IonText>
             <ul>
               {(skills[category][subcategory] as string[]).map((skill, index) => (
-                <li key={index}>{skill}</li>
+                <li key={index} className='skillList'>{skill}</li>
               ))}
             </ul>
           </div>
@@ -100,11 +100,15 @@ const UserProfilePage: React.FC = () => {
         </div>
         <IonText className='ion-text-center'>
           <h1>{profile.firstName} {profile.lastName}</h1>
-          <p>{profile.email}</p>
+          <p>{profile.city}, {profile.state}</p>
           <p>{profile.profileDescription}</p>
         </IonText>
 
-        {renderSkills(profile.skillsOffered)}
+        <IonText className = 'profileSkills'>
+        <h1><span className='swap'>Swappable</span> Skills</h1> <br></br>
+          {renderSkills(profile.skillsOffered)}
+        </IonText>
+
         <IonFab className='ion-padding' slot='fixed' vertical='top' horizontal='end'>
           {currentUserId === uid ? (
             <IonFabButton onClick={handleEditProfile}>
