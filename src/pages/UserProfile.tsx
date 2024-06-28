@@ -103,11 +103,10 @@ const UserProfilePage: React.FC = () => {
           <p>{profile.city}, {profile.state}</p>
           <p>{profile.profileDescription}</p>
         </IonText>
-
-        <IonText className = 'profileSkills'>
+        <div className = 'profileSkills'>
         <h1><span className='swap'>Swappable</span> Skills</h1> <br></br>
           {renderSkills(profile.skillsOffered)}
-        </IonText>
+        </div>
 
         <IonFab className='ion-padding' slot='fixed' vertical='top' horizontal='end'>
           {currentUserId === uid ? (
