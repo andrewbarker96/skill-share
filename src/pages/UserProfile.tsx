@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import { firestore, auth } from '../../util/firebase';
 import { doc, getDoc } from 'firebase/firestore';
-import { IonCol, IonContent, IonGrid, IonImg, IonPage, IonRow, IonText, IonButton } from '@ionic/react';
+import { IonCol, IonContent, IonGrid, IonImg, IonPage, IonRow, IonText, IonButton, IonCardContent } from '@ionic/react';
 import { createChat } from '../services/messageService';
 
 const UserProfilePage: React.FC = () => {
@@ -52,21 +52,21 @@ const UserProfilePage: React.FC = () => {
 
 
   const renderSkills = (skills: any) => {
-    if (!skills) return null;
+    if (!skills) return null
 
     return Object.keys(skills).map((category) => (
-      <div key={category}>
-        <IonText className='ion-text-center'>
+      <div key={category} style= {{paddingLeft: '20px'}}>
+        <IonText>
           <h2>{category} Skills</h2>
         </IonText>
         {Object.keys(skills[category]).map((subcategory) => (
           <div key={subcategory}>
-            <IonText className='ion-text-center'>
-              <h3>{subcategory}</h3>
+            <IonText>
+              <h3><strong>{subcategory}</strong></h3>
             </IonText>
             <ul>
               {(skills[category][subcategory] as string[]).map((skill, index) => (
-                <li key={index}>{skill}</li>
+                <li key={index} className='skillList'>{skill}</li>
               ))}
             </ul>
           </div>
@@ -77,7 +77,7 @@ const UserProfilePage: React.FC = () => {
 
   return (
     <IonPage>
-      <IonContent className='ion-padding'>
+      <IonContent className = 'ion-padding' style = {{'--background': 'linear-gradient(rgba(152, 213, 252, 0), rgba(152, 213, 252, 1))' }}>
         <div style={{ display: 'flex', justifyContent: 'center', borderRadius: '50%' }}>
           <IonImg style={{ height: '100px', width: '100px' }} src={profile.profileImage} />
         </div>
@@ -85,12 +85,16 @@ const UserProfilePage: React.FC = () => {
           <h1>{profile.firstName} {profile.lastName}</h1>
         </IonText>
         <IonText className='ion-text-center'>
-          <p>{profile.email}</p>
+          <p>{profile.city}, {profile.state}</p>
         </IonText>
         <IonText className='ion-text-center'>
           <p>{profile.profileDescription}</p>
         </IonText>
-        {renderSkills(profile.skillsOffered)}
+        <IonCardContent className = 'profileSkills'>
+        <h1><span className='swap'>Swappable</span> Skills</h1> <br></br>
+          {renderSkills(profile.skillsOffered)}
+        </IonCardContent>
+
         <IonGrid className='form'>
           <IonRow>
             <IonCol size='12'>

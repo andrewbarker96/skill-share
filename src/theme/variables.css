@@ -446,6 +446,27 @@ html {
   /*color:white;*/
 }
 
+/*profile styling*/
+.swap {
+ color: var(--ion-color-secondary);
+ font-weight: bold;
+}
+
+.skillList {
+  border-left: 3px solid var(--ion-color-secondary);
+  list-style: none;
+  padding: 5px;
+}
+
+.profileSkills {
+  margin: auto;
+  background-color: white;
+  width: 325px;
+  border-radius: 3%;
+  padding-top: 5%;
+  box-shadow: 0px 2px 5px var(--ion-color-primary-shade);
+}
+
 /* Fonts*/
 
 h1, h2, h3, h4, ion-label, p, ion-input, button {
