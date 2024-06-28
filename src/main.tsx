@@ -24,18 +24,16 @@ const Main: React.FC = () => {
   // CAUSING ENDLESS LOAD TIMES
   if (isAuthenticated === null) {
     return (
-      <IonRefresher>
-        <IonLoading
-          isOpen={true}
-          message="Loading..."
-        />
-      </IonRefresher>
+      <IonLoading
+        isOpen={true}
+        message="Loading..."
+      />
     );
   }
 
   return (
     <React.StrictMode>
-      <TopMenu />
+      {isAuthenticated && <TopMenu />}
       <App isAuthenticated={isAuthenticated} />
     </React.StrictMode>
   );
