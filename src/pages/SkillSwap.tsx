@@ -59,8 +59,8 @@ const SkillSwapPage: React.FC = () => {
   return (
     <IonPage>
       
-      <IonContent>
-        <h2>Swappers</h2>
+      <IonContent className = 'swapBackground'>
+        <h2 className = ''>Swappers</h2>
         <h3>Explore other swappers!</h3>
         <IonGrid>
           {profiles.map(profile => (
