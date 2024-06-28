@@ -42,8 +42,6 @@ const UserProfilePage: React.FC = () => {
     fetchProfile();
   }, [uid]);
 
-
-
   const handleEditProfile = () => {
     history.push('/profile/update-profile');
   };
@@ -64,7 +62,7 @@ const UserProfilePage: React.FC = () => {
     if (!skills) return null
 
     return Object.keys(skills).map((category) => (
-      <div key={category} style= {{paddingLeft: '20px'}}>
+      <div key={category} style={{ paddingLeft: '20px' }}>
         <IonText>
           <h2>{category} Skills</h2>
         </IonText>
@@ -89,7 +87,7 @@ const UserProfilePage: React.FC = () => {
       <IonHeader>
         <IonToolbar>
           <TopMenu />
-          <IonTitle>{profile.username}'s Profile</IonTitle>
+          <IonTitle>{profile.username}</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent className='ion-padding'>
@@ -103,14 +101,16 @@ const UserProfilePage: React.FC = () => {
           <p>{profile.city}, {profile.state}</p>
           <p>{profile.profileDescription}</p>
         </IonText>
-        <div className = 'profileSkills'>
-        <h1><span className='swap'>Swappable</span> Skills</h1> <br></br>
+
+
+        <IonText className='profileSkills'>
+          <h1><span className='swap'>Swappable</span> Skills</h1> <br></br>
           {renderSkills(profile.skillsOffered)}
         </div>
 
         <IonFab className='ion-padding' slot='fixed' vertical='top' horizontal='end'>
           {currentUserId === uid ? (
-            <IonFabButton onClick={handleEditProfile}>
+            <IonFabButton routerLink='/profile/update-profile'>
               <IonIcon icon={pencil} />
             </IonFabButton>
           ) : (
