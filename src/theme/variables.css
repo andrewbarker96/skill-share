@@ -155,6 +155,7 @@ http://ionicframework.com/docs/theming/ */
   .ios body {
     --ion-background-color: #f4f5f8;
     --ion-background-color-rgb: 244, 245, 248;
+    
 
     --ion-text-color: #282828;
     --ion-text-color-rgb: 0, 0, 0;
@@ -192,7 +193,8 @@ http://ionicframework.com/docs/theming/ */
 
   .md body {
     --ion-background-color: #f4f5f8;
-    --ion-background-color-rgb: 244, 245, 248;
+    --ion-background-color-rgb: 244, 245, 248; 
+
 
     --ion-text-color: #282828;
     --ion-text-color-rgb: 0, 0, 0;
@@ -460,19 +462,11 @@ html {
 .profileSkills {
   margin: auto;
   background-color: white;
-  width: 350px;
+  width: 75%;
   border-radius: 3%;
   padding: 3% 7%;
   box-shadow: 0px 2px 5px var(--ion-color-primary-shade);
 }
-
-/*swap background styling*/
-.swapBackground {
-  --background: rgb(152, 213, 252);
-}
-
-
-
 
 /* Fonts*/
 
