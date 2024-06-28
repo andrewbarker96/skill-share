@@ -71,7 +71,7 @@ const App: React.FC<AppProps> = ({ isAuthenticated }) => {
             <IonTabs>
               <IonRouterOutlet>
                 <Redirect exact path="/" to="/home" />
-                <Route exact path="/home" render={() => <HomePage />} />
+                <Route path="/home" render={() => <HomePage />} />
                 <Route exact path="/profile/:uid" render={() => <UserProfilePage />} />
                 <Route exact path="/events" render={() => <EventsPage />} />
                 <Route exact path="/skill-swap" render={() => <SkillSwapPage />} />

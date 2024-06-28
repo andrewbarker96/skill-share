@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { createRoot } from 'react-dom/client';
-import { IonLoading, IonRefresher, IonRoute } from '@ionic/react';
+import { IonLoading, IonRefresher } from '@ionic/react';
 import { defineCustomElements } from '@ionic/pwa-elements/loader';
 import App from './App';
 import TopMenu from './components/TopMenu';
@@ -31,14 +31,14 @@ const Main: React.FC = () => {
         />
       </IonRefresher>
     );
-  } else {
-    return (
-      <React.StrictMode>
-        <TopMenu />
-        <App isAuthenticated={isAuthenticated} />
-      </React.StrictMode>
-    );
   }
+
+  return (
+    <React.StrictMode>
+      <TopMenu />
+      <App isAuthenticated={isAuthenticated} />
+    </React.StrictMode>
+  );
 };
 
 root.render(<Main />);
