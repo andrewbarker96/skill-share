@@ -16,7 +16,7 @@ import {
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
-import { camera, checkmark, happy, send, checkmarkCircle, arrowBackCircle, informationCircle, informationCircleOutline } from "ionicons/icons";
+import { camera, checkmark, happy, send, checkmarkCircle, arrowBackCircle, informationCircleOutline } from "ionicons/icons";
 import EmojiPicker from "emoji-picker-react";
 import {
   sendMessage,
@@ -81,7 +81,6 @@ const IndividualChat: React.FC = () => {
                 }
               }
 
-              // Update the last sent message status to 'receivedReply' when a new message is received
               const newMessageFromOtherUser = messages.find(
                 (message) => message.senderId !== currentUserId && message.status === 'sent'
               );
@@ -109,8 +108,6 @@ const IndividualChat: React.FC = () => {
     try {
       await sendMessage(chatId, text);
       setText("");
-      const messages = await getMessages(chatId);
-      setMessages(messages);
       scrollToBottom();
     } catch (error) {
       console.error("Error sending message:", error);
@@ -124,7 +121,7 @@ const IndividualChat: React.FC = () => {
   };
 
   useEffect(() => {
-    const timeout = setTimeout(scrollToBottom, 100); // Give some time for rendering
+    const timeout = setTimeout(scrollToBottom, 100);
     return () => clearTimeout(timeout);
   }, [messages]);
 
@@ -135,17 +132,18 @@ const IndividualChat: React.FC = () => {
       <IonHeader>
         <IonToolbar>
           <GoBackOption />
-          <IonTitle>{username}</IonTitle>
-          <IonButtons slot="end">
+          <IonTitle>{}</IonTitle>
+          {/* <IonButtons slot="end">
             <IonButton>
               <IonIcon icon={informationCircleOutline} />
             </IonButton>
-          </IonButtons>
+          </IonButtons> */}
         </IonToolbar>
       </IonHeader>
-      {/* <div className="top">
+      
+      <div className="top">
         <UserInfo username={username} profilePicture={profileImage} />
-      </div> */}
+      </div> 
       <IonContent ref={contentRef} scrollY={true} id="texts">
         {messages.map((message) => {
           const messageClass =
@@ -205,18 +203,17 @@ const IndividualChat: React.FC = () => {
             >
               <IonIcon icon={happy} />
             </IonButton>
-            <IonButton id="sendButton" onClick={handleSendMessage}>
+            <IonPopover
+              isOpen={open}
+              onDidDismiss={() => setOpen(false)}
+              className="emoji-popover"
+            >
+              <EmojiPicker onEmojiClick={handleEmoji} />
+            </IonPopover>
+            <IonButton onClick={handleSendMessage}>
               <IonIcon icon={send} />
             </IonButton>
           </IonButtons>
-          <IonPopover
-            trigger="emojiPicker"
-            isOpen={open}
-            side="top"
-            onDidDismiss={() => setOpen((prev) => !prev)}
-          >
-            <EmojiPicker onEmojiClick={handleEmoji} />
-          </IonPopover>
         </IonRow>
       </div>
     </IonPage>

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { Route, Redirect, useHistory, Switch } from 'react-router-dom';
-
 import {
   IonApp,
   IonContent,
@@ -19,7 +18,7 @@ import {
 import { IonReactRouter } from '@ionic/react-router';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from '../util/firebase';
-import { home, addCircle, chatbubbleEllipses, person, search } from 'ionicons/icons';
+import { home, addCircle, chatbubbleEllipses, person } from 'ionicons/icons';
 import TopMenu from './components/TopMenu';
 import HomePage from './pages/Home';
 import LoginPage from './pages/Login';
@@ -48,40 +47,44 @@ import '@ionic/react/css/palettes/dark.system.css';
 import './theme/variables.css';
 
 setupIonicReact();
-interface AppProps {
-  isAuthenticated: boolean;
-}
 
-const App: React.FC<AppProps> = ({ isAuthenticated }) => {
-  const uid = auth.currentUser?.uid;
-  const history = useHistory();
-  const goToProfile = () => {
-    if (uid) {
-      history.push(`/profile/${uid}`);
-    } else {
-      console.error('No user is currently logged in.');
-    }
-  };
+const App: React.FC = () => {
+  const [isLoading, setIsLoading] = useState(true);
+  const [isAuth, setIsAuth] = useState(false);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setIsAuth(!!user);
+      setIsLoading(false);
+    });
+    return () => unsubscribe();
+  }, []);
+
+  if (isLoading) {
+    return <IonLoading isOpen={true} message={"Loading..."} />;
+  }
 
   return (
     <IonApp>
-      <IonContent className='main-content'>
-        <IonReactRouter>
-          {isAuthenticated ? (
+      <IonReactRouter>
+        <IonContent className='main-content'>
+          {isAuth ? (
             <IonTabs>
               <IonRouterOutlet>
-                <Redirect exact path="/" to="/home" />
-                <Route exact path="/home" render={() => <HomePage />} />
-                <Route exact path="/profile/:uid" render={() => <UserProfilePage />} />
-                <Route exact path="/events" render={() => <EventsPage />} />
-                <Route exact path="/skill-swap" render={() => <SkillSwapPage />} />
-                <Route exact path="/chat" render={() => <ChatDashboard />} />
-                <Route exact path="/chat/new" render={() => <NewChatPage />} />
-                <Route exact path="/chats/:chatId" render={() => <IndividualChat />} />
-                <Route exact path="/update-profile" render={() => <UpdateProfilePage />} />
+                <Switch>
+                  <Redirect exact path="/" to="/home" />
+                  <Route exact path="/home" component={HomePage} />
+                  <Route exact path="/profile/:uid" component={UserProfilePage} />
+                  <Route exact path="/events" component={EventsPage} />
+                  <Route exact path="/skill-swap" component={SkillSwapPage} />
+                  <Route exact path="/chat" component={ChatDashboard} />
+                  <Route exact path="/chat/new" component={NewChatPage} />
+                  <Route exact path="/chats/:chatId" component={IndividualChat} />
+                  <Route exact path="/update-profile" render={() => <UpdateProfilePage />} />
+                </Switch>
               </IonRouterOutlet>
               <IonTabBar slot='bottom' style={{ paddingTop: '2%', paddingBottom: '1%' }}>
-                <IonTabButton tab='home' href='/home' >
+                <IonTabButton tab='home' href='/home'>
                   <IonIcon icon={home} />
                   <IonLabel>Home</IonLabel>
                 </IonTabButton>
@@ -93,7 +96,7 @@ const App: React.FC<AppProps> = ({ isAuthenticated }) => {
                   <IonIcon icon={chatbubbleEllipses} />
                   <IonLabel>Chat</IonLabel>
                 </IonTabButton>
-                <IonTabButton tab='profile' href={uid ? `/profile/${uid}` : '#'} >
+                <IonTabButton tab='profile' href={auth.currentUser?.uid ? `/profile/${auth.currentUser.uid}` : '#'}>
                   <IonIcon icon={person} />
                   <IonLabel>Profile</IonLabel>
                 </IonTabButton>
@@ -101,14 +104,16 @@ const App: React.FC<AppProps> = ({ isAuthenticated }) => {
             </IonTabs>
           ) : (
             <IonRouterOutlet>
-              <Route path="/" render={() => <LoginPage />} />
-              <Route path="/create-account" render={() => <CreateAccountPage />} />
-              <Route exact path="/password-reset" render={() => <ForgotPasswordPage />} />
-              <Route exact path="/privacy-policy" component={PrivacyPolicy} />
+              <Switch>
+                <Route exact path="/" component={LoginPage} />
+                <Route path="/create-account" component={CreateAccountPage} />
+                <Route exact path="/password-reset" component={ForgotPasswordPage} />
+                <Route exact path="/privacy-policy" component={PrivacyPolicy} />
+              </Switch>
             </IonRouterOutlet>
           )}
-        </IonReactRouter>
-      </IonContent>
+        </IonContent>
+      </IonReactRouter>
     </IonApp>
   );
 };

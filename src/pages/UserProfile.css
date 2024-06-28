@@ -9,3 +9,9 @@
   height: 100px;
   image-rendering: optimizeSpeed;
 }
+
+
+.profileSkills {
+  box-shadow:none!important;
+  background-color:transparent!important;
+}
