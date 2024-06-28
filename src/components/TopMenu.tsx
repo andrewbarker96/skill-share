@@ -12,10 +12,11 @@ import {
   IonButtons,
   IonText,
   IonLoading,
+  IonItem,
 } from '@ionic/react';
 import { logOutOutline, close, calendarOutline, shieldHalf, home, personAdd, person, add, chatbubble, chatbubbleEllipses, addCircle } from 'ionicons/icons';
 import Copyright from './Copyright';
-import { adminAuth, auth } from '../../util/firebase';
+import { auth } from '../../util/firebase';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 
 const TopMenu: React.FC = () => {
@@ -132,16 +133,10 @@ const TopMenu: React.FC = () => {
       </IonMenu>
 
       {/* Menu Appears when not clicked. */}
-      <IonPage id="main-content">
-        <IonHeader>
-          <IonToolbar>
-            <IonButtons slot="start">
-              <IonMenuButton />
-            </IonButtons>
-          </IonToolbar>
-        </IonHeader>
-        <IonContent />
-      </IonPage>
+      
+        <IonButtons slot="start" id='main-content'>
+          <IonMenuButton />
+        </IonButtons>
     </>
   );
 };

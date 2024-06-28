@@ -1,0 +1,11 @@
+
+.avatarContainer{
+  display: flex;
+  justify-content: center;
+}
+
+.profileAvatar{
+  width: 100px;
+  height: 100px;
+  image-rendering: optimizeSpeed;
+}

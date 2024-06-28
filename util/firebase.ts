@@ -6,7 +6,7 @@ import {
   getAuth,
   onAuthStateChanged,
   browserSessionPersistence,
-  setPersistence
+  setPersistence,
 } from "firebase/auth";
 import { create } from "ionicons/icons";
 import { getStorage } from "firebase/storage";
@@ -22,11 +22,6 @@ const firebaseConfig = {
   measurementId: "G-BH524Q334E",
 };
 
-const adminAuth = [
-  "yYMmzbnFnXPCclmWWmi0oyLulqh1",
-  "RmgwiiugPWTEL3YyfJOyro3aq3I2",
-];
-
 // Initialize Firebase
 const firebase = initializeApp(firebaseConfig);
 const analytics = getAnalytics(firebase);
@@ -35,16 +30,9 @@ const firestore = getFirestore(firebase);
 const auth = getAuth(firebase);
 const storage = getStorage(firebase);
 
-
 // Set authentication persistence to session-only
-setPersistence(auth, browserSessionPersistence)
-  .then(() => {
-    console.log("Auth persistence set to session only");
-  })
-  .catch((error) => {
-    console.error("Error setting auth persistence:", error);
-  });
+
 
 const uid = auth.currentUser?.uid;
 
-export { uid, db, analytics, firebase, firestore, auth, adminAuth, storage };
+export { uid, db, analytics, firebase, firestore, auth, storage };

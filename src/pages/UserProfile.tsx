@@ -2,10 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import { firestore, auth } from '../../util/firebase';
 import { doc, getDoc } from 'firebase/firestore';
-import { IonCol, IonContent, IonGrid, IonImg, IonPage, IonRow, IonText, IonButton, IonFabButton, IonIcon } from '@ionic/react';
+import { IonCol, IonContent, IonGrid, IonImg, IonPage, IonRow, IonText, IonButton, IonFabButton, IonIcon, IonFab, IonAvatar, IonHeader, IonToolbar, IonTitle } from '@ionic/react';
 import { createChat } from '../services/messageService';
 import { chatbox, pencil } from 'ionicons/icons';
 import { getUserProfile } from '../services/firestoreService';
+import './UserProfile.css';
+import TopMenu from '../components/TopMenu';
 
 const UserProfilePage: React.FC = () => {
   const [profile, setProfile] = useState<any>({});
@@ -14,8 +16,6 @@ const UserProfilePage: React.FC = () => {
 
   const history = useHistory();
   const currentUserId = auth.currentUser?.uid;
-
-  console.log(uid)
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -32,7 +32,6 @@ const UserProfilePage: React.FC = () => {
       setProfile(userProfile);
       setSelectedSkills(userProfile.skillsOffered || {});
 
-      console.log(uid)
       if (docSnap.exists()) {
         setProfile(docSnap.data());
       } else {
@@ -46,7 +45,7 @@ const UserProfilePage: React.FC = () => {
 
 
   const handleEditProfile = () => {
-    history.push('/update-profile');
+    history.push('/profile/update-profile');
   };
 
   const handleMessageUser = async () => {
@@ -58,7 +57,7 @@ const UserProfilePage: React.FC = () => {
     }
   };
 
-  
+
 
 
   const renderSkills = (skills: any) => {
@@ -87,17 +86,21 @@ const UserProfilePage: React.FC = () => {
 
   return (
     <IonPage>
-      <IonContent className = 'ion-padding' style = {{'--background': 'linear-gradient(rgba(152, 213, 252, 0), rgba(152, 213, 252, 1))' }}>
-        <div style={{ display: 'flex', justifyContent: 'center', borderRadius: '50%' }}>
-          <IonImg style={{ height: '100px', width: '100px' }} src={profile.profileImage} />
+      <IonHeader>
+        <IonToolbar>
+          <TopMenu />
+          <IonTitle>{profile.username}'s Profile</IonTitle>
+        </IonToolbar>
+      </IonHeader>
+      <IonContent className='ion-padding'>
+        <div className='avatarContainer'>
+          <IonAvatar className='profileAvatar'>
+            <IonImg src={profile.profileImage} />
+          </IonAvatar>
         </div>
         <IonText className='ion-text-center'>
           <h1>{profile.firstName} {profile.lastName}</h1>
-        </IonText>
-        <IonText className='ion-text-center'>
           <p>{profile.city}, {profile.state}</p>
-        </IonText>
-        <IonText className='ion-text-center'>
           <p>{profile.profileDescription}</p>
         </IonText>
         <div className = 'profileSkills'>
@@ -105,21 +108,17 @@ const UserProfilePage: React.FC = () => {
           {renderSkills(profile.skillsOffered)}
         </div>
 
-        <IonGrid className='form'>
-          <IonRow>
-            <IonCol size='12'>
-            {currentUserId === uid ? (     
-                    <IonFabButton onClick={handleEditProfile}>
-                      <IonIcon icon={pencil} />
-                    </IonFabButton>
-                  ) : (
-                    <IonFabButton  onClick={handleMessageUser}>
-                      <IonIcon icon={chatbox} />
-                    </IonFabButton>
-                  )}
-            </IonCol>
-          </IonRow>
-        </IonGrid>
+        <IonFab className='ion-padding' slot='fixed' vertical='top' horizontal='end'>
+          {currentUserId === uid ? (
+            <IonFabButton onClick={handleEditProfile}>
+              <IonIcon icon={pencil} />
+            </IonFabButton>
+          ) : (
+            <IonFabButton onClick={handleMessageUser}>
+              <IonIcon icon={chatbox} />
+            </IonFabButton>
+          )}
+        </IonFab>
       </IonContent>
     </IonPage>
   );
