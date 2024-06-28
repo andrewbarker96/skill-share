@@ -106,7 +106,7 @@ const UserProfilePage: React.FC = () => {
         <IonText className='profileSkills'>
           <h1><span className='swap'>Swappable</span> Skills</h1> <br></br>
           {renderSkills(profile.skillsOffered)}
-        </div>
+        </IonText>
 
         <IonFab className='ion-padding' slot='fixed' vertical='top' horizontal='end'>
           {currentUserId === uid ? (
