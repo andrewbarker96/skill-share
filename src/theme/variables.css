@@ -223,6 +223,10 @@ http://ionicframework.com/docs/theming/ */
     --ion-card-background: #f9f9f9;
     --ion-item-background: #ffffff00;
 
+        --ion-item-background: #ffffff00;
+        
+          --ion-card-background: #ffffff;
+
     }
   
     .md ion-modal {
@@ -412,11 +416,6 @@ html {
   padding: 2.5%;
 }
 
-.form {
-  padding-left: 25%;
-  padding-right: 25%;
-}
-
 .copyright {
   display: block;
   text-align: center;
@@ -444,6 +443,27 @@ html {
   border-radius:4px;
   align-self:stretch;
   /*color:white;*/
+}
+
+/*profile styling*/
+.swap {
+ color: var(--ion-color-secondary);
+ font-weight: bold;
+}
+
+.skillList {
+  border-left: 3px solid var(--ion-color-secondary);
+  list-style: none;
+  padding: 5px;
+}
+
+.profileSkills {
+  margin: auto;
+  background-color: white;
+  width: 325px;
+  border-radius: 3%;
+  padding-top: 5%;
+  box-shadow: 0px 2px 5px var(--ion-color-primary-shade);
 }
 
 /* Fonts*/
@@ -525,11 +545,6 @@ input::placeholder{
     align-content: center;
     align-items: center;
     width: 100%;
-  }
-
-  .form {
-    padding-left: 15%;
-    padding-right: 15%;
   }
 
 }

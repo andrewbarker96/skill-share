@@ -16,7 +16,7 @@ import {
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import { onAuthStateChanged } from 'firebase/auth';
-import { adminAuth, auth } from '../util/firebase';
+import { auth } from '../util/firebase';
 import { add, addCircle, calendar, chatbubble, chatbubbleEllipses, ellipse, home, person, search, square, triangle } from 'ionicons/icons';
 import TopMenu from './components/TopMenu';
 import HomePage from './pages/Home';

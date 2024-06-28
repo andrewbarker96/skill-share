@@ -54,9 +54,7 @@ interface AppProps {
 
 const App: React.FC<AppProps> = ({ isAuthenticated }) => {
   const uid = auth.currentUser?.uid;
-  console.log(uid)
   const history = useHistory();
-
   const goToProfile = () => {
     if (uid) {
       history.push(`/profile/${uid}`);
@@ -67,55 +65,45 @@ const App: React.FC<AppProps> = ({ isAuthenticated }) => {
 
   return (
     <IonApp>
-      {isAuthenticated && (
-        <IonHeader>
-          <IonToolbar>
-            <TopMenu />
-            <IonButton fill='clear' slot='icon-only' onClick={goToProfile}>
-              <IonIcon icon={search} />
-            </IonButton>
-          </IonToolbar>
-        </IonHeader>
-      )}
       <IonContent className='main-content'>
         <IonReactRouter>
           {isAuthenticated ? (
             <IonTabs>
-              <IonRouterOutlet><Switch>
-                <Route exact path="/" component={HomePage} />
-                <Route path="/profile/:uid" component={UserProfilePage} exact />
-                <Route exact path="/events" component={EventsPage} />
-                <Route exact path="/skill-swap" component={SkillSwapPage} />
-                <Route exact path="/chat" component={ChatDashboard} />
-                <Route exact path="/chat/new" component={NewChatPage} />
-                <Route exact path="/chats/:chatId" component={IndividualChat} />
-                <Route exact path="/update-profile" component={UpdateProfilePage} />
-              </Switch>
+              <IonRouterOutlet>
+                <Redirect exact path="/" to="/home" />
+                <Route path="/home" render={() => <HomePage />} />
+                <Route exact path="/profile/:uid" render={() => <UserProfilePage />} />
+                <Route exact path="/events" render={() => <EventsPage />} />
+                <Route exact path="/skill-swap" render={() => <SkillSwapPage />} />
+                <Route exact path="/chat" render={() => <ChatDashboard />} />
+                <Route exact path="/chat/new" render={() => <NewChatPage />} />
+                <Route exact path="/chats/:chatId" render={() => <IndividualChat />} />
+                <Route exact path="/profile/update-profile" render={() => <UpdateProfilePage />} />
               </IonRouterOutlet>
-              <IonTabBar slot='bottom'>
-                <IonTabButton tab='Home' href='/'>
+              <IonTabBar slot='bottom' style={{ paddingTop: '2%', paddingBottom: '1%' }}>
+                <IonTabButton tab='home' href='/home' >
                   <IonIcon icon={home} />
                   <IonLabel>Home</IonLabel>
                 </IonTabButton>
-                <IonTabButton tab='Skill Swap' href='/skill-swap'>
+                <IonTabButton tab='skill-swap' href='/skill-swap'>
                   <IonIcon icon={addCircle} />
                   <IonLabel>Skill Swap</IonLabel>
                 </IonTabButton>
-                <IonTabButton tab='Messages' href='/chat'>
+                <IonTabButton tab='chat' href='/chat'>
                   <IonIcon icon={chatbubbleEllipses} />
                   <IonLabel>Chat</IonLabel>
                 </IonTabButton>
-                <IonTabButton tab='Profile' href={uid ? `/profile/${uid}` : '#'}>
+                <IonTabButton tab='profile' href={uid ? `/profile/${uid}` : '#'} >
                   <IonIcon icon={person} />
                   <IonLabel>Profile</IonLabel>
                 </IonTabButton>
               </IonTabBar>
             </IonTabs>
           ) : (
-            <IonRouterOutlet><Switch>
-              <Route exact path="/" component={LoginPage} />
-              <Route exact path="/create-account" component={CreateAccountPage} />
-              <Route exact path="/password-reset" component={ForgotPasswordPage} /></Switch>
+            <IonRouterOutlet>
+              <Route path="/" render={() => <LoginPage />} />
+              <Route path="/create-account" render={() => <CreateAccountPage />} />
+              <Route exact path="/password-reset" render={() => <ForgotPasswordPage />} />
               <Route exact path="/privacy-policy" component={PrivacyPolicy} />
             </IonRouterOutlet>
           )}

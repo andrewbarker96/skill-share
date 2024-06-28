@@ -1,9 +1,16 @@
-import { IonCol, IonContent, IonGrid, IonPage, IonRow, IonText } from '@ionic/react'
+import { IonCol, IonContent, IonGrid, IonHeader, IonPage, IonRow, IonText, IonTitle, IonToolbar } from '@ionic/react'
 import React from 'react'
+import TopMenu from '../components/TopMenu'
 
 const EventsPage: React.FC = () => {
   return (
     <IonPage>
+      <IonHeader>
+        <IonToolbar>
+          <TopMenu />
+          <IonTitle>Events</IonTitle>
+        </IonToolbar>
+      </IonHeader>
       <IonContent className='ion-padding'>
         <IonGrid>
           <IonRow>

@@ -30,12 +30,19 @@ import { person } from "ionicons/icons";
 import { firestore, auth } from "../../util/firebase";
 import React from "react";
 import "./Home.css"
+import TopMenu from "../components/TopMenu";
 
 function HomePage() {
   const uid = auth.currentUser?.uid;
 
   return (
     <IonPage>
+      <IonHeader>
+        <IonToolbar>
+          <TopMenu />
+          <IonTitle>Home</IonTitle>
+        </IonToolbar>
+      </IonHeader>
       <IonContent className="ion-padding">
         <IonGrid>
           <IonRow>
@@ -49,7 +56,7 @@ function HomePage() {
               <IonFabButton
                 color="light"
                 style={{ float: "right" }}
-                href="/profile/:uid"
+                routerLink={`/profile/${auth.currentUser?.uid}`}
               >
                 <IonIcon icon={person} />
               </IonFabButton>
@@ -84,18 +91,18 @@ function HomePage() {
                     <IonCardContent>
                       <IonList>
                         <h2>Technical Skills</h2>
-                        <IonItem lines = "none">
+                        <IonItem lines="none">
 
                           <IonAccordionGroup className='acc-group'>
                             <IonAccordion value="first">
-                              <IonItem slot="header" className = 'accordion-header'>
+                              <IonItem slot="header" className='accordion-header'>
                                 <IonLabel>Programming Languages</IonLabel>
                               </IonItem>
                               <div className="ion-padding" slot="content">
                                 <li>Python</li>
                                 <li>Java</li>
                                 <li>JavaScript</li>
-                                
+
                               </div>
                             </IonAccordion>
                             <IonAccordion value="second">
@@ -104,10 +111,10 @@ function HomePage() {
                               </IonItem>
                               <div className="ion-padding" slot="content">
                                 <ul>
-                                <li>HTML</li>
-                                <li>CSS</li>
-                                <li>React</li>
-                                <li>Angular</li></ul>
+                                  <li>HTML</li>
+                                  <li>CSS</li>
+                                  <li>React</li>
+                                  <li>Angular</li></ul>
                               </div>
                             </IonAccordion>
                             <IonAccordion value="third">
@@ -115,7 +122,7 @@ function HomePage() {
                                 <IonLabel>Data Analysis</IonLabel>
                               </IonItem>
                               <div className="ion-padding" slot="content">
-                              <li>SQL</li>
+                                <li>SQL</li>
                                 <li>R</li>
                                 <li>Python for Data Analysis</li>
                                 <li>Data Visualization</li>
@@ -128,8 +135,8 @@ function HomePage() {
                         <h2>Creative Skills</h2>
 
                         <IonItem>
-                          
-                        <IonAccordionGroup className='acc-group'>
+
+                          <IonAccordionGroup className='acc-group'>
                             <IonAccordion value="first">
                               <IonItem slot="header" >
                                 <IonLabel>Design</IonLabel>
@@ -157,7 +164,7 @@ function HomePage() {
                                 <IonLabel>Art</IonLabel>
                               </IonItem>
                               <div className="ion-padding" slot="content">
-                              <li>Drawing</li>
+                                <li>Drawing</li>
                                 <li>Painting</li>
                                 <li>Sculpture</li>
                                 <li>Digital Art</li>
