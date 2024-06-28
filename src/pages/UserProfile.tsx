@@ -43,7 +43,7 @@ const UserProfilePage: React.FC = () => {
   }, [uid]);
 
   const handleEditProfile = () => {
-    history.push('/profile/update-profile');
+    history.push('/update-profile');
   };
 
   const handleMessageUser = async () => {
@@ -110,7 +110,7 @@ const UserProfilePage: React.FC = () => {
 
         <IonFab className='ion-padding' slot='fixed' vertical='top' horizontal='end'>
           {currentUserId === uid ? (
-            <IonFabButton routerLink='/profile/update-profile'>
+            <IonFabButton onClick={handleEditProfile}>
               <IonIcon icon={pencil} />
             </IonFabButton>
           ) : (
