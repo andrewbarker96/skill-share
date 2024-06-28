@@ -71,14 +71,14 @@ const App: React.FC<AppProps> = ({ isAuthenticated }) => {
             <IonTabs>
               <IonRouterOutlet>
                 <Redirect exact path="/" to="/home" />
-                <Route path="/home" render={() => <HomePage />} />
+                <Route exact path="/home" render={() => <HomePage />} />
                 <Route exact path="/profile/:uid" render={() => <UserProfilePage />} />
                 <Route exact path="/events" render={() => <EventsPage />} />
                 <Route exact path="/skill-swap" render={() => <SkillSwapPage />} />
                 <Route exact path="/chat" render={() => <ChatDashboard />} />
                 <Route exact path="/chat/new" render={() => <NewChatPage />} />
                 <Route exact path="/chats/:chatId" render={() => <IndividualChat />} />
-                <Route exact path="/profile/update-profile" render={() => <UpdateProfilePage />} />
+                <Route exact path="/update-profile" render={() => <UpdateProfilePage />} />
               </IonRouterOutlet>
               <IonTabBar slot='bottom' style={{ paddingTop: '2%', paddingBottom: '1%' }}>
                 <IonTabButton tab='home' href='/home' >
