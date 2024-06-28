@@ -27,6 +27,7 @@ const Main: React.FC = () => {
 
   return (
     <React.StrictMode>
+      <TopMenu />
       <App isAuthenticated={isAuthenticated} />
     </React.StrictMode>
   );
