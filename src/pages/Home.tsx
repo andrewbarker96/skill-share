@@ -55,7 +55,7 @@ function HomePage() {
             </IonCol>
             <IonCol size="6">
               <IonFabButton
-                color="light"
+                color="primary"
                 style={{ float: "right" }}
                 routerLink={`/profile/${auth.currentUser?.uid}`}
               >

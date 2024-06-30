@@ -26,7 +26,6 @@ ion-card-title, ion-card-subtitle {
 }
 
 
-
 .item.sc-ion-label-md-h, .item .sc-ion-label-md-h{
     font-size: 12px!important;
 }
@@ -36,15 +35,15 @@ ion-accordion-group {
 
 ion-accordion  ion-item[slot='header'] {
     --color:white;
-    --background:rgb(39, 89, 175); 
+    --background:#53aee6!important; 
 }
 
 ion-accordion.accordion-expanded ion-item[slot='header'] {
-    --background:#53aee6!important;
+    --background:#f83747!important;
 }
 
 ion-accordion.accordion-expanded ion-item[slot='header'] {
-    --background: #53aee6 !important;
+    --background:#f83747!important;
 }
 
 /* Additional styles to remove lines */

@@ -153,8 +153,8 @@ http://ionicframework.com/docs/theming/ */
   }
 
   .ios body {
-    --ion-background-color: #f4f5f8;
-    --ion-background-color-rgb: 244, 245, 248;
+    --ion-background-color: #FCFCFC!important;
+    --ion-background-color-rgb: 252, 252, 252!important;
     
 
     --ion-text-color: #282828;
@@ -192,8 +192,8 @@ http://ionicframework.com/docs/theming/ */
   }
 
   .md body {
-    --ion-background-color: #f4f5f8;
-    --ion-background-color-rgb: 244, 245, 248; 
+    --ion-background-color: #FCFCFC;
+    --ion-background-color-rgb: 252, 252, 252; 
 
 
     --ion-text-color: #282828;
