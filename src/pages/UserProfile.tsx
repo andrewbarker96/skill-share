@@ -68,7 +68,7 @@ const UserProfilePage: React.FC = () => {
     }
   };
 
-  /* const renderSkills = (skills: any) => {
+const renderSkills = (skills: any) => {
     if (!skills) return null;
 
     return Object.keys(skills).map((category) => (
@@ -93,10 +93,10 @@ const UserProfilePage: React.FC = () => {
       </IonCard>
     ));
   };
- */
 
 
-  const renderSkills = (skills: any) => {
+
+/*   const renderSkills = (skills: any) => {
     if (!skills) return null;
 
     return Object.keys(skills).map((category) => (
@@ -118,7 +118,7 @@ const UserProfilePage: React.FC = () => {
         ))}
       </div>
     ));
-  };
+  }; */
   return (
     <IonPage>
       <IonHeader>
@@ -127,7 +127,6 @@ const UserProfilePage: React.FC = () => {
           <IonTitle>{profile.username}</IonTitle>
         </IonToolbar>
       </IonHeader>
-      <GoBackOption />
       <IonContent className='ion-padding'>
         <div className='avatarContainer'>
           <IonAvatar className='profileAvatar'>
