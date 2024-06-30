@@ -15,3 +15,26 @@
   box-shadow:none!important;
   background-color:transparent!important;
 }
+
+
+ion-card-content {
+  padding-left:25px!important;
+}
+
+
+ion-card-header {
+  padding-bottom:10px;
+}
+
+
+ion-card-content ul {
+  margin-top:5px!important;
+}
+
+ion-card {
+  margin-bottom:20px;
+}
+
+.profileSkills h1 {
+  margin-bottom:0px!important;
+}
