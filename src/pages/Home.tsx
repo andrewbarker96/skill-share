@@ -32,8 +32,7 @@ import React from "react";
 import "./Home.css";
 import TopMenu from "../components/TopMenu";
 
-function HomePage() {
-  const uid = auth.currentUser?.uid;
+const HomePage: React.FC = () => {
 
   return (
     <IonPage>

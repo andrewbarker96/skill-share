@@ -48,7 +48,11 @@ import './theme/variables.css';
 
 setupIonicReact();
 
-const App: React.FC = () => {
+interface AppProps {
+  isAuthenticated: boolean;
+}
+
+const App: React.FC<AppProps> = ({ isAuthenticated }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [isAuth, setIsAuth] = useState(false);
 
@@ -71,15 +75,17 @@ const App: React.FC = () => {
           {isAuth ? (
             <IonTabs>
               <IonRouterOutlet>
-                <Redirect exact path="/" to="/home" />
-                <Route exact path="/home" component={HomePage} />
-                <Route exact path="/profile/:uid" component={UserProfilePage} />
-                <Route exact path="/events" component={EventsPage} />
-                <Route exact path="/skill-swap" component={SkillSwapPage} />
-                <Route exact path="/chat" component={ChatDashboard} />
-                <Route exact path="/chat/new" component={NewChatPage} />
-                <Route exact path="/chats/:chatId" component={IndividualChat} />
-                <Route exact path="/update-profile" render={() => <UpdateProfilePage />} />
+                <Switch>
+                  <Redirect exact path="/" to="/home" />
+                  <Route exact path="/home" component={HomePage} />
+                  <Route exact path="/profile/:uid" component={UserProfilePage} />
+                  <Route exact path="/events" component={EventsPage} />
+                  <Route exact path="/skill-swap" component={SkillSwapPage} />
+                  <Route exact path="/chat" component={ChatDashboard} />
+                  <Route exact path="/chat/new" component={NewChatPage} />
+                  <Route exact path="/chats/:chatId" component={IndividualChat} />
+                  <Route exact path="/update-profile" render={() => <UpdateProfilePage />} />
+                </Switch>
               </IonRouterOutlet>
               <IonTabBar slot='bottom' style={{ paddingTop: '2%', paddingBottom: '1%' }}>
                 <IonTabButton tab='home' href='/home'>
@@ -102,11 +108,12 @@ const App: React.FC = () => {
             </IonTabs>
           ) : (
             <IonRouterOutlet>
-              <Redirect exact path="/home" to="/" />
-              <Route exact path="/" component={LoginPage} />
-              <Route path="/create-account" component={CreateAccountPage} />
-              <Route exact path="/password-reset" component={ForgotPasswordPage} />
-              <Route exact path="/privacy-policy" component={PrivacyPolicy} />
+              <Switch>
+                <Route exact path="/" component={LoginPage} />
+                <Route path="/create-account" component={CreateAccountPage} />
+                <Route exact path="/password-reset" component={ForgotPasswordPage} />
+                <Route exact path="/privacy-policy" component={PrivacyPolicy} />
+              </Switch>
             </IonRouterOutlet>
           )}
         </IonContent>
