@@ -12,7 +12,7 @@ const root = createRoot(container!);
 defineCustomElements(window);
 
 const Main: React.FC = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
@@ -21,7 +21,6 @@ const Main: React.FC = () => {
     });
   }, []);
 
-  // CAUSING ENDLESS LOAD TIMES
   if (isAuthenticated === null) {
     return (
       <IonLoading
@@ -39,4 +38,4 @@ const Main: React.FC = () => {
   );
 };
 
-root.render(<Main />); 
+root.render(<Main />);
