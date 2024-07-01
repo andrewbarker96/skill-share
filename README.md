@@ -39,9 +39,9 @@ Deployed the PWA and submitted the mobile apps to the respective app stores.
 
 The students who participated in this project and assisted in development are as follows:
 
-Andrew Barker – <a href='https://github.com/andrewbarker96'>GitHub</a>
-Aaron Blac – <a href='https://github.com/aaronblac'>GitHub</a>
-Kayla Duffy – <a href='https://github.com/kaylavera99'>GitHub</a>
-Bryenna Warmann – <a href='https://github.com/BRYWARMANN'>GitHub</a>
+- Andrew Barker – <a href='https://github.com/andrewbarker96'>GitHub</a>
+- Aaron Blac – <a href='https://github.com/aaronblac'>GitHub</a>
+- Kayla Duffy – <a href='https://github.com/kaylavera99'>GitHub</a>
+- Bryenna Warmann – <a href='https://github.com/BRYWARMANN'>GitHub</a>
 
 This collaborative effort resulted in a functional and user-friendly platform for professionals to connect and exchange skills, showcasing the application of Agile methodologies and teamwork in software development.
