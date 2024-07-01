@@ -38,3 +38,5 @@ yarn-error.log*
 *.cache
 resources/ios/**/*
 resources/android/**/*
+
+./build
