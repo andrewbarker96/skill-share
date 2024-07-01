@@ -4,7 +4,7 @@
 
 SkillSwap is a hybrid app created utilizing Ionic & React Frameworks. It is built to function as both a PWA and mobile applications for iOS & Android.
 
-This project was completed as part of the Maryville University Master's of Software Development program, specifically for the "SWDV-650 SOFTWARE DEV, PROC, PRO, METH" course.
+This project was completed as part of the Maryville University Master's of Software Development program, specifically for the "SWDV-650 SOFTWARE DEV, PROC, PRO, METH" course .
 
 ## Development Process
 
