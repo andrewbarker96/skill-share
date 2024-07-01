@@ -1,17 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useHistory } from 'react-router-dom';
 import ProfileForm from '../components/ProfileForm';
-import { IonPage, IonGrid, IonRow, IonCol, IonLoading, IonContent, IonText, IonImg } from '@ionic/react';
+import { IonPage, IonGrid, IonRow, IonCol, IonLoading, IonContent, IonText, IonImg, IonHeader, IonToolbar, IonTitle } from '@ionic/react';
 import { auth } from '../../util/firebase';
 import { getUserProfile } from '../services/firestoreService';
 import { ProfileData } from '../types';
+import TopMenu from '../components/TopMenu';
+import GoBackOption from '../components/GoBack';
 
-// Define the type for location state
 interface LocationState {
   mode: 'update';
   initialStep?: number;
   initialSkills?: any;
-  uid?:string;
+  uid?: string;
 }
 
 const UpdateProfilePage: React.FC = () => {
@@ -19,32 +20,35 @@ const UpdateProfilePage: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const location = useLocation<LocationState>();
+  const history = useHistory();
 
   const initialStep = location.state?.initialStep ?? 0;
   const initialSkills = location.state?.initialSkills ?? {};
 
   useEffect(() => {
     const fetchProfileData = async () => {
-      console.log('Fetching profile data...');
       if (auth.currentUser) {
         try {
           const profileData = await getUserProfile(auth.currentUser.uid);
           setInitialProfileData(profileData);
-          console.log('Fetched profile data in UP:', profileData);
         } catch (error) {
-          console.error('Error fetching profile data in UP:', error);
-          setError('Failed to fetch profile data in UP');
+          setError('Failed to fetch profile data');
         } finally {
           setLoading(false);
         }
       } else {
-        console.error('No authenticated user found');
+        setError('No authenticated user found');
         setLoading(false);
       }
     };
 
     fetchProfileData();
   }, []);
+
+  const handleProfileUpdate = (updatedProfileData: ProfileData) => {
+    setInitialProfileData(updatedProfileData);
+    history.push(`/profile/${auth.currentUser?.uid}`, { updatedProfile: updatedProfileData });
+  };
 
   if (loading) {
     return (
@@ -68,6 +72,12 @@ const UpdateProfilePage: React.FC = () => {
 
   return (
     <IonPage>
+      <IonHeader>
+        <IonToolbar>
+          <GoBackOption />
+          <IonTitle>Edit Profile</IonTitle>
+        </IonToolbar>
+      </IonHeader>
       <IonContent className="ion-padding">
         <IonGrid class="form">
           <IonRow>
@@ -76,7 +86,7 @@ const UpdateProfilePage: React.FC = () => {
                 src="https://firebasestorage.googleapis.com/v0/b/skill-share-791ad.appspot.com/o/SkillSwap-Horizontal.png?alt=media&token=b1ac2ccd-0de3-4997-b50a-6ee7a07580a2"
                 alt="SkillSwap Logo"
                 style={{ height: '75px', marginBottom: '5%' }}
-                />
+              />
             </IonCol>
           </IonRow>
           <IonRow>
@@ -86,10 +96,11 @@ const UpdateProfilePage: React.FC = () => {
                 initialProfileData={initialProfileData}
                 initialStep={initialStep}
                 initialSkills={initialSkills}
+                onSubmit={handleProfileUpdate}
                 setInvalid={() => {}}
                 setSuccess={() => {}}
                 setErrorMessage={() => {}}
-                />
+              />
             </IonCol>
           </IonRow>
         </IonGrid>

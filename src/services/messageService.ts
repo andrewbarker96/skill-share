@@ -13,12 +13,14 @@ import {
   onSnapshot
 } from "firebase/firestore";
 
+
 // Define the User interface
 interface User {
   id: string;
   username: string;
   email: string;
   UID: string;
+  profileImage: string;
 }
 
 interface Chat {
@@ -39,17 +41,23 @@ interface Message {
 // Find users by email or username
 export const findUsers = async (search: string): Promise<User[]> => {
   try {
+
+    const searchQuery = search.toLowerCase();
     // Search by email
     const emailQuery = query(
       collection(db, "userProfiles"),
-      where("email", "==", search)
+      where("email", ">=", search),
+      where("email", "<=", searchQuery + '\uf8ff')
+
     );
     const emailSnapshot = await getDocs(emailQuery);
+    console.log(emailSnapshot)
 
     // Search by username
     const usernameQuery = query(
       collection(db, "userProfiles"),
-      where("username", "==", search)
+      where("username", ">=", searchQuery),
+      where("username", "<=", searchQuery + '\uf8ff')
     );
     const usernameSnapshot = await getDocs(usernameQuery);
 
@@ -62,6 +70,7 @@ export const findUsers = async (search: string): Promise<User[]> => {
         username: user.username,
         email: user.email,
         UID: user.uid,
+        profileImage: user.profileImage || ''
       });
     });
     usernameSnapshot.docs.forEach((doc) => {
@@ -72,6 +81,7 @@ export const findUsers = async (search: string): Promise<User[]> => {
           username: user.username,
           email: user.email,
           UID: user.uid,
+          profileImage: user.profileImage || ''
         });
       }
     });

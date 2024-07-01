@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Route } from 'react-router-dom';
+import { Route, Redirect, useHistory, } from 'react-router-dom';
 import {
   IonApp,
   IonContent,
@@ -18,7 +18,8 @@ import {
 import { IonReactRouter } from '@ionic/react-router';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from '../util/firebase';
-import { home, addCircle, chatbubbleEllipses, person, search } from 'ionicons/icons';
+import { home, addCircle, chatbubbleEllipses, person } from 'ionicons/icons';
+import { SplashScreen } from '@capacitor/splash-screen';
 import TopMenu from './components/TopMenu';
 import HomePage from './pages/Home';
 import LoginPage from './pages/Login';
@@ -31,6 +32,7 @@ import ChatDashboard from './pages/ChatDashboard';
 import NewChatPage from './pages/NewChatPage';
 import IndividualChat from './components/Messaging/chat/chat';
 import UpdateProfilePage from './pages/UpdateProfile';
+import PrivacyPolicy from './components/PrivacyPolicy';
 
 import '@ionic/react/css/core.css';
 import '@ionic/react/css/normalize.css';
@@ -47,48 +49,61 @@ import './theme/variables.css';
 
 setupIonicReact();
 
-const App: React.FC <{ isAuthenticated: boolean }> = ({ isAuthenticated }) => {
+interface AppProps {
+  isAuthenticated: boolean;
+}
+
+const App: React.FC<AppProps> = ({ isAuthenticated }) => {
+  const [isLoading, setIsLoading] = useState(true);
+  const [isAuth, setIsAuth] = useState(false);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setIsAuth(!!user);
+      setIsLoading(false);
+    });
+    return () => unsubscribe();
+  }, []);
+
+  setTimeout(() => {
+    SplashScreen.hide();
+  }, 2000);
+
+  if (isLoading) {
+    return <IonLoading isOpen={true} message={"Loading..."} />;
+  }
 
   return (
     <IonApp>
-      {isAuthenticated && (
-        <IonHeader>
-          <IonToolbar>
-            <TopMenu />
-            <IonButton fill='clear' slot='icon-only'>
-              <IonIcon icon={search} />
-            </IonButton>
-          </IonToolbar>
-        </IonHeader>
-      )}
-      <IonContent className='main-content'>
-        <IonReactRouter>
-          {isAuthenticated ? (
+      <IonReactRouter>
+        <IonContent className='main-content'>
+          {isAuth ? (
             <IonTabs>
               <IonRouterOutlet>
-                <Route exact path="/" component={HomePage} />
-                <Route exact path="/profile" component={UserProfilePage} />
+                <Redirect exact path="/" to="/home" />
+                <Route exact path="/home" component={HomePage} />
+                <Route exact path="/profile/:uid" component={UserProfilePage} />
                 <Route exact path="/events" component={EventsPage} />
-                <Route exact path="/skills" component={SkillSwapPage} />
+                <Route exact path="/skill-swap" component={SkillSwapPage} />
                 <Route exact path="/chat" component={ChatDashboard} />
                 <Route exact path="/chat/new" component={NewChatPage} />
                 <Route exact path="/chats/:chatId" component={IndividualChat} />
-                <Route exact path="/update-profile" component={UpdateProfilePage} />
+                <Route exact path="/update-profile" render={() => <UpdateProfilePage />} />
               </IonRouterOutlet>
-              <IonTabBar slot='bottom'>
-                <IonTabButton tab='Home' href='/'>
+              <IonTabBar slot='bottom' style={{ paddingTop: '3%', paddingBottom: '5%' }}>
+                <IonTabButton tab='home' href='/home'>
                   <IonIcon icon={home} />
                   <IonLabel>Home</IonLabel>
                 </IonTabButton>
-                <IonTabButton tab='Skills' href='/skills'>
+                <IonTabButton tab='skill-swap' href='/skill-swap'>
                   <IonIcon icon={addCircle} />
-                  <IonLabel>Skills</IonLabel>
+                  <IonLabel>Skill Swap</IonLabel>
                 </IonTabButton>
-                <IonTabButton tab='Messages' href='/chat'>
+                <IonTabButton tab='chat' href='/chat'>
                   <IonIcon icon={chatbubbleEllipses} />
                   <IonLabel>Chat</IonLabel>
                 </IonTabButton>
-                <IonTabButton tab='Profile' href='/profile'>
+                <IonTabButton tab='profile' href={auth.currentUser?.uid ? `/profile/${auth.currentUser.uid}` : '#'}>
                   <IonIcon icon={person} />
                   <IonLabel>Profile</IonLabel>
                 </IonTabButton>
@@ -97,12 +112,13 @@ const App: React.FC <{ isAuthenticated: boolean }> = ({ isAuthenticated }) => {
           ) : (
             <IonRouterOutlet>
               <Route exact path="/" component={LoginPage} />
-              <Route exact path="/create-account" component={CreateAccountPage} />
+              <Route path="/create-account" component={CreateAccountPage} />
               <Route exact path="/password-reset" component={ForgotPasswordPage} />
+              <Route exact path="/privacy-policy" component={PrivacyPolicy} />
             </IonRouterOutlet>
           )}
-        </IonReactRouter>
-      </IonContent>
+        </IonContent>
+      </IonReactRouter>
     </IonApp>
   );
 };

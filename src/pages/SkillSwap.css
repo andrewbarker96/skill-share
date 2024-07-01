@@ -1,0 +1,11 @@
+
+.cardAvatar {
+    width:60px;
+    height:60px;
+}
+
+
+.card-col {
+    display:flex;
+    flex-direction:column;
+}

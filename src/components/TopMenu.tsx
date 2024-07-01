@@ -12,10 +12,11 @@ import {
   IonButtons,
   IonText,
   IonLoading,
+  IonItem,
 } from '@ionic/react';
 import { logOutOutline, close, calendarOutline, shieldHalf, home, personAdd, person, add, chatbubble, chatbubbleEllipses, addCircle } from 'ionicons/icons';
 import Copyright from './Copyright';
-import { adminAuth, auth } from '../../util/firebase';
+import { auth } from '../../util/firebase';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 
 const TopMenu: React.FC = () => {
@@ -74,7 +75,7 @@ const TopMenu: React.FC = () => {
             <IonButton
               fill="clear"
               expand="block"
-              routerLink='/profile'
+              routerLink={`/profile/${auth.currentUser?.uid}`}
               style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
             >
               <IonIcon slot="start" icon={person} style={{ marginRight: '10px' }} />
@@ -96,14 +97,14 @@ const TopMenu: React.FC = () => {
             <IonButton
               fill="clear"
               expand="block"
-              routerLink='/skills'
+              routerLink='/skill-swap'
               style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
             >
               <IonIcon slot="start" icon={addCircle} style={{ marginRight: '10px' }} />
               <IonText>Swap Skills</IonText>
             </IonButton>
           </IonButtons>
-          <IonButtons className='top-menu-button'>
+          {/* <IonButtons className='top-menu-button'>
             <IonButton
               fill="clear"
               expand="block"
@@ -113,7 +114,7 @@ const TopMenu: React.FC = () => {
               <IonIcon slot="start" icon={calendarOutline} style={{ marginRight: '10px' }} />
               <IonText>Events</IonText>
             </IonButton>
-          </IonButtons>
+          </IonButtons> */}
           <IonButtons className='top-menu-button'>
             <IonButton
               id='open-loading'
@@ -132,16 +133,10 @@ const TopMenu: React.FC = () => {
       </IonMenu>
 
       {/* Menu Appears when not clicked. */}
-      <IonPage id="main-content">
-        <IonHeader>
-          <IonToolbar>
-            <IonButtons slot="start">
-              <IonMenuButton />
-            </IonButtons>
-          </IonToolbar>
-        </IonHeader>
-        <IonContent />
-      </IonPage>
+      
+        <IonButtons slot="start" id='main-content'>
+          <IonMenuButton />
+        </IonButtons>
     </>
   );
 };

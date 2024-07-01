@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import AccountInformationForm from './AccounInformationForm';
+import AccountInformationForm from './AccountInformationForm';
 import SkillsForm from './SkillsForm';
 import ProfilePictureForm from './ProfilePictureForm';
 import { createProfile, getUserProfile, updateProfile } from '../services/firestoreService';
@@ -20,6 +20,7 @@ interface Props {
   setSuccess: (state: boolean) => void;
   setErrorMessage: (message: string) => void;
   handleContinueProfile?: (uid: string) => void;
+  onSubmit: (updatedProfileData: ProfileData) => void;
 }
 
 const ProfileForm: React.FC<Props> = ({
@@ -30,7 +31,8 @@ const ProfileForm: React.FC<Props> = ({
   setInvalid,
   setSuccess,
   setErrorMessage,
-  handleContinueProfile
+  handleContinueProfile,
+  onSubmit
 }) => {
   const [step, setStep] = useState(initialStep);
   const [formData, setFormData] = useState<ProfileData>({
@@ -52,27 +54,32 @@ const ProfileForm: React.FC<Props> = ({
   const [loading, setLoading] = useState(false);
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
-  
+
   const history = useHistory();
 
   useEffect(() => {
     if (mode === 'update' && initialProfileData) {
       setFormData(initialProfileData);
+      setStep(initialStep); // Ensure the form starts at the correct step
     } else if (mode === 'update') {
       const fetchUserProfile = async () => {
         if (auth.currentUser) {
+          setLoading(true);
           try {
             const userProfile = await getUserProfile(auth.currentUser.uid);
             setFormData(userProfile);
+            setStep(initialStep); // Ensure the form starts at the correct step
           } catch (error) {
             setErrorMessage('Failed to fetch user profile');
             setShowToast(true);
+          } finally {
+            setLoading(false);
           }
         }
       };
       fetchUserProfile();
     }
-  }, [mode, initialProfileData, setErrorMessage]);
+  }, [mode, initialProfileData, initialSkills, initialStep, setErrorMessage]);
 
   const handleChange = (name: string, value: string) => {
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -96,12 +103,10 @@ const ProfileForm: React.FC<Props> = ({
     }
 
     try {
-      //create user
       const userCredential = await createUserWithEmailAndPassword(auth, formData.email, formData.password);
       const user = userCredential.user;
       const updatedFormData = { ...formData, uid: user.uid };
       const { password, confirmPassword, ...profileData } = updatedFormData;
-      // create user profile
       await createProfile(profileData);
       setToastMessage("Account created successfully!");
       setShowToast(true);
@@ -132,7 +137,7 @@ const ProfileForm: React.FC<Props> = ({
   };
 
   const handleSkillChange = (type: 'offered' | 'wanted', category: string, subcategory: string, skill: string, isChecked: boolean) => {
-    const updatedSkills = { ...formData[type === 'offered' ? 'skillsOffered' : 'skillsWanted'] };
+    const updatedSkills: Skills = { ...formData[type === 'offered' ? 'skillsOffered' : 'skillsWanted'] };
     if (!updatedSkills[category]) updatedSkills[category] = {};
     if (!updatedSkills[category][subcategory]) updatedSkills[category][subcategory] = [];
 
@@ -140,6 +145,12 @@ const ProfileForm: React.FC<Props> = ({
       updatedSkills[category][subcategory].push(skill);
     } else {
       updatedSkills[category][subcategory] = updatedSkills[category][subcategory].filter((s: string) => s !== skill);
+      if (updatedSkills[category][subcategory].length === 0) {
+        delete updatedSkills[category][subcategory];
+        if (Object.keys(updatedSkills[category]).length === 0) {
+          delete updatedSkills[category];
+        }
+      }
     }
 
     setFormData({ ...formData, [type === 'offered' ? 'skillsOffered' : 'skillsWanted']: updatedSkills });
@@ -163,11 +174,13 @@ const ProfileForm: React.FC<Props> = ({
     }
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault(); // Prevent the default form submission
     await saveProfileData();
     setToastMessage("Profile updated successfully!");
     setShowToast(true);
-    history.push('/profile');
+    onSubmit(formData); // Call the onSubmit callback with the updated profile data
+    history.push(`/profile/${formData.uid}`,  { updatedProfile: formData }); // Redirect to the profile page
   };
 
   const steps = [

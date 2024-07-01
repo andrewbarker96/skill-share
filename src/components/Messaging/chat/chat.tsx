@@ -1,33 +1,36 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "./chat.css";
-import { Timestamp} from 'firebase/firestore';
 import {
   IonButton,
   IonButtons,
   IonCol,
   IonContent,
+  IonHeader,
   IonIcon,
   IonInput,
-  IonItem,
+  IonLabel,
   IonPage,
   IonPopover,
   IonRow,
   IonText,
-  IonLabel,
-  IonItemDivider,
+  IonTitle,
+  IonToolbar,
 } from "@ionic/react";
-import { camera, checkmarkOutline, happy, send, checkmarkSharp } from "ionicons/icons";
+import { camera, checkmark, happy, send, checkmarkCircle, arrowBackCircle, informationCircleOutline } from "ionicons/icons";
 import EmojiPicker from "emoji-picker-react";
 import {
   sendMessage,
   getMessages,
   getChat,
   updateMessageStatusToRead,
-  onMessagesSnapshot
+  onMessagesSnapshot,
+  updateLastSentMessageStatus,
 } from "../../../services/messageService";
 import UserInfo from "../list/userInfo/UserInfo";
 import { auth } from "../../../../util/firebase";
 import { getUserProfile } from "../../../services/firestoreService";
+import TopMenu from "../../TopMenu";
+import GoBackOption from "../../GoBack";
 
 interface Message {
   id: string;
@@ -41,10 +44,12 @@ const IndividualChat: React.FC = () => {
   const [open, setOpen] = useState(false);
   const [text, setText] = useState("");
   const [chatId, setChatId] = useState<string>("");
-  const [messages, setMessages] = useState<any[]>([]);
+  const [messages, setMessages] = useState<Message[]>([]);
   const [targetUserId, setTargetUserId] = useState<string>("");
   const [username, setUsername] = useState<string>("");
   const [profileImage, setProfileImage] = useState<string>("");
+
+  const contentRef = useRef<HTMLIonContentElement>(null);
 
   useEffect(() => {
     const url = window.location.href;
@@ -55,36 +60,33 @@ const IndividualChat: React.FC = () => {
     if (chatIdFromUrl) {
       const fetchChatData = async () => {
         try {
-          // Fetch chat details to get target user ID
           const chat = await getChat(chatIdFromUrl);
           const currentUserId = auth.currentUser?.uid;
           if (chat && chat.users && currentUserId) {
-            const otherUserId = chat.users.find(
-              (id: string) => id !== currentUserId
-            );
+            const otherUserId = chat.users.find((id: string) => id !== currentUserId);
             if (otherUserId) {
               setTargetUserId(otherUserId);
-
-              // Fetch target user's profile to get the username
               const userProfile = await getUserProfile(otherUserId);
-              console.log("Fetched user data: ", userProfile);
               setUsername(userProfile.username);
               setProfileImage(userProfile.profileImage);
-              console.log("Profile Picture URL:", userProfile.profileImage);
             }
 
-            // Set up real-time listener for messages
             const unsubscribe = onMessagesSnapshot(chatIdFromUrl, async (messages) => {
               setMessages(messages);
+              scrollToBottom();
 
               for (const message of messages) {
-                if (
-                  message.senderId !== currentUserId &&
-                  message.status === "delivered"
-                ) {
+                if (message.senderId !== currentUserId && message.status === "delivered") {
                   await updateMessageStatusToRead(chatIdFromUrl, message.id);
                 }
-              };
+              }
+
+              const newMessageFromOtherUser = messages.find(
+                (message) => message.senderId !== currentUserId && message.status === 'sent'
+              );
+              if (newMessageFromOtherUser) {
+                await updateLastSentMessageStatus(chatIdFromUrl, currentUserId);
+              }
             });
 
             return () => unsubscribe();
@@ -106,60 +108,77 @@ const IndividualChat: React.FC = () => {
     try {
       await sendMessage(chatId, text);
       setText("");
-      const messages = await getMessages(chatId);
-      setMessages(messages);
+      scrollToBottom();
     } catch (error) {
       console.error("Error sending message:", error);
     }
   };
 
+  const scrollToBottom = () => {
+    if (contentRef.current) {
+      contentRef.current.scrollToBottom(300);
+    }
+  };
+
+  useEffect(() => {
+    const timeout = setTimeout(scrollToBottom, 100);
+    return () => clearTimeout(timeout);
+  }, [messages]);
+
   const currentUserId = auth.currentUser?.uid;
 
   return (
     <IonPage>
-      <div className="top">
-        <UserInfo username={username} profilePicture={profileImage} />{" "}
-        {/* Pass the target user's username */}
-      </div>
-      <IonContent className="chat-content textBg" scrollY={true} id="texts">
+      <IonHeader>
+        <IonToolbar>
+          <GoBackOption />
+          <IonTitle>{username}</IonTitle>
+          <IonButtons slot="end">
+            <IonButton>
+              <IonIcon icon={informationCircleOutline} />
+            </IonButton>
+          </IonButtons>
+        </IonToolbar>
+      </IonHeader>
+
+      {/* <div className="top">
+        <UserInfo username={username} profilePicture={profileImage} />
+      </div>  */}
+      <IonContent ref={contentRef} scrollY={true} id="texts">
         {messages.map((message) => {
           const messageClass =
-            message.senderId === currentUserId ? "sender" : "from";
-
+            message.senderId === currentUserId ? "message-sender" : "message-target";
           const textClass =
-            message.senderId === currentUserId ? "sender-text" : "from-text";
+            message.senderId === currentUserId ? "message-sender-text" : "message-target-text";
 
           return (
-            <IonItem
-              lines="none"
-              className={`message ${messageClass}`}
-              key={message.id}
-              
-            >
+            <div className={`message ${messageClass}`} key={message.id}>
               <IonText className={textClass}>{message.message}</IonText>
-              <IonText className={'wrapper'}>
-
-  
-                {messageClass === "sender" && message.status !== 'receivedReply' && (
-                  <IonText className="message-status ">
-                    {message.status === 'sent' && <IonIcon icon={checkmarkOutline} className="checkmark" />}
+              <IonText>
+                {messageClass === "message-sender" && message.status !== 'receivedReply' && (
+                  <IonText color={'medium'} className="message-status">
+                    {message.status === 'sent' && (
+                      <>
+                        <IonText>Sent</IonText>
+                        <IonIcon icon={checkmark} />
+                      </>
+                    )}
                     {message.status === 'delivered' && (
                       <>
-                        
-                        <IonIcon icon={checkmarkOutline} className="checkmark" />
-                        <IonIcon icon={checkmarkOutline} className="checkmark"  />
+                        <IonText color={'primary'}>Delivered</IonText>
+                        <IonIcon icon={checkmark} />
                       </>
                     )}
                     {message.status === 'read' && (
                       <>
-                        <IonIcon icon={checkmarkOutline} className="checkmark read" />
-                        <IonIcon icon={checkmarkOutline} className="checkmark read" />
+                        <IonText>Read</IonText>
+                        <IonIcon icon={checkmarkCircle} />
                       </>
                     )}
                   </IonText>
-                )}</IonText>
-            </IonItem>
-            
+                )}
+              </IonText>
+            </div>
           );
         })}
       </IonContent>
@@ -184,18 +203,17 @@ const IndividualChat: React.FC = () => {
             >
               <IonIcon icon={happy} />
             </IonButton>
-            <IonButton id="sendButton" onClick={handleSendMessage}>
+            <IonPopover
+              isOpen={open}
+              onDidDismiss={() => setOpen(false)}
+              className="emoji-popover"
+            >
+              <EmojiPicker onEmojiClick={handleEmoji} />
+            </IonPopover>
+            <IonButton onClick={handleSendMessage}>
               <IonIcon icon={send} />
             </IonButton>
           </IonButtons>
-          <IonPopover
-            trigger="emojiPicker"
-            isOpen={open}
-            side="top"
-            onDidDismiss={() => setOpen((prev) => !prev)}
-          >
-            <EmojiPicker onEmojiClick={handleEmoji} />
-          </IonPopover>
         </IonRow>
       </div>
     </IonPage>

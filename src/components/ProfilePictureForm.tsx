@@ -1,11 +1,12 @@
 import React from 'react';
 import { IonButton, IonItem, IonLabel, IonImg, IonRow, IonCol, IonText } from '@ionic/react';
+import { auth } from '../../util/firebase';
 
 interface Props {
   formData: any;
   setFormData: React.Dispatch<React.SetStateAction<any>>;
   handleImageUpload: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  handleSubmit: () => void;
+  handleSubmit: (event: React.FormEvent) => Promise<void>;
   handlePrev: () => void;
 }
 
@@ -40,8 +41,8 @@ const ProfilePictureForm: React.FC<Props> = ({ formData, setFormData, handleImag
         </IonCol>
       </IonCol>
       <IonCol>
-        <IonButton expand="block" onClick={handlePrev}>Previous</IonButton>
-        <IonButton expand="block" onClick={handleSubmit}>Submit Profile</IonButton>
+        <IonButton shape='round' expand="block" onClick={handlePrev}>Previous</IonButton>
+        <IonButton shape='round' expand="block" type="submit">Submit Profile</IonButton>
       </IonCol>
     </IonRow>
   );
