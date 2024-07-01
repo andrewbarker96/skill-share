@@ -153,8 +153,9 @@ http://ionicframework.com/docs/theming/ */
   }
 
   .ios body {
-    --ion-background-color: #f4f5f8;
-    --ion-background-color-rgb: 244, 245, 248;
+    --ion-background-color: #FCFCFC!important;
+    --ion-background-color-rgb: 252, 252, 252!important;
+    
 
     --ion-text-color: #282828;
     --ion-text-color-rgb: 0, 0, 0;
@@ -191,8 +192,9 @@ http://ionicframework.com/docs/theming/ */
   }
 
   .md body {
-    --ion-background-color: #f4f5f8;
-    --ion-background-color-rgb: 244, 245, 248;
+    --ion-background-color: #FCFCFC;
+    --ion-background-color-rgb: 252, 252, 252; 
+
 
     --ion-text-color: #282828;
     --ion-text-color-rgb: 0, 0, 0;
@@ -377,6 +379,8 @@ http://ionicframework.com/docs/theming/ */
     --ion-tab-bar-background: #1f1f1f;
 
     --ion-card-background: #1e1e1e;
+
+    --ion-card-header-color: #ffffff;
   }
 }
 
@@ -460,9 +464,9 @@ html {
 .profileSkills {
   margin: auto;
   background-color: white;
-  width: 325px;
+  width: 75%;
   border-radius: 3%;
-  padding-top: 5%;
+  padding: 3% 7%;
   box-shadow: 0px 2px 5px var(--ion-color-primary-shade);
 }
 

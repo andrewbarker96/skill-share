@@ -1,4 +1,4 @@
-package io.ionic.starter;
+package skillswap.test;
 
 import com.getcapacitor.BridgeActivity;
 

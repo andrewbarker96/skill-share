@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import AccountInformationForm from './AccountInformationForm';
 import SkillsForm from './SkillsForm';
@@ -20,6 +20,7 @@ interface Props {
   setSuccess: (state: boolean) => void;
   setErrorMessage: (message: string) => void;
   handleContinueProfile?: (uid: string) => void;
+  onSubmit: (updatedProfileData: ProfileData) => void;
 }
 
 const ProfileForm: React.FC<Props> = ({
@@ -30,7 +31,8 @@ const ProfileForm: React.FC<Props> = ({
   setInvalid,
   setSuccess,
   setErrorMessage,
-  handleContinueProfile
+  handleContinueProfile,
+  onSubmit
 }) => {
   const [step, setStep] = useState(initialStep);
   const [formData, setFormData] = useState<ProfileData>({
@@ -58,6 +60,7 @@ const ProfileForm: React.FC<Props> = ({
   useEffect(() => {
     if (mode === 'update' && initialProfileData) {
       setFormData(initialProfileData);
+      setStep(initialStep); // Ensure the form starts at the correct step
     } else if (mode === 'update') {
       const fetchUserProfile = async () => {
         if (auth.currentUser) {
@@ -65,6 +68,7 @@ const ProfileForm: React.FC<Props> = ({
           try {
             const userProfile = await getUserProfile(auth.currentUser.uid);
             setFormData(userProfile);
+            setStep(initialStep); // Ensure the form starts at the correct step
           } catch (error) {
             setErrorMessage('Failed to fetch user profile');
             setShowToast(true);
@@ -75,7 +79,7 @@ const ProfileForm: React.FC<Props> = ({
       };
       fetchUserProfile();
     }
-  }, [mode, initialProfileData, initialSkills, setErrorMessage]);
+  }, [mode, initialProfileData, initialSkills, initialStep, setErrorMessage]);
 
   const handleChange = (name: string, value: string) => {
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -99,12 +103,10 @@ const ProfileForm: React.FC<Props> = ({
     }
 
     try {
-      //create user
       const userCredential = await createUserWithEmailAndPassword(auth, formData.email, formData.password);
       const user = userCredential.user;
       const updatedFormData = { ...formData, uid: user.uid };
       const { password, confirmPassword, ...profileData } = updatedFormData;
-      // create user profile
       await createProfile(profileData);
       setToastMessage("Account created successfully!");
       setShowToast(true);
@@ -172,11 +174,13 @@ const ProfileForm: React.FC<Props> = ({
     }
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault(); // Prevent the default form submission
     await saveProfileData();
     setToastMessage("Profile updated successfully!");
     setShowToast(true);
-    history.push(`/profile/${formData.uid}`);
+    onSubmit(formData); // Call the onSubmit callback with the updated profile data
+    history.push(`/profile/${formData.uid}`,  { updatedProfile: formData }); // Redirect to the profile page
   };
 
   const steps = [

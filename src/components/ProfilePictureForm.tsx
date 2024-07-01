@@ -1,20 +1,16 @@
 import React from 'react';
 import { IonButton, IonItem, IonLabel, IonImg, IonRow, IonCol, IonText } from '@ionic/react';
-import { useHistory } from 'react-router-dom';
 import { auth } from '../../util/firebase';
 
 interface Props {
   formData: any;
   setFormData: React.Dispatch<React.SetStateAction<any>>;
   handleImageUpload: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  handleSubmit: () => void;
+  handleSubmit: (event: React.FormEvent) => Promise<void>;
   handlePrev: () => void;
 }
 
 const ProfilePictureForm: React.FC<Props> = ({ formData, setFormData, handleImageUpload, handleSubmit, handlePrev }) => {
-  const history = useHistory();
-  const uid = auth.currentUser?.uid;
-
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     handleImageUpload(event);
     if (event.target.files && event.target.files[0]) {
@@ -24,13 +20,6 @@ const ProfilePictureForm: React.FC<Props> = ({ formData, setFormData, handleImag
         profileImage: fileURL,
       }));
     }
-  };
-
-
-
-  const handleFormSubmit = async () => {
-    await handleSubmit();
-    history.push(`/profile/${uid}`);
   };
 
   return (
@@ -52,8 +41,8 @@ const ProfilePictureForm: React.FC<Props> = ({ formData, setFormData, handleImag
         </IonCol>
       </IonCol>
       <IonCol>
-        <IonButton expand="block" onClick={handleFormSubmit}>Submit Profile</IonButton>
-        <IonButton fill="outline" expand="block" onClick={handlePrev}>Previous</IonButton>
+        <IonButton expand="block" onClick={handlePrev}>Previous</IonButton>
+        <IonButton expand="block" type="submit">Submit Profile</IonButton>
       </IonCol>
     </IonRow>
   );
