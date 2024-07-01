@@ -24,18 +24,19 @@ const Main: React.FC = () => {
   if (isAuthenticated === null) {
     return (
       <IonLoading
-        isOpen={true}
-        message="Loading..."
+        trigger='open-loading'
+        message="Checking Credentials..."
+        duration={3000}
       />
     );
-  }
-
-  return (
-    <React.StrictMode>
-      {isAuthenticated && <TopMenu />}
-      <App isAuthenticated={isAuthenticated} />
-    </React.StrictMode>
-  );
+  } else {
+    return (
+      <React.StrictMode>
+        {isAuthenticated && <TopMenu />}
+        <App isAuthenticated={isAuthenticated} />
+      </React.StrictMode>
+    );
+  };
 };
 
 root.render(<Main />);

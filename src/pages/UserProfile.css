@@ -9,7 +9,7 @@
 .profileAvatar{
   width: 75px;
   height: 75px;
-  margin-right: 3%;
+  margin-right:10px;
   image-rendering: optimizeSpeed;
 }
 

@@ -20,9 +20,9 @@ import {
   IonInputPasswordToggle,
   IonRouterLink,
 } from '@ionic/react';
-import { getAuth, signInWithEmailAndPassword, sendPasswordResetEmail } from 'firebase/auth';
+import { getAuth, signInWithEmailAndPassword, GoogleAuthProvider, getRedirectResult, signInWithRedirect, signInWithPopup } from 'firebase/auth';
 import { firebase } from '../../util/firebase';
-import { close, create } from 'ionicons/icons';
+import { close, create, logoGoogle } from 'ionicons/icons';
 import Copyright from '../components/Copyright';
 import { IonLoading } from '@ionic/react';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
@@ -40,7 +40,7 @@ export default function LoginPage() {
   const handleLogin = () => {
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
-        const user = userCredential.user;
+        const user = userCredential!.user;
         const uid = user.uid;
         console.log('User signed in:', user, uid);
       })
@@ -54,6 +54,23 @@ export default function LoginPage() {
       });
   };
 
+  // const handleGoogleLogin = () => {
+  //   signInWithPopup(auth, new GoogleAuthProvider())
+  //     .then((result) => {
+  //       const credential = GoogleAuthProvider.credentialFromResult(result);
+  //       const token = credential?.accessToken;
+  //       const user = result.user;
+  //       console.log('User signed in:', user, token);
+  //     })
+  //     .catch((error) => {
+  //       const errorCode = error.code;
+  //       const errorMessage = error.message;
+  //       console.error('Error signing in:', errorCode, errorMessage);
+  //       setInvalid(true);
+  //       setPassword('');
+  //       setErrorMessage("Error Signing In. Verify Email & Password");
+  //     });
+  // };
 
   return (
 
@@ -87,6 +104,10 @@ export default function LoginPage() {
           <br />
           <IonButton color={'secondary'} shape='round' expand='block' routerLink='/create-account'>Create Account</IonButton>
           <br />
+          {/* <IonButton color={'light'} shape='round' expand='block' onClick={handleGoogleLogin}>
+            <IonIcon icon={logoGoogle} slot='start' />
+            <IonText>Signin with Google</IonText>
+          </IonButton> */}
           <Copyright />
         </div>
         <IonLoading className='custom-loading' trigger='open-loading' isOpen={false} onDidDismiss={() => setInvalid(false)} message='Logging in...' duration={500} />

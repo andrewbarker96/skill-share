@@ -47,7 +47,6 @@ const HomePage: React.FC = () => {
         <IonFab vertical="top" horizontal="end" slot="fixed">
           <IonFabButton
             color="primary"
-            style={{ float: "right" }}
             routerLink={`/profile/${auth.currentUser?.uid}`}
           >
             <IonIcon icon={person} />
@@ -58,7 +57,7 @@ const HomePage: React.FC = () => {
           <IonImg
             src="https://firebasestorage.googleapis.com/v0/b/skill-share-791ad.appspot.com/o/SkillSwap-Horizontal.png?alt=media&token=b1ac2ccd-0de3-4997-b50a-6ee7a07580a2"
             alt="SkillSwap Logo"
-            style={{ width: '50%' }}
+            style={{ minWidth: '20%', maxWidth: '200px' }}
           />
         </IonItem>
         <IonItem lines="none">

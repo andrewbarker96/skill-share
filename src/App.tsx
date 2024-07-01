@@ -90,7 +90,7 @@ const App: React.FC<AppProps> = ({ isAuthenticated }) => {
                 <Route exact path="/chats/:chatId" component={IndividualChat} />
                 <Route exact path="/update-profile" render={() => <UpdateProfilePage />} />
               </IonRouterOutlet>
-              <IonTabBar slot='bottom' style={{ paddingTop: '3%', paddingBottom: '5%' }}>
+              <IonTabBar slot='bottom' style={{ paddingTop: '10px', paddingBottom: '20px' }}>
                 <IonTabButton tab='home' href='/home'>
                   <IonIcon icon={home} />
                   <IonLabel>Home</IonLabel>
