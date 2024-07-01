@@ -16,7 +16,7 @@ interface Props {
 const SkillsForm: React.FC<Props> = ({ mode, formData, handleSkillChange, handleNext, handlePrev, filterOfferedSkills }) => {
   const [expandedCategories, setExpandedCategories] = useState<{ [key: string]: boolean }>({});
   const [expandedSubcategories, setExpandedSubcategories] = useState<{ [key: string]: boolean }>({});
-  const [allSkills, setAllSkills] = useState<Skills>({}); 
+  const [allSkills, setAllSkills] = useState<Skills>({});
 
   useEffect(() => {
     const fetchSkills = async () => {
@@ -68,7 +68,7 @@ const SkillsForm: React.FC<Props> = ({ mode, formData, handleSkillChange, handle
   const subToggleColor = mode === 'wanted' ? '#2759AF' : '#FF3847';
   const categoryBorder = mode === 'wanted' ? '2px solid rgba(56, 128, 255, 0.70)' : '2px solid rgba(255, 56, 71, 0.56)';
 
-  return ( 
+  return (
     <IonGrid>
       <IonRow>
         <IonCol size='12'>
@@ -92,16 +92,16 @@ const SkillsForm: React.FC<Props> = ({ mode, formData, handleSkillChange, handle
                 <IonListHeader onClick={() => toggleCategory(categoryName)} style={{ display: 'flex' }}>
                   <IonIcon
                     icon={expandedCategories[categoryName] ? chevronDownOutline : chevronForwardOutline}
-                    style={{ margin: '0 1.25rem 0.625rem 0rem', color: chevronColor, fontSize:'1.25rem' }}
+                    style={{ margin: '0 1.25rem 0.625rem 0rem', color: chevronColor, fontSize: '1.25rem' }}
                   />
                   <IonLabel style={{ fontSize: '1.25rem', fontWeight: 'bold' }}>{categoryName}</IonLabel>
                 </IonListHeader>
                 {expandedCategories[categoryName] && allSkills[categoryName] && Object.keys(allSkills[categoryName]).map((subcategoryName) => (
-                  <div key={subcategoryName} style={{ marginLeft: '1.575rem', borderLeft:categoryBorder }}>
-                    <IonListHeader onClick={() => toggleSubcategory(subcategoryName)} style={{ display: 'flex', marginLeft:'.575rem' }}>
+                  <div key={subcategoryName} style={{ marginLeft: '1.575rem', borderLeft: categoryBorder }}>
+                    <IonListHeader onClick={() => toggleSubcategory(subcategoryName)} style={{ display: 'flex', marginLeft: '.575rem' }}>
                       <IonIcon
                         icon={expandedSubcategories[subcategoryName] ? removeCircleOutline : addCircleOutline}
-                        style={{ margin: '0 0.875rem 0.625rem 0rem', color: subToggleColor,fontSize:'1.2rem' }}
+                        style={{ margin: '0 0.875rem 0.625rem 0rem', color: subToggleColor, fontSize: '1.2rem' }}
                       />
                       <IonLabel style={{ fontSize: '1rem', fontWeight: 'bold' }}>{subcategoryName}</IonLabel>
                     </IonListHeader>
@@ -129,8 +129,8 @@ const SkillsForm: React.FC<Props> = ({ mode, formData, handleSkillChange, handle
           </IonList>
         </IonCol>
         <IonCol>
-          <IonButton expand="block" onClick={handleNext}>Next</IonButton>
-          <IonButton fill="outline" expand="block" onClick={handlePrev}>Previous</IonButton>
+          <IonButton shape='round' expand="block" onClick={handleNext}>Next</IonButton>
+          <IonButton fill="outline" shape='round' expand="block" onClick={handlePrev}>Previous</IonButton>
         </IonCol>
       </IonRow>
     </IonGrid>

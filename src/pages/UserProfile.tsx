@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useHistory, useLocation } from 'react-router-dom';
 import { firestore, auth } from '../../util/firebase';
 import { doc, getDoc } from 'firebase/firestore';
-import { IonCol, IonContent, IonCard, IonCardContent, IonCardTitle,IonCardHeader, IonCardSubtitle, IonGrid, IonImg, IonPage, IonRow, IonText, IonButton, IonFabButton, IonIcon, IonFab, IonAvatar, IonHeader, IonToolbar, IonTitle } from '@ionic/react';
+import { IonCol, IonContent, IonCard, IonCardContent, IonCardTitle, IonCardHeader, IonCardSubtitle, IonGrid, IonImg, IonPage, IonRow, IonText, IonButton, IonFabButton, IonIcon, IonFab, IonAvatar, IonHeader, IonToolbar, IonTitle, IonItem } from '@ionic/react';
 import { createChat } from '../services/messageService';
 import { chatbox, pencil } from 'ionicons/icons';
 import { getUserProfile } from '../services/firestoreService';
@@ -68,7 +68,7 @@ const UserProfilePage: React.FC = () => {
     }
   };
 
-const renderSkills = (skills: any) => {
+  const renderSkills = (skills: any) => {
     if (!skills) return null;
 
     return Object.keys(skills).map((category) => (
@@ -96,29 +96,29 @@ const renderSkills = (skills: any) => {
 
 
 
-/*   const renderSkills = (skills: any) => {
-    if (!skills) return null;
-
-    return Object.keys(skills).map((category) => (
-      <div key={category} style={{ paddingLeft: '20px' }}>
-        <IonText>
-          <h2>{category} Skills</h2>
-        </IonText>
-        {Object.keys(skills[category]).map((subcategory) => (
-          <div key={subcategory}>
-            <IonText>
-              <h3><strong>{subcategory}</strong></h3>
-            </IonText>
-            <ul>
-              {(skills[category][subcategory] as string[]).map((skill, index) => (
-                <li key={index} className='skillList'>{skill}</li>
-              ))}
-            </ul>
-          </div>
-        ))}
-      </div>
-    ));
-  }; */
+  /*   const renderSkills = (skills: any) => {
+      if (!skills) return null;
+  
+      return Object.keys(skills).map((category) => (
+        <div key={category} style={{ paddingLeft: '20px' }}>
+          <IonText>
+            <h2>{category} Skills</h2>
+          </IonText>
+          {Object.keys(skills[category]).map((subcategory) => (
+            <div key={subcategory}>
+              <IonText>
+                <h3><strong>{subcategory}</strong></h3>
+              </IonText>
+              <ul>
+                {(skills[category][subcategory] as string[]).map((skill, index) => (
+                  <li key={index} className='skillList'>{skill}</li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+      ));
+    }; */
   return (
     <IonPage>
       <IonHeader>
@@ -127,25 +127,24 @@ const renderSkills = (skills: any) => {
           <IonTitle>{profile.username}</IonTitle>
         </IonToolbar>
       </IonHeader>
-      <IonContent className='ion-padding'>
-        <div className='avatarContainer'>
+      <IonContent className="ion-padding-top">
+        <IonItem lines='none' className='profileInfo'>
           <IonAvatar className='profileAvatar'>
             <IonImg src={profile.profileImage} />
           </IonAvatar>
-        </div>
-        
-        <IonText className='ion-text-center'>
-          <h1>{profile.firstName} {profile.lastName}</h1>
-          <p>{profile.city}, {profile.state}</p>
-          <p>{profile.profileDescription}</p>
-        </IonText>
-        
+          <IonText>
+            <h1>{profile.firstName} {profile.lastName}</h1>
+            <p>{profile.city}, {profile.state}</p>
+            {/* <p>{profile.profileDescription}</p> */}
+          </IonText>
+        </IonItem>
+
         <IonText className='profileSkills'>
-          <h1><span className='swap'>Swappable</span> Skills</h1> <br></br>
+          <h1><span className='swap'>Swappable</span> Skills</h1>
           {renderSkills(profile.skillsOffered)}
         </IonText>
 
-        <IonFab className='ion-padding' slot='fixed' vertical='top' horizontal='end'>
+        <IonFab className='ion-padding' slot='fixed' vertical='bottom' horizontal='end'>
           {currentUserId === uid ? (
             <IonFabButton onClick={handleEditProfile}>
               <IonIcon icon={pencil} />

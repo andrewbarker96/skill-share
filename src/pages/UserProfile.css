@@ -4,9 +4,12 @@
   justify-content: center;
 }
 
+
+
 .profileAvatar{
-  width: 100px;
-  height: 100px;
+  width: 75px;
+  height: 75px;
+  margin-right: 3%;
   image-rendering: optimizeSpeed;
 }
 
