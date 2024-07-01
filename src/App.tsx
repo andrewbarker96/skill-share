@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Route, Redirect, useHistory, Switch } from 'react-router-dom';
+import { Route, Redirect, useHistory, } from 'react-router-dom';
 import {
   IonApp,
   IonContent,
@@ -19,6 +19,7 @@ import { IonReactRouter } from '@ionic/react-router';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from '../util/firebase';
 import { home, addCircle, chatbubbleEllipses, person } from 'ionicons/icons';
+import { SplashScreen } from '@capacitor/splash-screen';
 import TopMenu from './components/TopMenu';
 import HomePage from './pages/Home';
 import LoginPage from './pages/Login';
@@ -64,6 +65,10 @@ const App: React.FC<AppProps> = ({ isAuthenticated }) => {
     return () => unsubscribe();
   }, []);
 
+  setTimeout(() => {
+    SplashScreen.hide();
+  }, 2000);
+
   if (isLoading) {
     return <IonLoading isOpen={true} message={"Loading..."} />;
   }
@@ -75,19 +80,17 @@ const App: React.FC<AppProps> = ({ isAuthenticated }) => {
           {isAuth ? (
             <IonTabs>
               <IonRouterOutlet>
-                <Switch>
-                  <Redirect exact path="/" to="/home" />
-                  <Route exact path="/home" component={HomePage} />
-                  <Route exact path="/profile/:uid" component={UserProfilePage} />
-                  <Route exact path="/events" component={EventsPage} />
-                  <Route exact path="/skill-swap" component={SkillSwapPage} />
-                  <Route exact path="/chat" component={ChatDashboard} />
-                  <Route exact path="/chat/new" component={NewChatPage} />
-                  <Route exact path="/chats/:chatId" component={IndividualChat} />
-                  <Route exact path="/update-profile" render={() => <UpdateProfilePage />} />
-                </Switch>
+                <Redirect exact path="/" to="/home" />
+                <Route exact path="/home" component={HomePage} />
+                <Route exact path="/profile/:uid" component={UserProfilePage} />
+                <Route exact path="/events" component={EventsPage} />
+                <Route exact path="/skill-swap" component={SkillSwapPage} />
+                <Route exact path="/chat" component={ChatDashboard} />
+                <Route exact path="/chat/new" component={NewChatPage} />
+                <Route exact path="/chats/:chatId" component={IndividualChat} />
+                <Route exact path="/update-profile" render={() => <UpdateProfilePage />} />
               </IonRouterOutlet>
-              <IonTabBar slot='bottom' style={{ paddingTop: '2%', paddingBottom: '1%' }}>
+              <IonTabBar slot='bottom' style={{ paddingTop: '3%', paddingBottom: '5%' }}>
                 <IonTabButton tab='home' href='/home'>
                   <IonIcon icon={home} />
                   <IonLabel>Home</IonLabel>
@@ -108,12 +111,10 @@ const App: React.FC<AppProps> = ({ isAuthenticated }) => {
             </IonTabs>
           ) : (
             <IonRouterOutlet>
-              <Switch>
-                <Route exact path="/" component={LoginPage} />
-                <Route path="/create-account" component={CreateAccountPage} />
-                <Route exact path="/password-reset" component={ForgotPasswordPage} />
-                <Route exact path="/privacy-policy" component={PrivacyPolicy} />
-              </Switch>
+              <Route exact path="/" component={LoginPage} />
+              <Route path="/create-account" component={CreateAccountPage} />
+              <Route exact path="/password-reset" component={ForgotPasswordPage} />
+              <Route exact path="/privacy-policy" component={PrivacyPolicy} />
             </IonRouterOutlet>
           )}
         </IonContent>

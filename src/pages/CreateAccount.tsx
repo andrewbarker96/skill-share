@@ -65,6 +65,7 @@ const CreateAccountPage: React.FC = () => {
                 setSuccess={setSuccess}
                 setErrorMessage={setErrorMessage}
                 handleContinueProfile={handleContinueProfile}
+                onSubmit={() => {}}
               />
             </IonCol>
           </IonRow>

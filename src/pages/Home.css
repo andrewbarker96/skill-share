@@ -1,17 +1,7 @@
-.ion-card .ios {
-    width:100%!important;
-}
-
-
-ion-item .item-inner {
-border-bottom:0!important;
-}
-
 
 .acc-group {
     width:100%;
 }
-
 
 ion-card h2 {
     margin-bottom: 10px!important;
@@ -20,15 +10,14 @@ ion-card h2 {
     color:black!important;
 }
 
-
 ion-card-title, ion-card-subtitle {
     color:black!important;
 }
 
-
 .item.sc-ion-label-md-h, .item .sc-ion-label-md-h{
     font-size: 12px!important;
 }
+
 ion-accordion-group {
     margin-bottom: 25px!important;
 }
@@ -44,15 +33,6 @@ ion-accordion.accordion-expanded ion-item[slot='header'] {
 
 ion-accordion.accordion-expanded ion-item[slot='header'] {
     --background:#f83747!important;
-}
-
-/* Additional styles to remove lines */
-ion-item {
-    --inner-border-width: 0px;
-}
-
-ion-item-divider {
-    --border-width: 0px;
 }
 
 ul {

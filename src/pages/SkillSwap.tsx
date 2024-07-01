@@ -65,24 +65,24 @@ const SkillSwapPage: React.FC = () => {
           <IonTitle>Skill Swap</IonTitle>
         </IonToolbar>
       </IonHeader>
-      <IonContent className='ion-padding'>
+      <IonContent className='ion-padding-top'>
         <h2>Swappers</h2>
         <h3>Explore other swappers!</h3>
-        <IonGrid>
-          {profiles.map(profile => (
-            <IonCard key={profile.id} onClick={() => handleProfileClick(profile.id)}>
-              <IonItem lines='none' className='ion-padding-top ion-padding-bottom'>
-                <IonAvatar slot='start' className='cardAvatar'>
-                  <IonImg src={profile.profileImage || "https://ionicframework.com/docs/img/demos/card-media.png"} alt="Profile Image" />
-                </IonAvatar>
-                <IonCardContent>
-                  <IonCardTitle>{profile.firstName} {profile.lastName}</IonCardTitle>
-                  <IonCardSubtitle>{profile.location}</IonCardSubtitle>
-                </IonCardContent>
-              </IonItem>
-            </IonCard>
-          ))}
-        </IonGrid>
+
+        {profiles.map(profile => (
+          <IonCard key={profile.id} onClick={() => handleProfileClick(profile.id)}>
+            <IonItem lines='none' className='ion-padding-top ion-padding-bottom'>
+              <IonAvatar slot='start' className='cardAvatar'>
+                <IonImg src={profile.profileImage || "https://ionicframework.com/docs/img/demos/card-media.png"} alt="Profile Image" />
+              </IonAvatar>
+              <IonCardContent>
+                <IonCardTitle>{profile.firstName} {profile.lastName}</IonCardTitle>
+                <IonCardSubtitle>{profile.location}</IonCardSubtitle>
+              </IonCardContent>
+            </IonItem>
+          </IonCard>
+        ))}
+
       </IonContent>
     </IonPage>
   )

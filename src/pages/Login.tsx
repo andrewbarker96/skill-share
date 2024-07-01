@@ -59,44 +59,36 @@ export default function LoginPage() {
 
     // Main Login Form
     <IonPage>
+      <IonHeader>
+        <IonToolbar color={'none'}>
+        </IonToolbar>
+        <IonImg className='ion-padding' src='https://firebasestorage.googleapis.com/v0/b/skill-share-791ad.appspot.com/o/SkillSwap-Horizontal.png?alt=media&token=b1ac2ccd-0de3-4997-b50a-6ee7a07580a2' alt='SkillSwap Logo' style={{ height: '100px' }} />
+
+      </IonHeader>
       <IonContent className='ion-padding'>
-        <IonGrid className='form'>
-          <IonRow>
-            <IonCol size='12'>
-              <IonImg src='https://firebasestorage.googleapis.com/v0/b/skill-share-791ad.appspot.com/o/SkillSwap-Horizontal.png?alt=media&token=b1ac2ccd-0de3-4997-b50a-6ee7a07580a2' alt='SkillSwap Logo' style={{ height: '75px', marginBottom: '5%' }} />
-            </IonCol>
-          </IonRow>
-          <IonRow>
-            <IonCol size='12'>
-              <IonInput type='email' labelPlacement='stacked' label='Email' placeholder='Email' value={email} onIonChange={e => setEmail(e.detail.value!)} />
-            </IonCol>
-            <IonCol size='12'>
-              <IonInput type='password' labelPlacement='stacked' label='Password' placeholder='Password' value={password} onIonChange={e => setPassword(e.detail.value!)}>
-                <IonInputPasswordToggle color={'medium'} slot='end' />
-              </IonInput>
-            </IonCol>
-            <IonCol size='12' className='ion-text-end'>
-              <div className='ion-text-end'>
-                <IonButton fill='clear' color={'primary'} routerLink='/password-reset'>Forgot Password</IonButton>
-              </div>
-            </IonCol>
-          </IonRow>
-          <IonRow>
-            <IonCol>
-              <IonButton shape='round' id='open-loading' expand='block' onClick={handleLogin}>Login</IonButton>
-            </IonCol>
-          </IonRow>
-          <IonRow>
-            <IonCol>
-              <IonButton color={'secondary'} shape='round' expand='block' routerLink='/create-account'>Create Account</IonButton>
-            </IonCol>
-          </IonRow>
-          <IonRow>
-            <IonCol>
-              <Copyright />
-            </IonCol>
-          </IonRow>
-        </IonGrid>
+        <div>
+          <IonItem lines='none'>
+            <IonInput type='email' labelPlacement='stacked' label='Email' placeholder='user@mail.com' value={email} onIonChange={e => setEmail(e.detail.value!)} />
+          </IonItem>
+          <br />
+          <IonItem lines='none'>
+            <IonInput type='password' labelPlacement='stacked' label='Password' placeholder='abc123!' value={password} onIonChange={e => setPassword(e.detail.value!)}>
+              <IonInputPasswordToggle color={'medium'} slot='end' />
+            </IonInput>
+          </IonItem>
+          <IonItem lines='none'>
+            <IonButtons slot='end'>
+              <IonButton fill='clear' color={'primary'} routerLink='/password-reset'>Forgot Password</IonButton>
+            </IonButtons>
+          </IonItem>
+        </div>
+        <div>
+          <IonButton shape='round' id='open-loading' expand='block' onClick={handleLogin}>Login</IonButton>
+          <br />
+          <IonButton color={'secondary'} shape='round' expand='block' routerLink='/create-account'>Create Account</IonButton>
+          <br />
+          <Copyright />
+        </div>
         <IonLoading className='custom-loading' trigger='open-loading' isOpen={false} onDidDismiss={() => setInvalid(false)} message='Logging in...' duration={500} />
         <IonToast isOpen={invalid} color={'danger'} onDidDismiss={() => setInvalid(false)} message={errorMessage} duration={2000} />
       </IonContent>

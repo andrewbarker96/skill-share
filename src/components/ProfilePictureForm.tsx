@@ -41,8 +41,8 @@ const ProfilePictureForm: React.FC<Props> = ({ formData, setFormData, handleImag
         </IonCol>
       </IonCol>
       <IonCol>
-        <IonButton expand="block" onClick={handlePrev}>Previous</IonButton>
-        <IonButton expand="block" type="submit">Submit Profile</IonButton>
+        <IonButton shape='round' expand="block" onClick={handlePrev}>Previous</IonButton>
+        <IonButton shape='round' expand="block" type="submit">Submit Profile</IonButton>
       </IonCol>
     </IonRow>
   );

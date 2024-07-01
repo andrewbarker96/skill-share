@@ -137,19 +137,16 @@ const ChatDashboard: React.FC = () => {
       <IonHeader>
         <IonToolbar>
           <TopMenu />
-          <IonTitle>Chats</IonTitle>
+          <IonTitle>Chat</IonTitle>
         </IonToolbar>
-      </IonHeader>
-      <IonHeader className='ion-padding'>
-        <IonText>
-          <h1>Chats</h1>
-        </IonText>
         <IonSearchbar
           placeholder='Search'
           value={search}
           onIonInput={(e) => setSearch(e.detail.value!)}
         />
       </IonHeader>
+
+
       <IonContent>
         {filteredChats.map(chat => (
           <IonItem className='chatItem' lines='none' key={chat.id} routerLink={`/chats/${chat.id}`}>

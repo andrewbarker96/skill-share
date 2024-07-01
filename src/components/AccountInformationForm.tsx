@@ -221,26 +221,26 @@ const AccountInformationForm: React.FC<Props> = ({ formData, handleChange, handl
                 {errors.confirmPassword && <IonText color="danger">{errors.confirmPassword}</IonText>}
               </IonCol>
               <IonCol>
-              <IonItem lines="none" className="ion-align-items-center">
-                  <IonCheckbox checked={agree} onIonChange={e => setAgree(e.detail.checked)} style={{ maxWidth:'2rem' }}/>
-                  <IonLabel className="ion-text-wrap" style={{ fontSize:'0.75rem' }}>
+                <IonItem lines="none" className="ion-align-items-center">
+                  <IonCheckbox checked={agree} onIonChange={e => setAgree(e.detail.checked)} style={{ maxWidth: '2rem' }} />
+                  <IonLabel className="ion-text-wrap" style={{ fontSize: '0.75rem' }}>
                     Check here to agree to the <span onClick={() => setShowModal(true)} style={{ color: '#2759AF', textDecoration: 'underline', cursor: 'pointer' }}>privacy policy</span>.
                   </IonLabel>
                 </IonItem>
               </IonCol>
               <IonCol>
                 <>
-                  <IonButton expand='block' onClick={() => handleSubmit('profile')}>
+                  <IonButton shape='round' expand='block' onClick={() => handleSubmit('profile')}>
                     Continue Creating Profile
                   </IonButton>
-                  <IonButton fill="outline" expand='block' onClick={() => handleSubmit('home')}>
+                  <IonButton shape='round' fill="outline" expand='block' onClick={() => handleSubmit('home')}>
                     Create Account and Go to Home
                   </IonButton>
                   <IonPopover
                     isOpen={showPopover}
                     onDidDismiss={() => setShowPopover(false)}
                   >
-                    <p style={{ padding:'1rem' }}>Fill out all fields and agree to the privacy policy before continuing</p>
+                    <p style={{ padding: '1rem' }}>Fill out all fields and agree to the privacy policy before continuing</p>
                   </IonPopover>
                 </>
               </IonCol>

@@ -132,18 +132,18 @@ const IndividualChat: React.FC = () => {
       <IonHeader>
         <IonToolbar>
           <GoBackOption />
-          <IonTitle>{}</IonTitle>
-          {/* <IonButtons slot="end">
+          <IonTitle>{username}</IonTitle>
+          <IonButtons slot="end">
             <IonButton>
               <IonIcon icon={informationCircleOutline} />
             </IonButton>
-          </IonButtons> */}
+          </IonButtons>
         </IonToolbar>
       </IonHeader>
-      
-      <div className="top">
+
+      {/* <div className="top">
         <UserInfo username={username} profilePicture={profileImage} />
-      </div> 
+      </div>  */}
       <IonContent ref={contentRef} scrollY={true} id="texts">
         {messages.map((message) => {
           const messageClass =
