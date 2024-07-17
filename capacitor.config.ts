@@ -1,7 +1,7 @@
 import type { CapacitorConfig } from "@capacitor/cli";
 
 const config: CapacitorConfig = {
-  appId: "skillswap.test",
+  appId: "skillswap.app",
   appName: "SkillSwap",
   webDir: "dist",
   plugins: {

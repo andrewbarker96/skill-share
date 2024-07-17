@@ -1,4 +1,4 @@
-package skillswap.test;
+package skillswap.app;
 
 import com.getcapacitor.BridgeActivity;
 
