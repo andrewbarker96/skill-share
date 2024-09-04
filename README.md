@@ -45,3 +45,5 @@ The students who participated in this project and assisted in development are as
 - Bryenna Warmann – <a href='https://github.com/BRYWARMANN'>GitHub</a>
 
 This collaborative effort resulted in a functional and user-friendly platform for professionals to connect and exchange skills, showcasing the application of Agile methodologies and teamwork in software development.
+
+To view the backlog/timeline for this project feel free to <a href="https://skillswap660.atlassian.net/jira/software/projects/SCRUM/boards/1/timeline?selectedIssue=SCRUM-4&shared=&atlOrigin=eyJpIjoiZDk5NWM0MjQ5YWM0NGQ1MTk2NTY1OWQ2MTRjZmZlZTgiLCJwIjoiaiJ9">check out our Jira page</a>!
